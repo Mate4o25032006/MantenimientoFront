@@ -29,12 +29,10 @@ Devuelve código JSX que representa la interfaz de usuario de la aplicación. */
 
 export const AppUi = () => {
     const { loader } = useContext(TurisContext);
-    const admin = useGetAdmin();
 
     return (
         <>
             <BrowserRouter>
-                {admin ? <> <Menu /> </> : <></>}
                 {/* <Layout> */}
                     {loader && <Loader />}
                     <AppRoutes />
