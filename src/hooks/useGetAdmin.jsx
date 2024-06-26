@@ -13,7 +13,7 @@ const useGetAdmin = () => {
         const fetchData = async () => {
             setLoader(true)
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
                     headers: {
                         "Authorization": `Bearer ${tokenSession}`
                     }

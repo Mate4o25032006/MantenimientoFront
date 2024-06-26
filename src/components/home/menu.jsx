@@ -61,8 +61,9 @@ export const Menu = () => {
     setOpen(!open);
   };
 
-    <React.Fragment>
-        <MuiAppBar position="absolute" open={open}>
+  return (
+    <>
+        <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -100,8 +101,8 @@ export const Menu = () => {
               style={{ width: 50, height: 50, objectFit: 'cover' }}
             />
           </Toolbar>
-        </MuiAppBar>
-        <MuiDrawer variant="permanent" open={open}>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
               display: 'flex',
@@ -121,6 +122,7 @@ export const Menu = () => {
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
-        </MuiDrawer>
-    </React.Fragment>
+        </Drawer>
+    </>
+  )
 }
