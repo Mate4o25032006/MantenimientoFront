@@ -4,6 +4,8 @@ import { TurisContext } from "../Context";
 import Loader from '../components/Loader'
 
 import { Login,HomePage } from '../pages/';
+import useGetAdmin from "../hooks/useGetAdmin";
+import { Menu } from "../components/home/menu";
 
 /* La función `AppRoutes` es responsable de definir las rutas de la aplicación usando el gancho
 `useRoutes` de la biblioteca `react-router-dom`. Crea una matriz de objetos de ruta, donde cada
@@ -26,12 +28,13 @@ function AppRoutes() {
 Devuelve código JSX que representa la interfaz de usuario de la aplicación. */
 
 export const AppUi = () => {
-    const { loader } = useContext(TurisContext)
+    const { loader } = useContext(TurisContext);
+    const admin = useGetAdmin();
 
     return (
         <>
             <BrowserRouter>
-                {/* <Navbar /> */}
+                {admin ? <> <Menu /> </> : <></>}
                 {/* <Layout> */}
                     {loader && <Loader />}
                     <AppRoutes />
