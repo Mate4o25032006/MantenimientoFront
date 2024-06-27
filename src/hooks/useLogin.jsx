@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useContext } from 'react';
-import { TurisContext } from '../Context';
+import { MantenContext } from '../Context';
 
 const useLogin = (url, onSubmit, inputs) => {
     const navigate = useNavigate();
-    const { setLoader, setTokenSession } = useContext(TurisContext); // Obtén el contexto
+    const { setLoader, setTokenSession } = useContext(MantenContext); // Obtén el contexto
 
     const aceptSubmit = async () => {
         try {

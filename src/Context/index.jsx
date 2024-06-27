@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
-export const TurisContext = createContext();
+export const MantenContext = createContext();
 
-export function TurisContextProvider({ children }) {
+export function MantenContextProvider({ children }) {
     const [inputs, setInputs] = useState({});
     const [loader, setLoader] = useState(true);
     const [admin, setAdmin] = useState(false)
@@ -26,7 +26,7 @@ export function TurisContextProvider({ children }) {
 
 
     return (
-        <TurisContext.Provider
+        <MantenContext.Provider
             value={{
                 inputs,
                 setInputs,
@@ -39,6 +39,6 @@ export function TurisContextProvider({ children }) {
             }}
         >
             {children}
-        </TurisContext.Provider>
+        </MantenContext.Provider>
     )
 }

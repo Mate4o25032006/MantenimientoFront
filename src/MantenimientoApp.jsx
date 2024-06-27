@@ -1,11 +1,11 @@
 import { AppUi } from './router';
-import { TurisContextProvider } from './Context';
+import { MantenContext, MantenContextProvider } from './Context';
 
 
 export const MantenimientoApp = () => {
   return (
-    <TurisContextProvider>
+    <MantenContextProvider>
         <AppUi />
-    </TurisContextProvider>
+    </MantenContextProvider>
   )
 }
