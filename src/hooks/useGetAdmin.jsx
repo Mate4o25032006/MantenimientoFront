@@ -1,26 +1,26 @@
-import { useContext, useEffect, useState } from "react"
-import { TurisContext } from "../Context"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useContext, useEffect, useState } from "react";
+import { MantenContext } from "../Context";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const useGetAdmin = () => {
-    const navigate = useNavigate()
-    const { tokenSession, setAdmin, setLoader } = useContext(TurisContext)
-    const [adminSession, setAdminSession] = useState()
-    setAdmin(true)
+    const navigate = useNavigate();
+    const { tokenSession, setAdmin, setLoader } = useContext(MantenContext);
+    const [adminSession, setAdminSession] = useState();
+
     useEffect(() => {
         const fetchData = async () => {
-            setLoader(true)
+            setLoader(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/usuarios`, {
                     headers: {
                         "Authorization": `Bearer ${tokenSession}`
                     }
-                })
-                setLoader(false)
-                setAdmin(true)
-                setAdminSession(true)
+                });
+                setLoader(false);
+                setAdmin(true);
+                setAdminSession(true);
                 console.log(response);
             } catch (error) {
                 console.log(error);
@@ -31,18 +31,18 @@ const useGetAdmin = () => {
                     showConfirmButton: false,
                     timer: 2500,
                 }).then(() => {
-                    setLoader(false)
-                    setAdmin(false)
-                    setAdminSession(false)
+                    setLoader(false);
+                    setAdmin(false);
+                    setAdminSession(false);
                     navigate("/login", {
                         replace: true
-                    })
+                    });
                 });
             }
-        }
-        fetchData()
-    }, [tokenSession])
-    return adminSession
-}
+        };
+        fetchData();
+    }, [tokenSession, setAdmin, setLoader, navigate]); 
+    return adminSession;
+};
 
-export default useGetAdmin
+export default useGetAdmin;

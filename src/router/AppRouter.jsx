@@ -1,6 +1,6 @@
 import { useRoutes, BrowserRouter } from "react-router-dom";
 import { useContext } from "react";
-import { TurisContext } from "../Context";
+import { MantenContext } from "../Context";
 import Loader from '../components/Loader'
 
 import { Login,HomePage } from '../pages/';
@@ -28,7 +28,7 @@ function AppRoutes() {
 Devuelve código JSX que representa la interfaz de usuario de la aplicación. */
 
 export const AppUi = () => {
-    const { loader } = useContext(TurisContext);
+    const { loader } = useContext(MantenContext);
     return (
         <>
             <BrowserRouter>
