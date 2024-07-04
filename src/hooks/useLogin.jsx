@@ -22,9 +22,8 @@ const useLogin = (url, onSubmit, inputs) => {
                 onSubmit();
                 setLoader(false);
                 setTokenSession(response.data.token);
-                navigate("/admin", {
-                    replace: true,
-                });
+                localStorage.setItem('authToken', response.data.token); // Guardar token en localStorage
+                navigate("/admin", { replace: true });
             });
         } catch (error) {
             Swal.fire({
