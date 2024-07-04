@@ -1,0 +1,69 @@
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
+const usePostData = (url, onSubmit, inputs) => {
+    const navigate = useNavigate(); // Assuming you are using React Router v6
+
+    const aceptSubmit = async () => {
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/${url}`, inputs);
+            Swal.fire({
+                title: "¡Bien!",
+                text: "La información ha sido guardada correctamente.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2500,
+                customClass: {
+                    container: 'swal2-container', // Custom class for container
+                    popup: 'swal2-popup' // Custom class for popup
+                }
+            }).then(() => {
+                onSubmit();
+                navigate("/admin", { replace: true });
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Parece que hubo un error: por favor verifique los datos.`,
+                confirmButtonColor: "#6fc390",
+                customClass: {
+                    container: 'swal2-container', // Custom class for container
+                    popup: 'swal2-popup' // Custom class for popup
+                }
+            });
+            console.log(error);
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        confirmSubmit();
+    };
+
+    const confirmSubmit = () => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Confirma que la información sea correcta.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6fc390',
+            cancelButtonColor: '#FF4747',
+            confirmButtonText: 'Sí, estoy seguro!',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                container: 'swal2-container', // Custom class for container
+                popup: 'swal2-popup' // Custom class for popup
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                aceptSubmit();
+            }
+        });
+    }
+
+    return handleSubmit;
+};
+
+export default usePostData;

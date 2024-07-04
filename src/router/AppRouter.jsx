@@ -2,10 +2,9 @@ import { useRoutes, BrowserRouter } from "react-router-dom";
 import { useContext } from "react";
 import { MantenContext } from "../Context";
 import Loader from '../components/Loader'
-
-import { Login,HomePage } from '../pages/';
-import useGetAdmin from "../hooks/useGetAdmin";
-import { Menu } from "../components/home/menu";
+import { Menu } from '../components/home/menu';
+import { Layout } from '../layout'
+import { Login,HomePage,FormUsuarios,FormEquipos,FormRoles } from '../pages/';
 
 /* La función `AppRoutes` es responsable de definir las rutas de la aplicación usando el gancho
 `useRoutes` de la biblioteca `react-router-dom`. Crea una matriz de objetos de ruta, donde cada
@@ -17,10 +16,9 @@ function AppRoutes() {
         { path: '/', element: <Login /> },
         { path: '/admin', element: <HomePage /> },
         { path: '/login', element: <Login /> },
-
-        // { path: '/administrador/editar/:id', element: <Edit /> },
-        // { path: '/*', element: <NotFound /> },
-
+        { path: '/usuarios', element: <FormUsuarios /> },
+        { path: '/equipos', element: <FormEquipos /> },
+        { path: '/asignacionRoles', element: <FormRoles /> }
     ])
     return routes
 }
@@ -28,15 +26,16 @@ function AppRoutes() {
 Devuelve código JSX que representa la interfaz de usuario de la aplicación. */
 
 export const AppUi = () => {
-    const { loader } = useContext(MantenContext);
+    const { loader, admin } = useContext(MantenContext);
 
     return (
         <>
             <BrowserRouter>
-                {/* <Layout> */}
                     {loader && <Loader />}
+                <Layout>
+                    {admin ? <Menu /> : <></> }
                     <AppRoutes />
-                {/* </Layout> */}
+                </Layout>
             </BrowserRouter>
         </>
     )

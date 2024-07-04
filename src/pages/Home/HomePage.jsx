@@ -11,7 +11,6 @@ import Link from '@mui/material/Link';
 import {Chart} from '../../components/home/Chart';
 import {Deposits} from '../../components/home/Deposits';
 import {Orders} from '../../components/home/Orders';
-import { Menu } from '../../components/home/menu';
 import useGetAdmin from '../../hooks/useGetAdmin';
 import LoaderCard from "../../components/Loader/LoaderCard";
 
@@ -33,16 +32,7 @@ function Copyright(props) {
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#1565c0',
-    },
-    secondary: {
-      main: '#e3f2fd',
-    },
-  },
-});
+
 
 export const HomePage = () => {
 
@@ -52,10 +42,6 @@ export const HomePage = () => {
     <>
     
       {admin1 ?
-      <ThemeProvider theme={defaultTheme}>
-        <Box sx={{ display: 'flex' }}>
-          <CssBaseline />
-          <Menu />
           <Box
             component="main"
             sx={{
@@ -107,8 +93,6 @@ export const HomePage = () => {
               <Copyright sx={{ pt: 4 }} />
             </Container>
           </Box>
-        </Box>
-      </ThemeProvider>
       : <> <LoaderCard /> </>}
   </>
   );
