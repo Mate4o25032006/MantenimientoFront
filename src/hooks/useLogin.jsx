@@ -1,16 +1,17 @@
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Swal from "sweetalert2";
+// useLogin.js
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../helpers/axiosConfig';
+import Swal from 'sweetalert2';
 import { useContext } from 'react';
 import { MantenContext } from '../Context';
 
 const useLogin = (url, onSubmit, inputs) => {
     const navigate = useNavigate();
-    const { setLoader, setTokenSession } = useContext(MantenContext); // Obtén el contexto
+    const { setLoader, setTokenSession } = useContext(MantenContext);
 
     const aceptSubmit = async () => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_AUTH_URL}/${url}`, inputs);
+            const response = await axiosInstance.post(`${import.meta.env.VITE_API_AUTH_URL}/${url}`, inputs);
             Swal.fire({
                 title: "¡Bien!",
                 text: "Ha Iniciado Sesión.",
@@ -18,12 +19,9 @@ const useLogin = (url, onSubmit, inputs) => {
                 showConfirmButton: false,
                 timer: 2500,
             }).then(() => {
-                // Redirect to home page
                 onSubmit();
                 setLoader(false);
                 setTokenSession(response.data.token);
-                console.log(response.data.token);
-                // Redirect to home page
                 navigate("/admin", {
                     replace: true,
                 });
@@ -37,7 +35,7 @@ const useLogin = (url, onSubmit, inputs) => {
             });
             console.log(error);
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,7 +57,7 @@ const useLogin = (url, onSubmit, inputs) => {
                 aceptSubmit();
             }
         });
-    }
+    };
 
     return handleSubmit;
 };

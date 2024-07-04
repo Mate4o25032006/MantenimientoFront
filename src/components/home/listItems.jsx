@@ -20,20 +20,22 @@ const ListItemButtonBlue = styled(ListItemButton)({
 
 export const mainListItems = (
   <React.Fragment >
+    <Link to="/admin">
     <ListItemButtonBlue>
       <ListItemIcon>
-        <Link to="/mantenimiento">
           <HomeIcon color='primary'/>  
-        </Link>
       </ListItemIcon>
       <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
+    </Link>
+    <Link to="/">
     <ListItemButtonBlue>
       <ListItemIcon>
         <LaptopIcon color='primary'/>
       </ListItemIcon>
       <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
+    </Link>
     <ListItemButtonBlue>
       <ListItemIcon>
         <EngineeringIcon color='primary' />
@@ -59,24 +61,34 @@ export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
       Formularios
+    <ListSubheader component="div" inset>
+      Formularios
     </ListSubheader>
+    <Link to="/equipos" >
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Formulario equipos" />
+      <ListItemText primary="Formulario equipos" />
     </ListItemButton>
+    </Link>
+    <Link to="/usuarios" >
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Formulario usuarios" />
+      <ListItemText primary="Formulario usuarios" />
     </ListItemButton>
+    </Link>
+    <Link to="/asignacionRoles">
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Asignación de roles" />
     </ListItemButton>
+    </Link>
   </React.Fragment>
 );

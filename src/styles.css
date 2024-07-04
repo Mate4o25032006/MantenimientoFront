@@ -5,3 +5,12 @@
 .bg-login{
   clip-path: polygon(35% 0, 100% 0%, 100% 100%, 0% 100%);
 }
+
+/* src/styles/sweetalert-custom.css */
+.swal2-container {
+  z-index: 10000 !important; /* Asegura que tenga un z-index alto */
+}
+
+.swal2-popup {
+  z-index: 10001 !important; /* Asegura que el popup tenga un z-index alto */
+}

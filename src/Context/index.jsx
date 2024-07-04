@@ -1,29 +1,22 @@
-import { createContext, useEffect, useState } from 'react';
-import axios from 'axios';
+// MantenContext.js
+import { createContext, useState, useEffect } from 'react';
 
 export const MantenContext = createContext();
 
 export function MantenContextProvider({ children }) {
     const [inputs, setInputs] = useState({});
     const [loader, setLoader] = useState(true);
-    const [admin, setAdmin] = useState(false)
-    const [tokenSession, setTokenSession] = useState("");
+    const [admin, setAdmin] = useState(false);
+    const [tokenSession, setTokenSessionState] = useState(localStorage.getItem('authToken'));
+
+    const setTokenSession = (token) => {
+        setTokenSessionState(token);
+        localStorage.setItem('authToken', token);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // const response = await axios.get('http://localhost:8000/api/imagen')
-                // const data = await response.data
-                // console.log(data);
-                setLoader(false)
-            } catch (error) {
-                console.log(`oh no hermano, algo salio mal: ${error}`);
-                setLoader(false)
-            }
-        }
-        fetchData()
-    }, []) 
-
+        setLoader(false);
+    }, []);
 
     return (
         <MantenContext.Provider
@@ -40,5 +33,5 @@ export function MantenContextProvider({ children }) {
         >
             {children}
         </MantenContext.Provider>
-    )
+    );
 }
