@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import useGetData from '../../hooks/useGetData';
 
+
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -54,7 +55,7 @@ export const Orders = () => {
                   <TableCell>{equipo.marca}</TableCell>
                   <TableCell>{equipo.referencia}</TableCell>
                   <TableCell>{equipo.propietario.nombre}</TableCell>
-                  <TableCell>{equipo.estado.estado ? "Activo" : "Inactivo"}</TableCell>
+                  <TableCell>{equipo.estado ? "Activo" : "Inactivo"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

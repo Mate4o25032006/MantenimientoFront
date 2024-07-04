@@ -88,8 +88,8 @@ export const FormUsuarios = () => {
                 {inputs1.map(input => (
                     <Input key={input.id} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required} handleInputChange={handleInputChange} />
                 ))}
-                <div className={inputs1.length % 2 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
-                    <Button type={'submit'} name={'Enviar'} />
+                <div className="col-span-1 md:col-span-2 flex items-center justify-center mt-6">
+                <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>
         </Forms>

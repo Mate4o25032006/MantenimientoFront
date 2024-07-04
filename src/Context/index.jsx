@@ -1,4 +1,3 @@
-// MantenContext.js
 import { createContext, useState, useEffect } from 'react';
 
 export const MantenContext = createContext();
@@ -11,7 +10,11 @@ export function MantenContextProvider({ children }) {
 
     const setTokenSession = (token) => {
         setTokenSessionState(token);
-        localStorage.setItem('authToken', token);
+        if (token) {
+            localStorage.setItem('authToken', token);
+        } else {
+            localStorage.removeItem('authToken');
+        }
     };
 
     useEffect(() => {

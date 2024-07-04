@@ -1,13 +1,14 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../helpers/axiosConfig";
 
 const usePostData = (url, onSubmit, inputs) => {
     const navigate = useNavigate(); // Assuming you are using React Router v6
 
     const aceptSubmit = async () => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/${url}`, inputs);
+            await axiosInstance.post(`${import.meta.env.VITE_API_URL}/${url}`, inputs);
             Swal.fire({
                 title: "¡Bien!",
                 text: "La información ha sido guardada correctamente.",
