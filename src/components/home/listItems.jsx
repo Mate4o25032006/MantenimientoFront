@@ -61,12 +61,15 @@ export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
       Formularios
+    <ListSubheader component="div" inset>
+      Formularios
     </ListSubheader>
     <Link to="/equipos" >
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
+      <ListItemText primary="Formulario equipos" />
       <ListItemText primary="Formulario equipos" />
     </ListItemButton>
     </Link>
@@ -75,6 +78,7 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
+      <ListItemText primary="Formulario usuarios" />
       <ListItemText primary="Formulario usuarios" />
     </ListItemButton>
     </Link>
