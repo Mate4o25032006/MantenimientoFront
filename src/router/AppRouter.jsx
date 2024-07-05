@@ -3,6 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
 import { ListaEquipos } from '../pages/Equipos/ListaEquipos';
+import { ListaUsuarios } from '../pages/Usuarios/ListaEquipos';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -45,6 +46,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <ListaEquipos />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/usuarios/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaUsuarios />
                 </ProtectedRoute>
             ),
         },
