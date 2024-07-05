@@ -48,12 +48,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
-    <ListItemButtonBlue>
+    {/* <ListItemButtonBlue>
       <ListItemIcon>
         <LayersIcon color='primary' />
       </ListItemIcon>
       <ListItemText primary="Integrations" primaryTypographyProps={{ color: 'primary' }}/>
-    </ListItemButtonBlue>
+    </ListItemButtonBlue> */}
   </React.Fragment>
 );
 
@@ -84,6 +84,22 @@ export const secondaryListItems = (
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Asignación de roles" />
+    </ListItemButton>
+    </Link>
+    <Link to="/propietarios">
+    <ListItemButton>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Form Propietarios" />
+    </ListItemButton>
+    </Link>
+    <Link to="/mantenimientos">
+    <ListItemButton>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Form Mantenimientos" />
     </ListItemButton>
     </Link>
   </React.Fragment>

@@ -1,7 +1,6 @@
-import axios from "axios";
+import axiosInstance from '../helpers/axiosConfig';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../helpers/axiosConfig";
 
 const usePostData = (url, onSubmit, inputs) => {
     const navigate = useNavigate(); // Assuming you are using React Router v6
