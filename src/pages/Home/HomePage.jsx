@@ -67,7 +67,7 @@ export const HomePage = () => {
                       height: 240,
                     }}
                   >
-                    <Chart />
+                    {/* <Chart /> */}
                   </Paper>
                 </Grid>
                 {/* Recent Deposits */}
@@ -80,7 +80,7 @@ export const HomePage = () => {
                       height: 240,
                     }}
                   >
-                    <Deposits />
+                    {/* <Deposits /> */}
                   </Paper>
                 </Grid>
                 {/* Recent Orders */}

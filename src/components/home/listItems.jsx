@@ -28,7 +28,7 @@ export const mainListItems = (
       <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
     </Link>
-    <Link to="/">
+    <Link to="/equipos/lista">
     <ListItemButtonBlue>
       <ListItemIcon>
         <LaptopIcon color='primary'/>
@@ -48,19 +48,17 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
-    <ListItemButtonBlue>
+    {/* <ListItemButtonBlue>
       <ListItemIcon>
         <LayersIcon color='primary' />
       </ListItemIcon>
       <ListItemText primary="Integrations" primaryTypographyProps={{ color: 'primary' }}/>
-    </ListItemButtonBlue>
+    </ListItemButtonBlue> */}
   </React.Fragment>
 );
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
-      Formularios
     <ListSubheader component="div" inset>
       Formularios
     </ListSubheader>
@@ -70,7 +68,6 @@ export const secondaryListItems = (
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Formulario equipos" />
-      <ListItemText primary="Formulario equipos" />
     </ListItemButton>
     </Link>
     <Link to="/usuarios" >
@@ -78,7 +75,6 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Formulario usuarios" />
       <ListItemText primary="Formulario usuarios" />
     </ListItemButton>
     </Link>
@@ -88,6 +84,22 @@ export const secondaryListItems = (
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Asignación de roles" />
+    </ListItemButton>
+    </Link>
+    <Link to="/propietarios">
+    <ListItemButton>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Form Propietarios" />
+    </ListItemButton>
+    </Link>
+    <Link to="/mantenimientos">
+    <ListItemButton>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Form Mantenimientos" />
     </ListItemButton>
     </Link>
   </React.Fragment>
