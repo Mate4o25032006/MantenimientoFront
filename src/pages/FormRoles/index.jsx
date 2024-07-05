@@ -38,7 +38,7 @@ export const FormRoles = () => {
             <h1 className="text-center my-2 mb-8 text-xl font-semibold">Formulario Asignación de Roles</h1>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
                 <Select
-                    label="Documento Usuario"
+                    label="Nombre Usuario"
                     name="usuario_documento"
                     onChange={handleInputChange}
                     options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
