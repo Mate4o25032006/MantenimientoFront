@@ -90,7 +90,6 @@ export const FormMantenimientos = () => {
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>
-            <Checklist />
         </Forms>
     );
 };
