@@ -4,17 +4,22 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import useGetData from '@/hooks/useGetData';
 import { Forms } from '@/layout/Forms';
 import React, { useMemo, useState } from 'react';
+import { Button } from "../../../components/forms/elements/button";
+
 
 export const Checklist = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [selectedMantent, setSelectedMantent] = useState("");
   const [selectAll, setSelectAll] = useState(false);
-  const urls = ["tipoEquipos", "propietarios"];
+  const urls = ["tipoEquipos", "mantenimientos", "areas"];
   const { data, error, loading } = useGetData(urls);
 
   const filteredEquipment = useMemo(() => {
     if (!data.tipoEquipos) return [];
+    if (!data.mantenimientos) return [];
+    if (!data.areas) return [];
     return [
       { id: "desktop", name: "Desktop", location: "office", type: "desktop" },
       { id: "laptop", name: "Laptop", location: "office", type: "laptop" },
@@ -34,7 +39,7 @@ export const Checklist = () => {
       if (selectedType && item.type !== selectedType) return false;
       return true;
     });
-  }, [selectedLocation, selectedType, data.tipoEquipos]);
+  }, [selectedLocation, selectedType, selectedMantent, data.tipoEquipos, data.areas, data.mantenimientos]);
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
@@ -63,28 +68,38 @@ export const Checklist = () => {
     <Forms>
       <Card className="col-span-2 lg:col-span-1 ">
         <CardHeader>
-          <CardTitle>Equipment Checklist</CardTitle>
+          <CardTitle>Asignación de equipos para mantenimiento</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="equipment">Select Equipment</Label>
-              <div className="flex gap-2">
-                <Select id="equipment" value={selectedLocation} onValueChange={setSelectedLocation}>
+            <Label htmlFor="mantenimiento">Selecciona el mantenimiento</Label>
+              <Select id="mantenimiento" value={selectedMantent} onValueChange={setSelectedMantent}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select location" />
+                    <SelectValue placeholder="Mantenimiento" />
                   </SelectTrigger>
                   <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
-                    <SelectItem value="all">All Locations</SelectItem>
-                    <SelectItem value="office">Office</SelectItem>
-                    <SelectItem value="warehouse">Warehouse</SelectItem>
-                    <SelectItem value="remote">Remote</SelectItem>
-                    <SelectItem value="data-center">Data Center</SelectItem>
+                    {data.mantenimientos.map(mant => (
+                      <SelectItem key={mant.idMantenimiento} value={mant.idMantenimiento}>{mant.objetivo}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              <div className="grid gap-2 mt-3">
+              <Label htmlFor="equipment">Filtra los equipos por:</Label>
+                <Select id="equipment" value={selectedLocation} onValueChange={setSelectedLocation}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Ubicacion" />
+                  </SelectTrigger>
+                  <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
+                    <SelectItem value="all">Todas las ubicaciones</SelectItem>
+                    {data.areas.map(area => (
+                      <SelectItem key={area.codigo} value={area.codigo}>{area.zona}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Select id="equipment-type" value={selectedType} onValueChange={setSelectedType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue placeholder="Tipo equipo" />
                   </SelectTrigger>
                   <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                     <SelectItem value="all">Todos los tipos</SelectItem>
@@ -95,7 +110,7 @@ export const Checklist = () => {
                 </Select>
               </div>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 mt-3">
               <Label>Selecciona los equipos para hacer el mantenimiento</Label>
               <div className="grid gap-2">
                 <input type="checkbox" id="selectAll" checked={selectAll} onChange={handleSelectAllChange} />
@@ -116,6 +131,9 @@ export const Checklist = () => {
           </div>
         </CardContent>
       </Card>
+      <div className="flex items-center justify-center mt-6">
+        <Button type={'submit'} name={'Enviar'} />
+      </div>
     </Forms>
   );
 };

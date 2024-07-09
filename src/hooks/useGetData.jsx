@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axiosInstance from "@/helpers/axiosConfig";
 
 function useGetData(urls) {
     const [data, setData] = useState({});
@@ -8,7 +8,7 @@ function useGetData(urls) {
 
     const fetchData = async () => {
         try {
-            const requests = urls.map(url => axios.get(`${import.meta.env.VITE_API_URL}/${url}`));
+            const requests = urls.map(url => axiosInstance.get(`${import.meta.env.VITE_API_URL}/${url}`));
             const results = await Promise.all(requests);
             const updatedData = results.reduce((prevData, responseData, index) => {
                 const key = urls[index];
