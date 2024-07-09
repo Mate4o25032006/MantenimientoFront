@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Select as CustomSelect } from "../../components/forms/elements/select";
 import usePostData from "../../hooks/usePostData";
 import useGetData from "../../hooks/useGetData";
+import { Forms } from "../../layout/Forms";
 import { Input } from "../../components/forms/elements/input";
 import { Button } from "../../components/forms/elements/button";
-import { Forms } from "../../layout/Forms";
-import { Select } from "../../components/forms/elements/select";
-import { useNavigate } from 'react-router-dom';
+import { Checklist } from "@/components/forms/FormMantenimiento/checklist";
+
 
 export const FormMantenimientos = () => {
     const initialData = { objetivo: "", tipoMantenimiento: "", fechaProxMantenimiento: "", fechaUltimoMantenimiento: "", usuario: "" };
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
-
     const urls = ["usuarios"];
     const { data, error, loading } = useGetData(urls);
 
@@ -59,7 +60,10 @@ export const FormMantenimientos = () => {
         navigate("/admin", { replace: true });
     };
 
+
     const handleSubmit = usePostData("mantenimientos", onSubmit, inputs);
+
+  
 
     if (loading) {
         return <div>Loading...</div>;
@@ -76,7 +80,7 @@ export const FormMantenimientos = () => {
                 {inputs1.map(input => (
                     <Input key={input.id} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required} handleInputChange={handleInputChange} />
                 ))}
-                <Select
+                <CustomSelect
                     label="Responsable Mantenimiento"
                     name="usuario"
                     onChange={handleInputChange}
@@ -86,6 +90,7 @@ export const FormMantenimientos = () => {
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>
+            <Checklist />
         </Forms>
-    );
+    );
 };

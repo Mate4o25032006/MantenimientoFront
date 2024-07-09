@@ -1,9 +1,7 @@
 // routes.js
 import { useRoutes } from 'react-router-dom';
-import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos } from '../pages/';
+import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos, ListaUsuarios } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
-import { ListaEquipos } from '../pages/Equipos/ListaEquipos';
-import { ListaUsuarios } from '../pages/Usuarios/ListaEquipos';
 
 export const AppRoutes = () => {
     return useRoutes([
