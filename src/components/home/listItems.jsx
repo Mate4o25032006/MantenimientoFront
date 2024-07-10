@@ -59,23 +59,12 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
-      Formularios
-    </ListSubheader>
-    <Link to="/equipos" >
+    <Link to="/formularios" >
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Formulario equipos" />
-    </ListItemButton>
-    </Link>
-    <Link to="/usuarios" >
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Formulario usuarios" />
+      <ListItemText primary="Formularios" />
     </ListItemButton>
     </Link>
     <Link to="/asignacionRoles">
@@ -86,20 +75,12 @@ export const secondaryListItems = (
       <ListItemText primary="Asignación de roles" />
     </ListItemButton>
     </Link>
-    <Link to="/propietarios">
+    <Link to="/asignacionEquipos">
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Form Propietarios" />
-    </ListItemButton>
-    </Link>
-    <Link to="/mantenimientos">
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Form Mantenimientos" />
+      <ListItemText primary="Asignación de equipos" />
     </ListItemButton>
     </Link>
   </React.Fragment>

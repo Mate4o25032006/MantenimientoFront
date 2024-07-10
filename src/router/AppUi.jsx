@@ -8,13 +8,13 @@ import { Layout } from '../layout';
 import { AppRoutes } from './AppRouter';
 
 export const AppUi = () => {
-    const { loader, admin } = useContext(MantenContext);
+    const { loader, tokenSession } = useContext(MantenContext);
 
     return (
         <BrowserRouter>
             {loader && <Loader />}
             <Layout>
-                {admin && <Menu />}
+                {tokenSession && <Menu />}
                 <AppRoutes />
             </Layout>
         </BrowserRouter>

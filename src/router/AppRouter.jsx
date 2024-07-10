@@ -2,6 +2,8 @@
 import { useRoutes } from 'react-router-dom';
 import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos, ListaUsuarios } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
+import { FormList } from '@/pages/ListaFormularios/FormList';
+import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -16,7 +18,15 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/usuarios',
+            path: '/formularios',
+            element: (
+                <ProtectedRoute>
+                    <FormList />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/formularios/usuarios',
             element: (
                 <ProtectedRoute>
                     <FormUsuarios />
@@ -24,10 +34,26 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/equipos',
+            path: '/formularios/equipos',
             element: (
                 <ProtectedRoute>
                     <FormEquipos />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/formularios/propietarios',
+            element: (
+                <ProtectedRoute>
+                    <FormPropietarios />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/formularios/mantenimientos',
+            element: (
+                <ProtectedRoute>
+                    <FormMantenimientos />
                 </ProtectedRoute>
             ),
         },
@@ -40,18 +66,10 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/propietarios',
+            path: '/asignacionEquipos',
             element: (
                 <ProtectedRoute>
-                    <FormPropietarios />
-                </ProtectedRoute>
-            ),
-        },
-        {
-            path: '/mantenimientos',
-            element: (
-                <ProtectedRoute>
-                    <FormMantenimientos />
+                    <Checklist />
                 </ProtectedRoute>
             ),
         },
