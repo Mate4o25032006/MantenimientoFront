@@ -1,14 +1,29 @@
 // routes.js
 import { useRoutes } from 'react-router-dom';
-import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos, ListaUsuarios } from '../pages/';
+import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos, ListaUsuarios, GestionMantenimiento } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
+import {LoginRoute} from './LoginRoute';
 import { FormList } from '@/pages/ListaFormularios/FormList';
 import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
 
 export const AppRoutes = () => {
     return useRoutes([
-        { path: '/', element: <Login /> },
-        { path: '/login', element: <Login /> },
+        { 
+            path: '/', 
+            element: (
+                <LoginRoute>
+                    <Login /> 
+                </LoginRoute>
+            )
+        },
+        { 
+            path: '/login', 
+            element: (
+                <LoginRoute>
+                    <Login /> 
+                </LoginRoute>
+            )
+        },
         {
             path: '/admin',
             element: (
@@ -86,6 +101,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <ListaUsuarios />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/mantenimientos/gestion',
+            element: (
+                <ProtectedRoute>
+                    <GestionMantenimiento />
                 </ProtectedRoute>
             ),
         },
