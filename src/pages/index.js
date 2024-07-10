@@ -7,3 +7,4 @@ export * from './FormPropietarios';
 export * from './FormMantenimientos'
 export * from './Equipos/ListaEquipos'
 export * from './Usuarios/ListaUsuarios'
+export * from './FormMantenimientos/GestionMantenimiento'

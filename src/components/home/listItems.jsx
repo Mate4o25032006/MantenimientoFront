@@ -36,12 +36,14 @@ export const mainListItems = (
       <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
     </Link>
+    <Link to="/mantenimientos/gestion">
     <ListItemButtonBlue>
       <ListItemIcon>
         <EngineeringIcon color='primary' />
       </ListItemIcon>
       <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary' }}/>
     </ListItemButtonBlue>
+    </Link>
     <ListItemButtonBlue>
       <ListItemIcon>
         <PeopleIcon color='primary' />
