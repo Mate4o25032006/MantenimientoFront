@@ -77,7 +77,7 @@ const [searchTerm, setSearchTerm] = useState(''); // State to store the search t
                   <TableCell>Fecha Compra</TableCell>
                   <TableCell>Marca</TableCell>
                   <TableCell>Referencia</TableCell>
-                  <TableCell>Propietario</TableCell>
+                  <TableCell>Cuentadante</TableCell>
                   <TableCell>Estado</TableCell>
                   <TableCell>Acciones</TableCell>
                 </TableRow>
@@ -88,7 +88,7 @@ const [searchTerm, setSearchTerm] = useState(''); // State to store the search t
                     <TableCell>{new Date(equipo.fechaCompra).toLocaleDateString()}</TableCell>
                     <TableCell>{equipo.marca}</TableCell>
                     <TableCell>{equipo.referencia}</TableCell>
-                    <TableCell>{equipo.propietario.nombre}</TableCell>
+                    <TableCell>{equipo.cuentaDante.nombre}</TableCell>
                     <TableCell>{equipo.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>
                     <TableCell>
                         <Link>

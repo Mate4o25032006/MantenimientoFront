@@ -6,6 +6,9 @@ import useGetData from "../../hooks/useGetData";
 import { Forms } from "../../layout/Forms";
 import { Input } from "../../components/forms/elements/input";
 import { Button } from "../../components/forms/elements/button";
+import { Checklist } from "@/components/forms/FormMantenimiento/checklist";
+import { Select } from "../../components/forms/elements/select";
+
 
 export const FormMantenimientos = () => {
     const initialData = { objetivo: "", tipoMantenimiento: "", fechaProxMantenimiento: "", fechaUltimoMantenimiento: "", usuario: "" };
@@ -25,14 +28,6 @@ export const FormMantenimientos = () => {
         },
         { 
             id: 2, 
-            type: 'text', 
-            name: 'tipoMantenimiento', 
-            placeholder: 'Ingrese el tipo de mantenimiento', 
-            value: inputs.tipoMantenimiento, 
-            required: true 
-        },
-        { 
-            id: 3, 
             type: 'date', 
             name: 'fechaProxMantenimiento', 
             placeholder: 'Ingrese la fecha del próximo mantenimiento', 
@@ -40,7 +35,7 @@ export const FormMantenimientos = () => {
             required: true 
         },
         { 
-            id: 4, 
+            id: 3, 
             type: 'date', 
             name: 'fechaUltimoMantenimiento', 
             placeholder: 'Ingrese la fecha del último mantenimiento', 
@@ -60,8 +55,6 @@ export const FormMantenimientos = () => {
 
 
     const handleSubmit = usePostData("mantenimientos", onSubmit, inputs);
-
-  
 
     if (loading) {
         return <div>Loading...</div>;
@@ -84,10 +77,29 @@ export const FormMantenimientos = () => {
                     onChange={handleInputChange}
                     options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
                 />
+                <Select
+                    label="Tipo Mantenimiento"
+                    name="tipoMantenimiento"
+                    onChange={handleInputChange}
+                    options={[
+                        {
+                            value: "Preventivo",
+                            label: "Preventivo",
+                        },
+                        {
+                            value: "Correctivo",
+                            label: "Correctivo",
+                        },
+                        {
+                            value: "Predictivo",
+                            label: "Predictivo",
+                        },
+                    ]}
+                />
                 <div className={inputs1.length % 2 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>
         </Forms>
-    );
+    );
 };

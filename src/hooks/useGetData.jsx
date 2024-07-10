@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axiosInstance from "@/helpers/axiosConfig";
+import axiosInstance from '../helpers/axiosConfig';
 
 function useGetData(urls) {
     const [data, setData] = useState({});

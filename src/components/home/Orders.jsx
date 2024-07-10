@@ -44,7 +44,7 @@ export const Orders = () => {
                 <TableCell>Fecha Compra</TableCell>
                 <TableCell>Marca</TableCell>
                 <TableCell>Referencia</TableCell>
-                <TableCell>Propietario</TableCell>
+                <TableCell>Cuentadante</TableCell>
                 <TableCell>Estado</TableCell>
               </TableRow>
             </TableHead>
@@ -54,7 +54,7 @@ export const Orders = () => {
                   <TableCell>{new Date(equipo.fechaCompra).toLocaleDateString()}</TableCell>
                   <TableCell>{equipo.marca}</TableCell>
                   <TableCell>{equipo.referencia}</TableCell>
-                  <TableCell>{equipo.propietario.nombre}</TableCell>
+                  <TableCell>{equipo.cuentaDante.nombre}</TableCell>
                   <TableCell>{equipo.estado ? "Activo" : "Inactivo"}</TableCell>
                 </TableRow>
               ))}

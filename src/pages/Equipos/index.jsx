@@ -8,11 +8,11 @@ import { Select } from "../../components/forms/elements/select";
 import { useNavigate } from 'react-router-dom';
 
 export const FormEquipos = () => {
-    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", codigoArea: "", placaSena: "", tipoEquipo: "", propietario: "" };
+    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", placaSena: "", tipoEquipo: "", cuentaDante: "", area: "" };
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
 
-    const urls = ["tipoEquipos", "propietarios"];
+    const urls = ["tipoEquipos", "cuentadantes", "areas"];
     const { data, error, loading } = useGetData(urls);
 
     const inputs1 = [
@@ -48,16 +48,8 @@ export const FormEquipos = () => {
             value: inputs.fechaCompra, 
             required: true 
         },
-        { 
-            id: 5, 
-            type: 'text', 
-            name: 'codigoArea', 
-            placeholder: 'Ingrese el código de área del equipo', 
-            value: inputs.codigoArea, 
-            required: true 
-        },
         {
-            id: 6, 
+            id: 5, 
             type: 'text', 
             name: 'placaSena', 
             placeholder: 'Ingrese la placa Sena del equipo', 
@@ -99,10 +91,16 @@ export const FormEquipos = () => {
                     options={data.tipoEquipos.map(tipo => ({ value: tipo.id, label: tipo.nombre }))}
                 />
                 <Select
-                    label="Propietario"
-                    name="propietario"
+                    label="Cuenta Dante"
+                    name="cuentaDante"
                     onChange={handleInputChange}
-                    options={data.propietarios.map(propietario => ({ value: propietario.documento, label: propietario.nombre }))}
+                    options={data.cuentadantes.map(cuentaDante => ({ value: cuentaDante.documento, label: cuentaDante.nombre }))}
+                />
+                <Select
+                    label="Area"
+                    name="area"
+                    onChange={handleInputChange}
+                    options={data.areas.map(area => ({ value: area.codigo, label: area.zona }))}
                 />
                 <div className={inputs1.length % 2 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
