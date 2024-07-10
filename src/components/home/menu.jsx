@@ -4,7 +4,8 @@ import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemButton, List
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { mainListItems, secondaryListItems as originalSecondaryListItems } from './listItems';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Importa el icono para el ítem de regresar
+import { mainListItems, secondaryListItems as originalSecondaryListItems, secondaryListItems } from './listItems';
 import Logo from '../../assets/Sena.png';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
@@ -60,31 +61,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export const Menu = () => {
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
-  const { admin } = useContext(MantenContext);
+  const { tokenSession } = useContext(MantenContext);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   const handleLogout = () => {
-    // // Aquí puedes agregar la lógica de cierre de sesión
-    // admin = false;
-    // localStorage.removeItem('authToken'); // o la clave que estés utilizando para almacenar el token
-    // navigate('/login'); // Ajusta esta ruta según tu configuración
+    tokenSession(false);
+    localStorage.removeItem('authToken'); // o la clave que estés utilizando para almacenar el token
+    navigate('/login'); // Ajusta esta ruta según tu configuración
   };
 
-  const secondaryListItems = (
-    <>
-      {originalSecondaryListItems}
-      <Divider sx={{ my: 1 }} />
-      <ListItemButton onClick={handleLogout}>
-        <ListItemIcon>
-          <LogoutIcon color="primary" />
-        </ListItemIcon>
-        <ListItemText primary="Cerrar sesión" />
-      </ListItemButton>
-    </>
-  );
+  const handleGoBack = () => {
+    navigate(-1); // Regresa a la dirección anterior
+  };
 
   return (
     <>
@@ -101,6 +92,15 @@ export const Menu = () => {
             }}
           >
             <MenuIcon color='secondary'/>
+          </IconButton>
+          <IconButton
+            edge="start"
+            color="primary"
+            aria-label="go back"
+            onClick={handleGoBack}
+            sx={{ marginRight: '16px' }}
+          >
+            <ArrowBackIcon color='secondary' />
           </IconButton>
           <Typography
             component="h1"
@@ -136,6 +136,13 @@ export const Menu = () => {
           {mainListItems}
           <Divider sx={{ my: 1 }} />
           {secondaryListItems}
+          <Divider sx={{ my: 3 }} />
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Cerrar sesión" />
+          </ListItemButton>
         </List>
       </Drawer>
     </>
