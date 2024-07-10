@@ -26,7 +26,7 @@ export const Checklist = () => {
     ].filter((item) => {
         if(selectedLocation === 'all' && selectedType === 'all') return true;
         if(selectedLocation === item.location && selectedType === 'all') return true;
-        if(selectedLocation ===  'all' && selectedType === item.location) return true;
+        if(selectedLocation ===  'all' && selectedType === item.type) return true;
         if (selectedLocation && item.location !== selectedLocation) return false;
         if (selectedType && item.type !== selectedType) return false;
         return true;

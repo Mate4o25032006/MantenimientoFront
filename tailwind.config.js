@@ -2,28 +2,13 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './index.html',
     './pages/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
-    './src/**/*.{html,js,ts,jsx,tsx}',
+    './src/**/*.{js,jsx}',
   ],
   prefix: "",
   theme: {
-    extend: {
-      colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        border: 'hsl(var(--border))',
-      },
-      fontFamily: {
-        body: ['YourFontFamily', 'sans-serif'],
-        heading: ['YourHeadingFontFamily', 'sans-serif'], // Si tienes una fuente personalizada para cabeceras
-      },
-      borderColor: theme => ({
-        border: 'hsl(var(--border))',
-      }),
-    },
     container: {
       center: true,
       padding: "2rem",
