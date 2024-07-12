@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const usePostData = (url, onSubmit, inputs) => {
-    const navigate = useNavigate(); // Assuming you are using React Router v6
+    const navigate = useNavigate(); 
 
     const aceptSubmit = async () => {
         try {

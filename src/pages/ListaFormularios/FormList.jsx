@@ -9,7 +9,7 @@ export const FormList = () => {
     { id: 1, name: 'Formulario Usuarios', description: 'Creación de usuarios', route: '/formularios/usuarios' },
     { id: 2, name: 'Formulario Equipos', description: 'Creación de equipos', route: '/formularios/equipos' },
     { id: 3, name: 'Formulario Mantenimiento', description: 'Creación de mantenimientos', route: '/formularios/mantenimientos' },
-    { id: 4, name: 'Formulario CuentaDante', description: 'Creación de cuenta dantes', route: '/formularios/propietario' },
+    { id: 4, name: 'Formulario CuentaDante', description: 'Creación de cuenta dantes', route: '/formularios/cuentadantes' },
   ];
 
   return (

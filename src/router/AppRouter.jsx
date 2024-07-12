@@ -1,6 +1,6 @@
 // routes.js
 import { useRoutes } from 'react-router-dom';
-import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormPropietarios, FormMantenimientos, ListaEquipos, ListaUsuarios, GestionMantenimiento } from '../pages/';
+import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormCuetadantes, FormMantenimientos, ListaEquipos, ListaUsuarios, GestionMantenimiento } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
 import {LoginRoute} from './LoginRoute';
 import { FormList } from '@/pages/ListaFormularios/FormList';
@@ -57,10 +57,10 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/formularios/propietarios',
+            path: '/formularios/cuentadantes',
             element: (
                 <ProtectedRoute>
-                    <FormPropietarios />
+                    <FormCuetadantes />
                 </ProtectedRoute>
             ),
         },

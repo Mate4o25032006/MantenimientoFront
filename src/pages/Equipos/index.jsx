@@ -63,7 +63,12 @@ export const FormEquipos = () => {
         setInputs({ ...inputs, [name]: value });
     };
 
+    const handleFormReset = () => {
+        setInputs(initialData);
+    };
+
     const onSubmit = () => {
+        handleFormReset();
         navigate("/", { replace: true });
     };
 
@@ -82,23 +87,26 @@ export const FormEquipos = () => {
             <h1 className="text-center my-2 mb-8 text-xl font-semibold">Formulario Equipos</h1>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
                 {inputs1.map(input => (
-                    <Input key={input.id} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required} handleInputChange={handleInputChange} />
+                    <Input key={input.id} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required} value={input.value} handleInputChange={handleInputChange} />
                 ))}
                 <Select
                     label="Tipo de Equipo"
                     name="tipoEquipo"
+                    value={inputs.tipoEquipo}
                     onChange={handleInputChange}
                     options={data.tipoEquipos.map(tipo => ({ value: tipo.id, label: tipo.nombre }))}
                 />
                 <Select
                     label="Cuenta Dante"
                     name="cuentaDante"
+                    value={inputs.cuentaDante}
                     onChange={handleInputChange}
                     options={data.cuentadantes.map(cuentaDante => ({ value: cuentaDante.documento, label: cuentaDante.nombre }))}
                 />
                 <Select
                     label="Area"
                     name="area"
+                    value={inputs.area}
                     onChange={handleInputChange}
                     options={data.areas.map(area => ({ value: area.codigo, label: area.zona }))}
                 />
