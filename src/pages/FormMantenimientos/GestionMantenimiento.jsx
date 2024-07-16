@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,18 +5,34 @@ import { Textarea } from "@/components/ui/textarea";
 import useGetData from "@/hooks/useGetData";
 import usePostData from "@/hooks/usePostData";
 import axiosInstance from "@/helpers/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export function GestionMantenimiento() {
-  const urls = ["equipos"];
-  const { data, error, loading } = useGetData(urls);
-  const equipos = data?.equipos || [];
+  const location = useLocation();
+  const { mantenimientoId } = location.state || {};
+  const [equipos, setEquipos] = useState([]);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
   const [observaciones, setObservaciones] = useState("");
   const navigate = useNavigate(); 
+
+  useEffect(() => {
+    const fetchEquipos = async () => {
+      try {
+        const response = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/mantenimientos/${mantenimientoId}/equipos`);
+        setEquipos(response.data);
+        console.log(response);
+      } catch (error) {
+        console.error("Error al obtener los equipos relacionados:", error);
+      }
+    };
+
+    if (mantenimientoId) {
+      fetchEquipos();
+    }
+  }, [mantenimientoId]);
 
   const handleSeleccionarEquipo = (equipo) => {
     setEquipoSeleccionado(equipo);
@@ -40,19 +54,6 @@ export function GestionMantenimiento() {
     setTareaSeleccionada(null);
     setObservaciones("");
   };
-
-  // const handleGuardarObservaciones = () => {
-  //   setEquipos((prevEquipos) => {
-  //     return prevEquipos.map((equipo) => {
-  //       if (equipo.serial === tareaSeleccionada) {
-  //         return { ...equipo, observaciones };
-  //       }
-  //       return equipo;
-  //     });
-  //   });
-  //   setTareaSeleccionada(null);
-  //   setObservaciones("");
-  // };
 
   const filteredEquipos = equipos.filter((equipo) => {
     return equipo.marca && equipo.marca.toLowerCase().includes(busqueda.toLowerCase());
@@ -87,13 +88,11 @@ export function GestionMantenimiento() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!mantenimientoId) {
+    return <div>Error: No se proporcionó el ID del mantenimiento.</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  console.log(filteredEquipos);
 
   return (
     <div className="flex flex-col h-screen">
@@ -129,7 +128,7 @@ export function GestionMantenimiento() {
                 <div className="text-muted-foreground text-sm">
                   <p>Serial: {equipo.serial}</p>
                   <p>Tipo Equipo: {equipo.tipoEquipo.nombre}</p>
-                  <p>Area: {equipo.area.zona}</p>
+                  <p>Area: {equipo.area.zona}</p> 
                 </div>
               </div>
             ))}
