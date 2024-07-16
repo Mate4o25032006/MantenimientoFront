@@ -6,11 +6,12 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { mainListItems, secondaryListItems as originalSecondaryListItems } from './listItems';
-import Logo from '../../assets/Sena.png';
+import Logo1 from '../../assets/Sena1.png';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { useNavigate } from 'react-router-dom';
 import { MantenContext } from '../../Context';
+
 
 const drawerWidth = 240;
 
@@ -30,6 +31,13 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+}));
+
+const CustomDivider = styled(Divider)(({ theme }) => ({
+    borderBottomWidth: '4px', // Cambia el grosor aquí
+    // borderColor: '#1976d2', // Cambia el color aquí
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -79,12 +87,12 @@ export const Menu = () => {
   const secondaryListItems = (
     <>
       {originalSecondaryListItems}
-      <Divider sx={{ my: 1 }} />
-      <ListItemButton onClick={handleLogout}>
+      <CustomDivider />
+      <ListItemButton onClick={handleLogout} sx={{ mt: 52 }}>
         <ListItemIcon>
           <LogoutIcon color="primary" />
         </ListItemIcon>
-        <ListItemText primary="Cerrar sesión" />
+        <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Cerrar sesión" />
       </ListItemButton>
     </>
   );
@@ -124,9 +132,9 @@ export const Menu = () => {
             Inicio
           </Typography>
           <img
-            src={Logo}
+            src={Logo1}
             alt="My Image"
-            style={{ width: 50, height: 50, objectFit: 'cover' }}
+            style={{ width: 60, height: 60, objectFit: 'cover' }}
           />
         </Toolbar>
       </AppBar>
@@ -146,7 +154,7 @@ export const Menu = () => {
         <Divider />
         <List component="nav">
           {mainListItems}
-          <Divider sx={{ my: 1 }} />
+          <CustomDivider/>
           {secondaryListItems}
         </List>
       </Drawer>

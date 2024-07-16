@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useGetData from "@/hooks/useGetData";
 import axiosInstance from "@/helpers/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export function GestionMantenimiento() {
-  const urls = ["equipos"];
-  const { data, error, loading } = useGetData(urls);
-  const equipos = data?.equipos || [];
+  const location = useLocation();
+  const { mantenimientoId } = location.state || {};
+  const [equipos, setEquipos] = useState([]);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
@@ -106,6 +106,16 @@ export function GestionMantenimiento() {
                 <p className="text-muted-foreground text-sm">
                   Serial: {equipo.serial} - Tipo: {equipo.tipoEquipo.nombre} - Área: {equipo.area.zona}
                 </p>
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">
+                    {equipo.marca}-{equipo.referencia}
+                  </h3>
+                </div>
+                <div className="text-muted-foreground text-sm">
+                  <p>Serial: {equipo.serial}</p>
+                  <p>Tipo Equipo: {equipo.tipoEquipo.nombre}</p>
+                  <p>Area: {equipo.area.zona}</p> 
+                </div>
               </div>
             ))}
           </div>

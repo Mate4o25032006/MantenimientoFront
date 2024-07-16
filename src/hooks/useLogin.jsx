@@ -16,6 +16,7 @@ const useLogin = (url, onSubmit, inputs) => {
                 title: "¡Bien!",
                 text: "Ha Iniciado Sesión.",
                 icon: "success",
+                iconColor: '#007BFF',
                 showConfirmButton: false,
                 timer: 2500,
             }).then(() => {
@@ -48,9 +49,10 @@ const useLogin = (url, onSubmit, inputs) => {
             title: '¿Estás seguro?',
             text: "Confirma que la información sea correcta.",
             icon: 'warning',
+            iconColor: '#007BFF',
             showCancelButton: true,
-            confirmButtonColor: '#6fc390',
-            cancelButtonColor: '#FF4747',
+            confirmButtonColor: '#007BFF',
+            cancelButtonColor: '#81d4fa',
             confirmButtonText: 'Si, estoy seguro!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {

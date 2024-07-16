@@ -25,7 +25,7 @@ export const mainListItems = (
       <ListItemIcon>
           <HomeIcon color='primary'/>  
       </ListItemIcon>
-      <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary' }}/>
+      <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
     </ListItemButtonBlue>
     </Link>
     <Link to="/equipos/lista">
@@ -33,28 +33,28 @@ export const mainListItems = (
       <ListItemIcon>
         <LaptopIcon color='primary'/>
       </ListItemIcon>
-      <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary' }}/>
+      <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
     </ListItemButtonBlue>
     </Link>
-    <Link to="/mantenimientos/gestion">
+    <Link to="/mantenimientos/lista">
     <ListItemButtonBlue>
       <ListItemIcon>
         <EngineeringIcon color='primary' />
       </ListItemIcon>
-      <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary' }}/>
+      <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
     </ListItemButtonBlue>
     </Link>
     <ListItemButtonBlue>
       <ListItemIcon>
         <PeopleIcon color='primary' />
       </ListItemIcon>
-      <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary' }}/>
+      <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
     </ListItemButtonBlue>
     {/* <ListItemButtonBlue>
       <ListItemIcon>
         <LayersIcon color='primary' />
       </ListItemIcon>
-      <ListItemText primary="Integrations" primaryTypographyProps={{ color: 'primary' }}/>
+      <ListItemText primary="Integrations" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
     </ListItemButtonBlue> */}
   </React.Fragment>
 );
@@ -62,28 +62,28 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <Link to="/formularios" >
-    <ListItemButton>
+    <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon />
+        <AssignmentIcon color='primary'/>
       </ListItemIcon>
-      <ListItemText primary="Formularios" />
-    </ListItemButton>
+      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Formularios" />
+    </ListItemButtonBlue>
     </Link>
     <Link to="/asignacionRoles">
-    <ListItemButton>
+    <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon />
+        <AssignmentIcon color='primary'/>
       </ListItemIcon>
-      <ListItemText primary="Asignación de roles" />
-    </ListItemButton>
+      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación roles" />
+    </ListItemButtonBlue>
     </Link>
     <Link to="/asignacionEquipos">
-    <ListItemButton>
+    <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon />
+        <AssignmentIcon color='primary'/>
       </ListItemIcon>
-      <ListItemText primary="Asignación de equipos" />
-    </ListItemButton>
+      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación equipos" />
+    </ListItemButtonBlue>
     </Link>
   </React.Fragment>
 );

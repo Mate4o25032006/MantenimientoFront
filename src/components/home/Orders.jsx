@@ -41,11 +41,11 @@ export const Orders = () => {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>Fecha Compra</TableCell>
-                <TableCell>Marca</TableCell>
-                <TableCell>Referencia</TableCell>
-                <TableCell>Cuentadante</TableCell>
-                <TableCell>Estado</TableCell>
+              <TableCell style={{ color: '#1565c0', fontWeight: 'bold' }}>Fecha Compra</TableCell>
+              <TableCell style={{ color: '#1565c0', fontWeight: 'bold' }}>Marca</TableCell>
+              <TableCell style={{ color: '#1565c0', fontWeight: 'bold' }}>Referencia</TableCell>
+              <TableCell style={{ color: '#1565c0', fontWeight: 'bold' }}>Cuentadante</TableCell>
+              <TableCell style={{ color: '#1565c0', fontWeight: 'bold' }}>Estado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

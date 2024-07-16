@@ -5,6 +5,7 @@ import {ProtectedRoute} from './ProtectedRoute';
 import {LoginRoute} from './LoginRoute';
 import { FormList } from '@/pages/ListaFormularios/FormList';
 import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
+import { ListaMantenimientos } from '@/pages/FormMantenimientos/ListaMantenimiento';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -105,7 +106,15 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/mantenimientos/gestion',
+            path: '/mantenimientos/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaMantenimientos />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/mantenimientos/:idMantenimiento/equipos',
             element: (
                 <ProtectedRoute>
                     <GestionMantenimiento />
