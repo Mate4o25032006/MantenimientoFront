@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useGetData from "@/hooks/useGetData";
-import usePostData from "@/hooks/usePostData";
 import axiosInstance from "@/helpers/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -18,45 +17,44 @@ export function GestionMantenimiento() {
   const [busqueda, setBusqueda] = useState("");
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
   const [observaciones, setObservaciones] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const handleSeleccionarEquipo = (equipo) => {
-    setEquipoSeleccionado(equipo);
-  };
+  const handleSeleccionarEquipo = (equipo) => setEquipoSeleccionado(equipo);
 
-  const handleMarcarFalla = (equipoId) => {
-    setTareaSeleccionada(equipoId);
-  };
-
-  const handleMarcarCompletado = (equipoId) => {
-    setEquipos((prevEquipos) => {
-      return prevEquipos.map((equipo) => {
-        if (equipo.id === equipoId) {
-          return { ...equipo, estado: { idEstado: equipo.estado.idEstado, estado: "En uso" } }; 
-        }
-        return equipo;
-      });
+  const handleAlert = (title, text, icon) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      showConfirmButton: false,
+      timer: 2500,
+      customClass: {
+        container: "swal2-container",
+        popup: "swal2-popup",
+      },
+    }).then(() => {
+      navigate("/admin", { replace: true });
     });
-    setTareaSeleccionada(null);
-    setObservaciones("");
   };
 
-  // const handleGuardarObservaciones = () => {
-  //   setEquipos((prevEquipos) => {
-  //     return prevEquipos.map((equipo) => {
-  //       if (equipo.serial === tareaSeleccionada) {
-  //         return { ...equipo, observaciones };
-  //       }
-  //       return equipo;
-  //     });
-  //   });
-  //   setTareaSeleccionada(null);
-  //   setObservaciones("");
-  // };
+  const handleMarcarCompletado = async () => {
+    const dataChequeo = {
+      equipo_serial: equipoSeleccionado.serial,
+      observaciones: "Todo Melo",
+      descripcion: "Completado",
+    };
 
-  const filteredEquipos = equipos.filter((equipo) => {
-    return equipo.marca && equipo.marca.toLowerCase().includes(busqueda.toLowerCase());
-  });
+    try {
+      await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
+      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+    }
+  };
+
+  const filteredEquipos = useMemo(() => {
+    return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));
+  }, [equipos, busqueda]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,31 +67,14 @@ export function GestionMantenimiento() {
 
     try {
       await axiosInstance.post(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
-      Swal.fire({
-        title: "¡Bien!",
-        text: "La información ha sido guardada correctamente.",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 2500,
-        customClass: {
-            container: 'swal2-container', 
-            popup: 'swal2-popup' 
-        }
-    }).then(() => {
-        navigate("/admin", { replace: true });
-    });
+      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
     } catch (error) {
       console.error("Error al enviar los datos:", error);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col h-screen">
@@ -103,15 +84,13 @@ export function GestionMantenimiento() {
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         <div className="bg-background rounded-lg shadow-md p-6">
           <h2 className="text-xl font-bold mb-4">Equipos</h2>
-          <div className="mb-4">
-            <Input
-              type="text"
-              placeholder="Buscar equipo..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-              className="w-full"
-            />
-          </div>
+          <Input
+            type="text"
+            placeholder="Buscar equipo..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="w-full mb-4"
+          />
           <div className="grid gap-4">
             {filteredEquipos.map((equipo) => (
               <div
@@ -121,16 +100,12 @@ export function GestionMantenimiento() {
                 }`}
                 onClick={() => handleSeleccionarEquipo(equipo)}
               >
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">
-                    {equipo.marca}-{equipo.referencia}
-                  </h3>
-                </div>
-                <div className="text-muted-foreground text-sm">
-                  <p>Serial: {equipo.serial}</p>
-                  <p>Tipo Equipo: {equipo.tipoEquipo.nombre}</p>
-                  <p>Area: {equipo.area.zona}</p>
-                </div>
+                <h3 className="text-lg font-semibold">
+                  {equipo.marca}-{equipo.referencia}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  Serial: {equipo.serial} - Tipo: {equipo.tipoEquipo.nombre} - Área: {equipo.area.zona}
+                </p>
               </div>
             ))}
           </div>
@@ -140,47 +115,37 @@ export function GestionMantenimiento() {
             <h2 className="text-xl font-bold mb-4">
               Checklist de Mantenimiento - {equipoSeleccionado.referencia}
             </h2>
-            <div className=" grid gap-4">
-              <div className="bg-card text-card-foreground rounded-lg p-4 flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-medium">
-                    Serial: {equipoSeleccionado.serial}
-                  </p>
-                  <p className="text-sm font-medium">
-                    Marca: {equipoSeleccionado.marca}
-                  </p>
-                  <p className="text-sm font-medium">
-                    Placa: {equipoSeleccionado.placaSena}
-                  </p>
-                  <p className="text-sm font-medium">
-                    Propietario: {equipoSeleccionado.cuentaDante.nombre}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleMarcarFalla(equipoSeleccionado.serial)}
-                    className="bg-red-500 text-white hover:bg-red-600"
-                  >
-                    Fallas
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleMarcarCompletado(equipoSeleccionado.serial)}
-                    className="bg-green-500 text-white hover:bg-green-600"
-                  >
-                    Completado
-                  </Button>
-                </div>
+            <div className="bg-card text-card-foreground rounded-lg p-4 flex justify-between items-center">
+              <div>
+                <p className="text-sm font-medium">Serial: {equipoSeleccionado.serial}</p>
+                <p className="text-sm font-medium">Marca: {equipoSeleccionado.marca}</p>
+                <p className="text-sm font-medium">Placa: {equipoSeleccionado.placaSena}</p>
+                <p className="text-sm font-medium">Propietario: {equipoSeleccionado.cuentaDante.nombre}</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTareaSeleccionada(equipoSeleccionado.serial)}
+                  className="bg-red-500 text-white hover:bg-red-600"
+                >
+                  Fallas
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleMarcarCompletado}
+                  className="bg-green-500 text-white hover:bg-green-600"
+                >
+                  Completado
+                </Button>
               </div>
             </div>
           </div>
         )}
       </div>
       {tareaSeleccionada && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 ">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="bg-white rounded-lg shadow-md p-6 max-w-md w-full">
             <h2 className="text-xl font-bold mb-4">Observaciones</h2>
             <Textarea
