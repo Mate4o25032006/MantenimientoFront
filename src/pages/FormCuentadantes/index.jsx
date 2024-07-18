@@ -68,7 +68,8 @@ export const FormCuetadantes = () => {
                 <Select
                     label="Tipo Contrato"
                     name="tipoContrato"
-                    handleInputChange={handleInputChange}
+                    value={inputs.tipoContrato}
+                    onChange={handleInputChange}
                     options={[
                         {
                             value: "Vinculado",

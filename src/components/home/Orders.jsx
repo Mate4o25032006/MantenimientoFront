@@ -198,7 +198,7 @@ export default function EnhancedTable() {
                       <TableCell>{row.marca}</TableCell>
                       <TableCell>{row.referencia}</TableCell>
                       <TableCell>{row.cuentaDante.nombre}</TableCell>
-                      <TableCell>{row.estado}</TableCell>
+                      <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>
                     </TableRow>
                   );
                 })}
