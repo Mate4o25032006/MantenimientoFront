@@ -14,6 +14,7 @@ export function GestionMantenimiento() {
   const location = useLocation();
   const { mantenimientoId } = location.state || {};
   const [equipos, setEquipos] = useState([]);
+  console.log(equipos);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
@@ -184,6 +185,6 @@ export function GestionMantenimiento() {
           </div>
         </div>
       )}
-    </div>
-  );
-}
+    </div>
+  );
+};
