@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useContext } from 'react';
-import { Divider, IconButton, List, ListItemIcon, ListItemButton, ListItemText, Toolbar, Typography, styled } from "@mui/material";
+import { useContext, useEffect } from 'react';
+import { Divider, IconButton, List, ListItemIcon, ListItemButton, ListItemText, Toolbar, Typography, styled, useMediaQuery } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -11,7 +11,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { useNavigate } from 'react-router-dom';
 import { MantenContext } from '../../Context';
-
+import { useTheme } from '@mui/material/styles';
 
 const drawerWidth = 240;
 
@@ -34,10 +34,9 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const CustomDivider = styled(Divider)(({ theme }) => ({
-    borderBottomWidth: '4px', // Cambia el grosor aquí
-    // borderColor: '#1976d2', // Cambia el color aquí
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+  borderBottomWidth: '4px',
+  marginTop: theme.spacing(1),
+  marginBottom: theme.spacing(1),
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -70,25 +69,33 @@ export const Menu = () => {
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
   const { setTokenSession } = useContext(MantenContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  useEffect(() => {
+    if (isMobile) {
+      setOpen(false);
+    }
+  }, [isMobile]);
+
   const handleLogout = () => {
-    setTokenSession(null); // Limpia el tokenSession
-    navigate('/login'); // Ajusta esta ruta según tu configuración
+    setTokenSession(null);
+    navigate('/login');
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Regresa a la dirección anterior
+    navigate(-1);
   };
 
   const secondaryListItems = (
     <>
       {originalSecondaryListItems}
       <CustomDivider />
-      <ListItemButton onClick={handleLogout} sx={{ mt: 52 }}>
+      <ListItemButton onClick={handleLogout} >
         <ListItemIcon>
           <LogoutIcon color="primary" />
         </ListItemIcon>
@@ -134,7 +141,7 @@ export const Menu = () => {
           <img
             src={Logo1}
             alt="My Image"
-            style={{ width: 60, height: 60, objectFit: 'cover' }}
+            style={{ width: 60, height: 60, objectFit: 'cover', marginTop: 5 }}
           />
         </Toolbar>
       </AppBar>

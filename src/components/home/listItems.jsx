@@ -21,35 +21,37 @@ const ListItemButtonBlue = styled(ListItemButton)({
 export const mainListItems = (
   <React.Fragment >
     <Link to="/admin">
-    <ListItemButtonBlue>
-      <ListItemIcon>
-          <HomeIcon color='primary'/>  
-      </ListItemIcon>
-      <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-    </ListItemButtonBlue>
+      <ListItemButtonBlue>
+        <ListItemIcon>
+            <HomeIcon color='primary'/>  
+        </ListItemIcon>
+        <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
+      </ListItemButtonBlue>
     </Link>
     <Link to="/equipos/lista">
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <LaptopIcon color='primary'/>
-      </ListItemIcon>
-      <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-    </ListItemButtonBlue>
+      <ListItemButtonBlue>
+        <ListItemIcon>
+          <LaptopIcon color='primary'/>
+        </ListItemIcon>
+        <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
+      </ListItemButtonBlue>
     </Link>
     <Link to="/mantenimientos/lista">
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <EngineeringIcon color='primary' />
-      </ListItemIcon>
-      <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-    </ListItemButtonBlue>
+      <ListItemButtonBlue>
+        <ListItemIcon>
+          <EngineeringIcon color='primary' />
+        </ListItemIcon>
+        <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
+      </ListItemButtonBlue>
     </Link>
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <PeopleIcon color='primary' />
-      </ListItemIcon>
-      <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-    </ListItemButtonBlue>
+    <Link to="/usuarios/lista">
+      <ListItemButtonBlue>
+        <ListItemIcon>
+          <PeopleIcon color='primary' />
+        </ListItemIcon>
+        <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
+      </ListItemButtonBlue>
+    </Link>
     {/* <ListItemButtonBlue>
       <ListItemIcon>
         <LayersIcon color='primary' />

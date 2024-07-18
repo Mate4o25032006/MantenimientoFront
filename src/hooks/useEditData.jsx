@@ -44,7 +44,7 @@ const useSendData = (url, onSubmit) => {
             });
             Swal.fire({
                 title: "¡Bien!",
-                text: "La información a sido guardada correctamente.",
+                text: "La información ha sido guardada correctamente.",
                 icon: "success",
                 showConfirmButton: false,
                 timer: 2500,

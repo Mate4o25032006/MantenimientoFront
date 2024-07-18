@@ -6,11 +6,13 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
-import {Chart} from '../../components/home/Chart';
-import {Deposits} from '../../components/home/Deposits';
-import {Orders} from '../../components/home/Orders';
+import EnhancedTable  from '../../components/home/Orders';
 import useGetAdmin from '../../hooks/useGetAdmin';
 import LoaderCard from "../../components/Loader/LoaderCard";
+import MaintenanceHistoryChart from '@/components/Graficos/HistoryChart';
+import EquipmentTypeChart from '@/components/Graficos/TipoEquipoChart';
+import AreaChart from '@/components/Graficos/AreaChart';
+import { useMediaQuery } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -25,73 +27,71 @@ function Copyright(props) {
   );
 }
 
-
-
-
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-
 export const HomePage = () => {
-
   const admin1 = useGetAdmin();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   return (
     <>
-    
-      {admin1 ?
-          <Box
-            component="main"
-            sx={{
-              backgroundColor: (theme) =>
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[900],
-              flexGrow: 1,
-              height: '100vh',
-              overflow: 'auto',
-            }}
-          >
+    {admin1 ? (
+            <Box
+              component="main"
+              sx={{
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[900],
+                flexGrow: 1,
+                height: '100vh',
+                overflow: 'auto',
+              }}
+            >
             <Toolbar />
-            <Container maxWidth='auto' sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="auto" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
-                {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 240,
-                    }}
-                  >
-                    {/* <Chart /> */}
+                {/* Maintenance History Chart */}
+                <Grid item xs={12} md={4}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>Historial de Mantenimiento</h2>
+                    <MaintenanceHistoryChart />
                   </Paper>
                 </Grid>
-                {/* Recent Deposits */}
-                <Grid item xs={12} md={4} lg={3}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: 240,
-                    }}
-                  >
-                    {/* <Deposits /> */}
+  
+                {/* Equipment Type Chart */}
+                <Grid item xs={12} md={4}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>Cantidad de equipos según el tipo</h2>
+                    <div style={{ weight: '45%'}}>
+                      <EquipmentTypeChart />
+                    </div>
                   </Paper>
                 </Grid>
+  
+                {/* Area Chart */}
+                <Grid item xs={12} md={4}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>Cantidad de equipos según la zona</h2>
+                    <div style={{ weight: '45%'}}>
+                      <AreaChart />
+                    </div>
+                  </Paper>
+                </Grid>
+  
                 {/* Recent Orders */}
                 <Grid item xs={12}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Orders />
+                    <EnhancedTable />
                   </Paper>
                 </Grid>
               </Grid>
               <Copyright sx={{ pt: 4 }} />
             </Container>
           </Box>
-      : <> <LoaderCard /> </>}
-  </>
+        ) : (
+          <LoaderCard />
+      )}
+    </>
   );
-}
+};
+
+export default HomePage;

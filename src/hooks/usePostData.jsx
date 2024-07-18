@@ -12,6 +12,7 @@ const usePostData = (url, onSubmit, inputs) => {
                 title: "¡Bien!",
                 text: "La información ha sido guardada correctamente.",
                 icon: "success",
+                iconColor: "#007BFF",
                 showConfirmButton: false,
                 timer: 2500,
                 customClass: {
@@ -47,10 +48,10 @@ const usePostData = (url, onSubmit, inputs) => {
             title: '¿Estás seguro?',
             text: "Confirma que la información sea correcta.",
             icon: 'warning',
-            iconColor: 'blue',
+            iconColor: '#007BFF',
             showCancelButton: true,
-            confirmButtonColor: '#039be5',
-            cancelButtonColor: '#FF4747',
+            confirmButtonColor: '#007BFF',
+            cancelButtonColor: '#81d4fa',
             confirmButtonText: 'Sí, estoy seguro!',
             cancelButtonText: 'Cancelar',
             customClass: {
