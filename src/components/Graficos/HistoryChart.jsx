@@ -6,7 +6,7 @@ import useGetData from '@/hooks/useGetData';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const MaintenanceHistoryChart = () => {
-  const { data, error, loading } = useGetData(['mantenimientos']); // Ajusta el nombre de la clave según cómo lo devuelve useGetData
+  const { data, error, loading } = useGetData(['mantenimientos']); 
   console.log(data);
 
   // Función para procesar los datos y contar equipos completados y con fallas
@@ -14,15 +14,17 @@ const MaintenanceHistoryChart = () => {
     let completedCount = 0;
     let withFailuresCount = 0;
 
-    // data.mantenimientos?.forEach(mant => {
-    //   // Suponiendo que tienes un campo "description" que indica el estado del equipo
-    //   if (mant.equipos.chequeos.idChequeo === 'Completado') {
-    //     completedCount++;
-    //   } else if (mant.description === 'En proceso') {
-    //     withFailuresCount++;
-    //   }
-    //   // Puedes agregar más condiciones según sea necesario para otros estados
-    // });
+    data.mantenimientos.forEach(mant => {
+      mant.equipos.forEach(equipo => {
+        equipo.chequeos.forEach(chequeo => {
+          if (chequeo.descripcion === 'Completado') {
+            completedCount++;
+          } else if (chequeo.descripcion === 'Proceso') {
+            withFailuresCount++;
+          }
+        });
+      });
+    });
 
     return { completedCount, withFailuresCount };
   };
