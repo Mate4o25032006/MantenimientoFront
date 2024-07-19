@@ -14,6 +14,8 @@ import Switch from '@mui/material/Switch';
 import useGetData from '../../hooks/useGetData';
 import { TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 
 const headCells = [
   { id: 'fechaCompra', numeric: false, disablePadding: false, label: 'Fecha Compra' },
@@ -198,8 +200,8 @@ export default function EnhancedTable() {
                       <TableCell>{row.marca}</TableCell>
                       <TableCell>{row.referencia}</TableCell>
                       <TableCell>{row.cuentaDante.nombre}</TableCell>
-                      <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>
-                    </TableRow>
+                      <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                
+                      </TableRow>
                   );
                 })}
               {emptyRows > 0 && (

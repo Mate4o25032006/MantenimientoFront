@@ -2,15 +2,25 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import LaptopIcon from '@mui/icons-material/Laptop';
 import PeopleIcon from '@mui/icons-material/People';
-import LayersIcon from '@mui/icons-material/Layers';
 import HomeIcon from '@mui/icons-material/Home';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { styled } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+// const menuItems = [
+//     { to: "/admin", icon: <HomeIcon color='primary' />, text: "Inicio" },
+//     { to: "/equipos/lista", icon: <LaptopIcon color='primary' />, text: "Equipos" },
+//     { to: "/mantenimientos/lista", icon: <EngineeringIcon color='primary' />, text: "Mantenimiento" },
+//     { to: "/usuarios/lista", icon: <PeopleIcon color='primary' />, text: "Usuarios" },
+//     { to: "/formularios", icon: <AssignmentIcon color='primary' />, text: "Formularios" },
+//     { to: "/asignacionRoles", icon: <AssignmentIcon color='primary' />, text: "Asignación roles" },
+//     { to: "/asignacionEquipos", icon: <AssignmentIcon color='primary' />, text: "Asignación equipos" },
+//     { to: "/admin", icon: <HomeIcon color='primary' />, text: "Inicio" },
+//     { to: "/equipos/lista", icon: <LaptopIcon color='primary' />, text: "Equipos" }
+//   ];
 
 const ListItemButtonBlue = styled(ListItemButton)({
     "&:hover":{
