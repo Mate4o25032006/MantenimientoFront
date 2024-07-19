@@ -2,23 +2,21 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-export const FormList = () => {
+export const Listas = () => {
   const navigate = useNavigate();
   
   const forms = [
-    { id: 1, name: 'Formulario Usuarios', description: 'Creación de usuarios', route: '/formularios/usuarios' },
-    { id: 2, name: 'Formulario Equipos', description: 'Creación de equipos', route: '/formularios/equipos' },
+    { id: 1, name: 'Lista Cuentadantes', description: 'Lista de todos los cuentadantes', route: '/cuentadantes/lista' },
+    { id: 2, name: 'Lista Areas ', description: 'Lista de todas las areas', route: '/areas/lista' },
     { id: 3, name: 'Formulario Mantenimiento', description: 'Creación de mantenimientos', route: '/formularios/mantenimientos' },
     { id: 4, name: 'Formulario CuentaDante', description: 'Creación de cuenta dantes', route: '/formularios/cuentadantes' },
-    { id: 5, name: 'Formulario Areas', description: 'Creación de Areas', route: '/formularios/areas' },
-    { id: 6, name: 'Formulario Tipos de Equipos', description: 'Creación de Tipos', route: '/formularios/tipoEquipos' },
   ];
 
   return (
     <div className="container mx-auto px-4 py-8 mt-12">
       <Card className="p-4">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold mb-4">Formularios</CardTitle>
+          <CardTitle className="text-center text-2xl font-bold mb-4">Lista</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {forms.map((form) => (
