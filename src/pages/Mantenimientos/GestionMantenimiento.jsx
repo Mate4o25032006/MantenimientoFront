@@ -40,21 +40,27 @@ export function GestionMantenimiento() {
   };
 
   const handleMarcarCompletado = async () => {
-    const dataChequeo = {
-        idChequeo: equipoSeleccionado.chequeos[0].idChequeo, // Asegúrate de que `idChequeo` esté presente
-        equipo_serial: equipoSeleccionado.serial,
-        observaciones: "Todo Melo",
-        descripcion: "Completado",
-    };
-
-    try {
-        const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
-        handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
-    } catch (error) {
-        console.error("Error al enviar los datos:", error);
-        handleAlert("Error", "No se pudo completar la solicitud.", "error");
+    if (!equipoSeleccionado) {
+      console.error("No hay equipo seleccionado para actualizar.");
+      return;
     }
-};
+  
+    const dataChequeo = {
+      idChequeo: equipoSeleccionado.chequeos?.[0]?.idChequeo || null,
+      equipo_serial: equipoSeleccionado.serial,
+      observaciones: "Todo Melo",
+      descripcion: "Completado",
+    };
+  
+    try {
+      const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
+      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+      handleAlert("Error", "No se pudo completar la solicitud.", "error");
+    }
+  };
+
 
   const filteredEquipos = useMemo(() => {
     return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));
@@ -93,8 +99,6 @@ export function GestionMantenimiento() {
     }
   }, [mantenimientoId]);
 
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col h-screen">
@@ -102,8 +106,8 @@ export function GestionMantenimiento() {
         <h1 className="text-2xl font-bold">Gestión de Mantenimiento</h1>
       </header>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-        <div className="bg-background rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Equipos</h2>
+      <div className="bg-background rounded-lg shadow-md p-6 w-100 h-auto">
+        <h2 className="text-xl font-bold mb-4">Equipos</h2>
           <Input
             type="text"
             placeholder="Buscar equipo..."
@@ -126,8 +130,11 @@ export function GestionMantenimiento() {
                   </h3>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      equipo.chequeos.length > 0 && equipo.chequeos[0].descripcion === "Proceso" ? "bg-green-500 text-green-50" : "bg-yellow-500 text-yellow-50"
-                    }`}
+                      equipo.chequeos[0]?.descripcion === "Proceso"
+                      ? "bg-red-500 text-red-50"
+                      : equipo.chequeos[0]?.descripcion === "Completado"
+                      ? "bg-green-500 text-green-50"
+                      : "bg-gray-500 text-gray-50"}`}
                   >
                     {equipo.chequeos.length > 0 ? equipo.chequeos[0].descripcion : "Sin Chequeo"}
                   </span>

@@ -81,6 +81,14 @@ export const secondaryListItems = (
       <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Formularios" />
     </ListItemButtonBlue>
     </Link>
+    <Link to="/listas" >
+    <ListItemButtonBlue>
+      <ListItemIcon>
+        <AssignmentIcon color='primary'/>
+      </ListItemIcon>
+      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Listas" />
+    </ListItemButtonBlue>
+    </Link>
     <Link to="/asignacionRoles">
     <ListItemButtonBlue>
       <ListItemIcon>

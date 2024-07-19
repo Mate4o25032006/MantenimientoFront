@@ -5,7 +5,10 @@ import {ProtectedRoute} from './ProtectedRoute';
 import {LoginRoute} from './LoginRoute';
 import { FormList } from '@/pages/ListaFormularios/FormList';
 import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
-import { ListaMantenimientos } from '@/pages/FormMantenimientos/ListaMantenimiento';
+import { ListaMantenimientos } from '@/pages/Mantenimientos/ListaMantenimiento';
+import { Listas } from '@/pages/Listas/Lista';
+import { ListaCuentaDante } from '@/pages/Cuentadantes/ListaCuentaDante';
+import ListaArea from '@/pages/Areas/ListaAreas';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -38,6 +41,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <FormList />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/listas',
+            element: (
+                <ProtectedRoute>
+                    <Listas />
                 </ProtectedRoute>
             ),
         },
@@ -134,6 +145,22 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <GestionMantenimiento />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/cuentadantes/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaCuentaDante />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/areas/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaArea />
                 </ProtectedRoute>
             ),
         },
