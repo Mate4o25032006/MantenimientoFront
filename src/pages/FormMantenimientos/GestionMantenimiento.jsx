@@ -35,24 +35,26 @@ export function GestionMantenimiento() {
         popup: "swal2-popup",
       },
     }).then(() => {
-      navigate("/admin", { replace: true });
+      navigate("/mantenimientos/lista", { replace: true });
     });
   };
 
   const handleMarcarCompletado = async () => {
     const dataChequeo = {
-      equipo_serial: equipoSeleccionado.serial,
-      observaciones: "Todo Melo",
-      descripcion: "Completado",
+        idChequeo: equipoSeleccionado.chequeos[0].idChequeo, // Asegúrate de que `idChequeo` esté presente
+        equipo_serial: equipoSeleccionado.serial,
+        observaciones: "Todo Melo",
+        descripcion: "Completado",
     };
 
     try {
-      await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
-      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
+        const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
+        handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
     } catch (error) {
-      console.error("Error al enviar los datos:", error);
+        console.error("Error al enviar los datos:", error);
+        handleAlert("Error", "No se pudo completar la solicitud.", "error");
     }
-  };
+};
 
   const filteredEquipos = useMemo(() => {
     return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));
@@ -124,10 +126,10 @@ export function GestionMantenimiento() {
                   </h3>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      equipo.chequeos.descripcion === "Proceso" ? "bg-green-500 text-green-50" : "bg-yellow-500 text-yellow-50"
+                      equipo.chequeos.length > 0 && equipo.chequeos[0].descripcion === "Proceso" ? "bg-green-500 text-green-50" : "bg-yellow-500 text-yellow-50"
                     }`}
                   >
-                    {equipo.chequeos.descripcion}
+                    {equipo.chequeos.length > 0 ? equipo.chequeos[0].descripcion : "Sin Chequeo"}
                   </span>
                 </div>
                 <div className="text-muted-foreground text-sm">
