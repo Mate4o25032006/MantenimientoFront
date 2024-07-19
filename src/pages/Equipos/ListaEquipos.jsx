@@ -26,7 +26,9 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 import useGetData from '../../hooks/useGetData';
+import usePutData from '../../hooks/usePutData';
 
 const headCells = [
   { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
@@ -74,6 +76,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  minWidth: 150
+}));
+
 export function ListaEquipos() {
   const { data, error, loading } = useGetData(["equipos", "mantenimientos"]);
   const mantenimientos = data?.mantenimientos;
@@ -87,6 +93,30 @@ export function ListaEquipos() {
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);
   const [editedRow, setEditedRow] = useState({});
+  
+  const handlePutData = usePutData(`equipos`, () => {
+    setEditMode(null);
+  });
+  
+  const handleEditClick = (event, row) => {
+    if (editMode === row.serial) {
+      console.log(editMode);
+      // Save changes to backend using custom hook
+      handlePutData({ ...editedRow, serial: row.serial });
+    } else {
+      setEditMode(row.serial);
+      setEditedRow(row);
+    }
+  };
+  
+  const handleInputChange = (event, field) => {
+    const value = event.target.value;
+    setEditedRow((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
+  
 
   useEffect(() => {
     if (loading) {
@@ -140,19 +170,6 @@ export function ListaEquipos() {
 
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
-  };
-
-  const handleEditClick = (event, row) => {
-    setEditMode(row.serial);
-    setEditedRow(row);
-  };
-
-  const handleInputChange = (event, field) => {
-    const value = event.target.value;
-    setEditedRow((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
   };
 
   const isSelected = (serial) => selected.indexOf(serial) !== -1;
@@ -240,103 +257,100 @@ export function ListaEquipos() {
                             {editMode === row.serial ? (
                               <>
                                 <TableCell>
-                                  <TextField
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.fechaCompra}
                                     onChange={(event) => handleInputChange(event, 'fechaCompra')}
-                                    fullWidth
-                                    InputProps={{
-                                    style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  new Date(row.fechaCompra).toLocaleDateString()
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.serial}
                                     onChange={(event) => handleInputChange(event, 'serial')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.serial
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.marca}
                                     onChange={(event) => handleInputChange(event, 'marca')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.marca
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.referencia}
                                     onChange={(event) => handleInputChange(event, 'referencia')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.referencia
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.cuentaDante.nombre}
-                                    onChange={(event) => handleInputChange(event, 'cuentaDante')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
+                                    onChange={(event) => handleInputChange(event, 'cuentaDante.nombre')}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.cuentaDante.nombre
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.placaSena}
                                     onChange={(event) => handleInputChange(event, 'placaSena')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.placaSena
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.tipoEquipo.nombre}
-                                    onChange={(event) => handleInputChange(event, 'tipoEquipo')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
+                                    onChange={(event) => handleInputChange(event, 'tipoEquipo.nombre')}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.tipoEquipo.nombre
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.area.zona}
-                                    onChange={(event) => handleInputChange(event, 'area')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
+                                    onChange={(event) => handleInputChange(event, 'area.zona')}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <TextField
+                                ) : (
+                                  row.area.zona
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.serial ? (
+                                  <StyledTextField
                                     value={editedRow.estado}
                                     onChange={(event) => handleInputChange(event, 'estado')}
-                                    fullWidth
-                                    InputProps={{
-                                      style: { minWidth: 150 },
-                                    }}
                                   />
-                                </TableCell>
-                                <TableCell>
-                                  <IconButton
-                                    aria-label="edit"
-                                    onClick={(event) => handleEditClick(event, row)}
-                                  >
-                                    <EditIcon sx={{ fontSize: 20 }} color='primary' />
-                                  </IconButton>
-                                </TableCell>
+                                ) : (
+                                  row.estado
+                                )}
+                              </TableCell>
+                              <TableCell padding="checkbox">
+                                <IconButton onClick={(event) => handleEditClick(event, row)}>
+                                 {editMode === row.serial ? <SaveIcon /> : <EditIcon />}
+                                </IconButton>
+                              </TableCell>
                               </>
                             ) : (
                               <>
@@ -350,12 +364,10 @@ export function ListaEquipos() {
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
                                 <TableCell>{row.area.zona}</TableCell>
-                                <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                <TableCell>
-                                  <IconButton
-                                    aria-label="edit"
-                                    onClick={(event) => handleEditClick(event, row)}
-                                  >
-                                    <EditIcon sx={{ fontSize: 20 }} color='primary' />
+                                <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                
+                                <TableCell padding="checkbox">
+                                  <IconButton onClick={(event) => handleEditClick(event, row)}>
+                                    {editMode === row.serial ? <SaveIcon /> : <EditIcon />}
                                   </IconButton>
                                 </TableCell>
                               </>
@@ -410,6 +422,7 @@ export function ListaEquipos() {
               component="div"
               count={sortedEquipos.length}
               rowsPerPage={rowsPerPage}
+              labelRowsPerPage="Número de filas"
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
@@ -417,7 +430,7 @@ export function ListaEquipos() {
           </Paper>
           <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+            label="Cambiar estilo"
           />
         </Grid>
       </Grid>

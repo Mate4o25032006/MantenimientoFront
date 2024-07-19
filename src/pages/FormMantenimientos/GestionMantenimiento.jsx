@@ -122,6 +122,13 @@ export function GestionMantenimiento() {
                   <h3 className="text-lg font-semibold">
                     {equipo.marca}-{equipo.referencia}
                   </h3>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      equipo.chequeos.descripcion === "Proceso" ? "bg-green-500 text-green-50" : "bg-yellow-500 text-yellow-50"
+                    }`}
+                  >
+                    {equipo.chequeos.descripcion}
+                  </span>
                 </div>
                 <div className="text-muted-foreground text-sm">
                   <p>Serial: {equipo.serial}</p>

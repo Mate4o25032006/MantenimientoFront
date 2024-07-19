@@ -17,6 +17,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import usePutData from '../../hooks/usePutData';
 
 const headCells = [
   { id: 'fechaInicio', numeric: false, disablePadding: false, label: 'Fecha Inicio' },
@@ -61,6 +63,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  minWidth: 150
+}));
+
 export function ListaUsuarios() {
   const { data, error, loading } = useGetData(["usuarios"]);
   const usuarios = data?.usuarios || [];
@@ -71,6 +77,31 @@ export function ListaUsuarios() {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [filter, setFilter] = useState('');
+  const [editMode, setEditMode] = useState(null);
+  const [editedRow, setEditedRow] = useState({});
+
+  const handlePutData = usePutData(`usuarios`, () => {
+    setEditMode(null);
+  });
+  
+  const handleEditClick = (event, row) => {
+    if (editMode === row.documento) {
+      console.log(editMode);
+      // Save changes to backend using custom hook
+      handlePutData({ ...editedRow, documento: row.documento });
+    } else {
+      setEditMode(row.documento);
+      setEditedRow(row);
+    }
+  };
+
+  const handleInputChange = (event, field) => {
+    const value = event.target.value;
+    setEditedRow((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
 
   useEffect(() => {
     if (loading) {
@@ -88,25 +119,6 @@ export function ListaUsuarios() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, serial) => {
-    const selectedIndex = selected.indexOf(serial);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, serial);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -191,15 +203,94 @@ export function ListaUsuarios() {
                       const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
-                        <React.Fragment key={row.serial}>
+                        <React.Fragment key={row.documento}>
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.serial)}
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
                             selected={isItemSelected}
                           >
+                          {editMode === row.documento ? (
+                              <>
+                                <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.fechaInicio}
+                                    onChange={(event) => handleInputChange(event, 'fechaInicio')}
+                                  />
+                                ) : (
+                                  new Date(row.fechaInicio).toLocaleDateString()
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.fechaFin}
+                                    onChange={(event) => handleInputChange(event, 'fechaFin')}
+                                  />
+                                ) : (
+                                  new Date(row.fechaFin).toLocaleDateString()
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.documento}
+                                    onChange={(event) => handleInputChange(event, 'documento')}
+                                  />
+                                ) : (
+                                  row.documento
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.nombre}
+                                    onChange={(event) => handleInputChange(event, 'nombre')}
+                                  />
+                                ) : (
+                                  row.nombre
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.correo}
+                                    onChange={(event) => handleInputChange(event, 'correo')}
+                                  />
+                                ) : (
+                                  row.correo
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.observaciones}
+                                    onChange={(event) => handleInputChange(event, 'observaciones')}
+                                  />
+                                ) : (
+                                  row.observaciones
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {editMode === row.documento ? (
+                                  <StyledTextField
+                                    value={editedRow.estado}
+                                    onChange={(event) => handleInputChange(event, 'estado')}
+                                  />
+                                ) : (
+                                  row.estado
+                                )}
+                              </TableCell>
+                              <TableCell padding="checkbox">
+                                <IconButton onClick={(event) => handleEditClick(event, row)}>
+                                 {editMode === row.documento ? <SaveIcon /> : <EditIcon />}
+                                </IconButton>
+                              </TableCell>
+                              </>
+                            ) : (
+                              <>
                             <TableCell component="th" id={labelId} scope="row">
                               {new Date(row.fechaInicio).toLocaleDateString()}
                             </TableCell>
@@ -209,14 +300,13 @@ export function ListaUsuarios() {
                             <TableCell>{row.correo}</TableCell>
                             <TableCell>{row.observaciones}</TableCell>
                             <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>
-                            <TableCell>
-                              <IconButton
-                                aria-label="edit"
-                                onClick={(event) => handleEditClick(event, row)}
-                              >
-                                <EditIcon sx={{ fontSize: 20 }} color='primary' />
-                              </IconButton>
+                            <TableCell padding="checkbox">
+                                  <IconButton onClick={(event) => handleEditClick(event, row)}>
+                                    {editMode === row.documento ? <SaveIcon /> : <EditIcon />}
+                                  </IconButton>
                             </TableCell>
+                            </>
+                            )}
                           </TableRow>
                           {/* <TableRow>
                             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
