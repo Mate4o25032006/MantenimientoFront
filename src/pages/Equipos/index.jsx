@@ -1,10 +1,10 @@
 import { useState } from "react";
-import usePostData from "../../hooks/usePostData";
-import useGetData from "../../hooks/useGetData";
+// import usePostData from "../../hooks/usePostData";
+// import useGetData from "../../hooks/useGetData";
 import { Input } from "../../components/forms/elements/input";
 import { Button } from "../../components/forms/elements/button";
-import { Forms } from "../../layout/Forms";
 import { Select } from "../../components/forms/elements/select";
+import { Forms } from "../../layout/Forms";
 import { useNavigate } from 'react-router-dom';
 
 export const FormEquipos = () => {
@@ -12,7 +12,7 @@ export const FormEquipos = () => {
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
 
-    const urls = ["tipoEquipos", "cuentadantes", "areas"];
+    // const urls = ["tipoEquipos", "cuentadantes", "areas"];
     const { data, error, loading } = useGetData(urls);
 
     const inputs1 = [

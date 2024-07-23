@@ -136,7 +136,7 @@ export const Menu = () => {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Inicio
+            Software de mantenimientos
           </Typography>
           <img
             src={Logo1}
