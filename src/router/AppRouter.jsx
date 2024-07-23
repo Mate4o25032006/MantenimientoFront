@@ -9,6 +9,7 @@ import { ListaMantenimientos } from '@/pages/Mantenimientos/ListaMantenimiento';
 import { Listas } from '@/pages/Listas/Lista';
 import { ListaCuentaDante } from '@/pages/Cuentadantes/ListaCuentaDante';
 import ListaArea from '@/pages/Areas/ListaAreas';
+import { ListaTipo } from '@/pages/TipoEquipos/ListaTipos';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -161,6 +162,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <ListaArea />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/tipoEquipos/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaTipo />
                 </ProtectedRoute>
             ),
         },

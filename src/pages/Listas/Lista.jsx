@@ -8,8 +8,7 @@ export const Listas = () => {
   const forms = [
     { id: 1, name: 'Lista Cuentadantes', description: 'Lista de todos los cuentadantes', route: '/cuentadantes/lista' },
     { id: 2, name: 'Lista Areas ', description: 'Lista de todas las areas', route: '/areas/lista' },
-    { id: 3, name: 'Formulario Mantenimiento', description: 'Creación de mantenimientos', route: '/formularios/mantenimientos' },
-    { id: 4, name: 'Formulario CuentaDante', description: 'Creación de cuenta dantes', route: '/formularios/cuentadantes' },
+    { id: 3, name: 'Lista Tipo Equipos', description: 'Lista de todos los tipos de equipos', route: '/tipoEquipos/lista' },
   ];
 
   return (

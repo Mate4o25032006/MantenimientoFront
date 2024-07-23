@@ -7,6 +7,9 @@ import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import DvrIcon from '@mui/icons-material/Dvr';
 import { styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -84,7 +87,7 @@ export const secondaryListItems = (
     <Link to="/listas" >
     <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon color='primary'/>
+        <ListAltIcon color='primary'/>
       </ListItemIcon>
       <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Listas" />
     </ListItemButtonBlue>
@@ -92,7 +95,7 @@ export const secondaryListItems = (
     <Link to="/asignacionRoles">
     <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon color='primary'/>
+        <AssignmentIndIcon color='primary'/>
       </ListItemIcon>
       <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación roles" />
     </ListItemButtonBlue>
@@ -100,7 +103,7 @@ export const secondaryListItems = (
     <Link to="/asignacionEquipos">
     <ListItemButtonBlue>
       <ListItemIcon>
-        <AssignmentIcon color='primary'/>
+        <DvrIcon color='primary'/>
       </ListItemIcon>
       <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación equipos" />
     </ListItemButtonBlue>
