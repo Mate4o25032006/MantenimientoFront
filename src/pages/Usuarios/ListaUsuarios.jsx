@@ -88,7 +88,7 @@ export function ListaUsuarios() {
     if (editMode === row.documento) {
       console.log(editMode);
       // Save changes to backend using custom hook
-      handlePutData({ ...editedRow, documento: row.documento });
+      handlePutData({ ...editedRow, serial: row.documento });
     } else {
       setEditMode(row.documento);
       setEditedRow(row);

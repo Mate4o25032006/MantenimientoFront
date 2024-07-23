@@ -3,10 +3,10 @@ export * from './Home/HomePage';
 export * from './Equipos';
 export * from './Usuarios';
 export * from './FormRoles';
-export * from './FormCuentadantes';
-export * from './FormMantenimientos'
+export * from './Cuentadantes';
+export * from './Mantenimientos'
 export * from './Equipos/ListaEquipos'
 export * from './Usuarios/ListaUsuarios'
-export * from './FormMantenimientos/GestionMantenimiento'
+export * from './Mantenimientos/GestionMantenimiento'
 export * from './Areas'
 export * from './Tipos'

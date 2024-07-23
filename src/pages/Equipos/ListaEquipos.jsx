@@ -27,6 +27,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import { Select } from '@/components/forms/elements/select';
 import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
 
@@ -81,9 +82,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 export function ListaEquipos() {
-  const { data, error, loading } = useGetData(["equipos", "mantenimientos"]);
+  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "areas"]);
   const mantenimientos = data?.mantenimientos;
+  const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
+  const tipoEquipos = data?.tipoEquipos;
+  const areas = data?.areas;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fechaCompra');
   const [selected, setSelected] = useState([]);
@@ -101,7 +105,6 @@ export function ListaEquipos() {
   const handleEditClick = (event, row) => {
     if (editMode === row.serial) {
       console.log(editMode);
-      // Save changes to backend using custom hook
       handlePutData({ ...editedRow, serial: row.serial });
     } else {
       setEditMode(row.serial);
@@ -110,12 +113,13 @@ export function ListaEquipos() {
   };
   
   const handleInputChange = (event, field) => {
-    const value = event.target.value;
-    setEditedRow((prevState) => ({
+    const { name, value } = event.target;
+    setEditedRow(prevState => ({
       ...prevState,
-      [field]: value,
+      [name]: value
     }));
   };
+  
   
 
   useEffect(() => {
@@ -298,9 +302,12 @@ export function ListaEquipos() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.serial ? (
-                                  <StyledTextField
-                                    value={editedRow.cuentaDante.nombre}
-                                    onChange={(event) => handleInputChange(event, 'cuentaDante.nombre')}
+                                  <Select
+                                    name="cuentaDante"
+                                    value={editedRow.cuentaDante ? editedRow.cuentaDante.documento : ''}
+                                    onChange={(event) => handleInputChange(event, 'cuentaDante')}
+                                    options={cuentadantes.map(cuentaDante => ({ value: cuentaDante.documento, label: cuentaDante.nombre }))}
+                                    style={{ height: '60px' }}
                                   />
                                 ) : (
                                   row.cuentaDante.nombre
@@ -318,9 +325,12 @@ export function ListaEquipos() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.serial ? (
-                                  <StyledTextField
-                                    value={editedRow.tipoEquipo.nombre}
-                                    onChange={(event) => handleInputChange(event, 'tipoEquipo.nombre')}
+                                  <Select
+                                    name="tipoEquipo"
+                                    value={editedRow.tipoEquipo ? editedRow.tipoEquipo.id : ''}
+                                    onChange={(event) => handleInputChange(event, 'tipoEquipo')}
+                                    options={tipoEquipos.map(tipoEquipo => ({ value: tipoEquipo.id, label: tipoEquipo.nombre }))}
+                                    style={{ height: '60px' }}
                                   />
                                 ) : (
                                   row.tipoEquipo.nombre
@@ -328,9 +338,12 @@ export function ListaEquipos() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.serial ? (
-                                  <StyledTextField
-                                    value={editedRow.area.zona}
-                                    onChange={(event) => handleInputChange(event, 'area.zona')}
+                                  <Select
+                                    name="area"
+                                    value={editedRow.area ? editedRow.area.codigo : ''}
+                                    onChange={(event) => handleInputChange(event, 'area')}
+                                    options={areas.map(area => ({ value: area.codigo, label: area.zona }))}
+                                    style={{ height: '60px' }}
                                   />
                                 ) : (
                                   row.area.zona
@@ -339,11 +352,11 @@ export function ListaEquipos() {
                               <TableCell>
                                 {editMode === row.serial ? (
                                   <StyledTextField
-                                    value={editedRow.estado}
+                                    value={editedRow.estado.estado ? "Activo" : "Inactivo"}
                                     onChange={(event) => handleInputChange(event, 'estado')}
                                   />
                                 ) : (
-                                  row.estado
+                                  row.estado.estado ? "Activo" : "Inactivo"
                                 )}
                               </TableCell>
                               <TableCell padding="checkbox">
@@ -364,7 +377,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
                                 <TableCell>{row.area.zona}</TableCell>
-                                <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                
+                                <TableCell>{row.estado ? "Activo" : "Inactivo"}</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.serial ? <SaveIcon /> : <EditIcon />}
