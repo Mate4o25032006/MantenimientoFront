@@ -96,7 +96,6 @@ export function ListaCuentaDante() {
   const handleEditClick = (event, row) => {
     if (editMode === row.documento) {
       console.log(editMode);
-      // Save changes to backend using custom hook
       handlePutData({ ...editedRow, documento: row.documento });
     } else {
       setEditMode(row.documento);
