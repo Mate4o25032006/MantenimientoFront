@@ -36,6 +36,7 @@ const usePutData = (url) => {
         title: "¡Bien!",
         text: "La información ha sido actualizada correctamente.",
         icon: "success",
+        iconColor: "#007BFF",
         showConfirmButton: false,
         timer: 2500,
         customClass: {

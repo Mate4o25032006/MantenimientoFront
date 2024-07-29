@@ -28,6 +28,7 @@ export function GestionMantenimiento() {
       title,
       text,
       icon,
+      iconColor: "#007BFF",
       showConfirmButton: false,
       timer: 2500,
       customClass: {
@@ -53,14 +54,15 @@ export function GestionMantenimiento() {
     };
   
     try {
-      const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
+      const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos/${equipoSeleccionado.chequeos?.[0]?.idChequeo}`, dataChequeo);
+      console.log("Esta es la" + response);
       handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
     } catch (error) {
       console.error("Error al enviar los datos:", error);
       handleAlert("Error", "No se pudo completar la solicitud.", "error");
     }
   };
-
+  
 
   const filteredEquipos = useMemo(() => {
     return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));

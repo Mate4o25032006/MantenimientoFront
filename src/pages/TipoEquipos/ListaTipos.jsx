@@ -94,7 +94,7 @@ export function ListaTipo() {
     if (editMode === row.id) {
       console.log(editMode);
       // Save changes to backend using custom hook
-      handlePutData({ ...editedRow, id: row.id });
+      handlePutData({ ...editedRow, serial: row.id });
     } else {
       setEditMode(row.id);
       setEditedRow(row);
