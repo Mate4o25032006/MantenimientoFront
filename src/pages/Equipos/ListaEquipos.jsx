@@ -262,6 +262,9 @@ export function ListaEquipos() {
                       console.log(row);
                       const isItemSelected = isSelected(row.serial);
                       const labelId = `enhanced-table-checkbox-${index}`;
+                      const equipoMantenimientos = mantenimientos.filter(
+                        (mantenimiento) => mantenimiento.equipo.serial === equipo.serial
+                      );
 
                       return (
                         <React.Fragment key={row.serial}>
@@ -433,7 +436,7 @@ export function ListaEquipos() {
                                         </TableRow>
                                       </TableHead>
                                       <TableBody>
-                                        {mantenimientos
+                                        {equipoMantenimientos
                                           // .filter((mant) => mant.equipo.serial === row.serial)
                                           .map((mant) => (
                                             <TableRow key={mant.id}>
