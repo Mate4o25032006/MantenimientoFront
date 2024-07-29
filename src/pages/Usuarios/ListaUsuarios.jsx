@@ -14,11 +14,10 @@ import Switch from '@mui/material/Switch';
 import useGetData from '../../hooks/useGetData';
 import { Container, Grid, TextField, Box, Collapse, IconButton, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import usePutData from '../../hooks/usePutData';
+import { Select } from '@/components/forms/elements/select';
 
 const headCells = [
   { id: 'fechaInicio', numeric: false, disablePadding: false, label: 'Fecha Inicio' },
@@ -86,21 +85,40 @@ export function ListaUsuarios() {
   
   const handleEditClick = (event, row) => {
     if (editMode === row.documento) {
-      console.log(editMode);
-      // Save changes to backend using custom hook
-      handlePutData({ ...editedRow, serial: row.documento });
+      console.log('Updating:', editedRow);
+      const updatedRow = {
+        ...editedRow,
+        estado: {
+          idEstado: editedRow.estado.idEstado,
+          estado: editedRow.estado.estado 
+        },
+        serial: row.documento
+      };
+      console.log(updatedRow);
+      handlePutData(updatedRow);
     } else {
       setEditMode(row.documento);
       setEditedRow(row);
     }
   };
-
+  
   const handleInputChange = (event, field) => {
     const value = event.target.value;
-    setEditedRow((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
+    if (field === 'estado') {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        estado: {
+          ...prevState.estado,
+          estado: value === "Activo",
+          idEstado: value === "Activo" ? 1 : 2
+        }
+      }));
+    } else {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        [field]: value
+      }));
+    }
   };
 
   useEffect(() => {
@@ -275,12 +293,24 @@ export function ListaUsuarios() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.documento ? (
-                                  <StyledTextField
-                                    value={editedRow.estado}
-                                    onChange={(event) => handleInputChange(event, 'estado')}
-                                  />
+                                <Select
+                                  name="estado"
+                                  onChange={(event) => handleInputChange(event, 'estado')}
+                                  value={editedRow.estado.estado ? "Activo" : "Inactivo"}
+                                  style={{ height: '60px' }}
+                                  options={[
+                                    {
+                                      value: "Activo",
+                                      label: "Activo",
+                                    },
+                                    {
+                                      value: "Inactivo",
+                                      label: "Inactivo",
+                                    },
+                                  ]}
+                                />
                                 ) : (
-                                  row.estado
+                                  row.estado.estado ? "Activo" : "Inactivo"
                                 )}
                               </TableCell>
                               <TableCell padding="checkbox">
@@ -299,7 +329,7 @@ export function ListaUsuarios() {
                             <TableCell>{row.nombre}</TableCell>
                             <TableCell>{row.correo}</TableCell>
                             <TableCell>{row.observaciones}</TableCell>
-                            <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>
+                            <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>    
                             <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.documento ? <SaveIcon /> : <EditIcon />}

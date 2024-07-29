@@ -82,12 +82,13 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 export function ListaEquipos() {
-  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "areas"]);
+  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "areas", "estados"]);
   const mantenimientos = data?.mantenimientos;
   const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
   const tipoEquipos = data?.tipoEquipos;
   const areas = data?.areas;
+  const estados = data?.estados;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fechaCompra');
   const [selected, setSelected] = useState([]);
@@ -101,11 +102,20 @@ export function ListaEquipos() {
   const handlePutData = usePutData(`equipos`, () => {
     setEditMode(null);
   });
-  
+
   const handleEditClick = (event, row) => {
     if (editMode === row.serial) {
-      console.log(editMode);
-      handlePutData({ ...editedRow, serial: row.serial });
+      console.log('Updating:', editedRow);
+      const updatedRow = {
+        ...editedRow,
+        estado: {
+          idEstado: editedRow.estado.idEstado,
+          estado: editedRow.estado.estado 
+        },
+        serial: row.serial
+      };
+      console.log(updatedRow);
+      handlePutData(updatedRow);
     } else {
       setEditMode(row.serial);
       setEditedRow(row);
@@ -113,14 +123,23 @@ export function ListaEquipos() {
   };
   
   const handleInputChange = (event, field) => {
-    const { name, value } = event.target;
-    setEditedRow(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    const value = event.target.value;
+    if (field === 'estado') {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        estado: {
+          ...prevState.estado,
+          estado: value === "Activo",
+          idEstado: value === "Activo" ? 1 : 2
+        }
+      }));
+    } else {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        [field]: value
+      }));
+    }
   };
-  
-  
 
   useEffect(() => {
     if (loading) {
@@ -351,10 +370,22 @@ export function ListaEquipos() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.serial ? (
-                                  <StyledTextField
-                                    value={editedRow.estado.estado ? "Activo" : "Inactivo"}
-                                    onChange={(event) => handleInputChange(event, 'estado')}
-                                  />
+                                <Select
+                                  name="estado"
+                                  onChange={(event) => handleInputChange(event, 'estado')}
+                                  value={editedRow.estado.estado ? "Activo" : "Inactivo"}
+                                  style={{ height: '60px' }}
+                                  options={[
+                                    {
+                                      value: "Activo",
+                                      label: "Activo",
+                                    },
+                                    {
+                                      value: "Inactivo",
+                                      label: "Inactivo",
+                                    },
+                                  ]}
+                                />
                                 ) : (
                                   row.estado.estado ? "Activo" : "Inactivo"
                                 )}
@@ -377,7 +408,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
                                 <TableCell>{row.area.zona}</TableCell>
-                                <TableCell>{row.estado ? "Activo" : "Inactivo"}</TableCell>                                
+                                <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.serial ? <SaveIcon /> : <EditIcon />}

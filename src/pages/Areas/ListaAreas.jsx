@@ -21,10 +21,6 @@ import {
 } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import SearchIcon from '@mui/icons-material/Search';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import useGetData from '../../hooks/useGetData';
@@ -95,8 +91,7 @@ export function ListaArea() {
   const handleEditClick = (event, row) => {
     if (editMode === row.codigo) {
       console.log(editMode);
-      // Save changes to backend using custom hook
-      handlePutData({ ...editedRow, codigo: row.codigo });
+      handlePutData({ ...editedRow, serial: row.codigo });
     } else {
       setEditMode(row.codigo);
       setEditedRow(row);

@@ -21,14 +21,11 @@ import {
 } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import SearchIcon from '@mui/icons-material/Search';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
+import { Select } from '@/components/forms/elements/select';
 
 const headCells = [
   // { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
@@ -37,6 +34,7 @@ const headCells = [
   { id: 'dependencia', numeric: false, disablePadding: false, label: 'Dependencia' },
   { id: 'departamento', numeric: false, disablePadding: false, label: 'Departamento' },
   { id: 'tipoContrato', numeric: false, disablePadding: false, label: 'Tipo Contrato' },
+  { id: 'estado', numeric: false, disablePadding: false, label: 'Estado' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
 
@@ -95,8 +93,17 @@ export function ListaCuentaDante() {
   
   const handleEditClick = (event, row) => {
     if (editMode === row.documento) {
-      console.log(editMode);
-      handlePutData({ ...editedRow, documento: row.documento });
+      console.log('Updating:', editedRow);
+      const updatedRow = {
+        ...editedRow,
+        estado: {
+          idEstado: editedRow.estado.idEstado,
+          estado: editedRow.estado.estado 
+        },
+        serial: row.documento
+      };
+      console.log(updatedRow);
+      handlePutData(updatedRow);
     } else {
       setEditMode(row.documento);
       setEditedRow(row);
@@ -105,12 +112,22 @@ export function ListaCuentaDante() {
   
   const handleInputChange = (event, field) => {
     const value = event.target.value;
-    setEditedRow((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
+    if (field === 'estado') {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        estado: {
+          ...prevState.estado,
+          estado: value === "Activo",
+          idEstado: value === "Activo" ? 1 : 2
+        }
+      }));
+    } else {
+      setEditedRow((prevState) => ({
+        ...prevState,
+        [field]: value
+      }));
+    }
   };
-  
 
   useEffect(() => {
     if (loading) {
@@ -288,24 +305,50 @@ export function ListaCuentaDante() {
                               </TableCell>
                               <TableCell>
                                 {editMode === row.documento ? (
-                                  <StyledTextField
-                                    value={editedRow.tipoContrato}
+                                  <Select
+                                    name="tipoContrato"
                                     onChange={(event) => handleInputChange(event, 'tipoContrato')}
+                                    value={editedRow.tipoContrato}
+                                    style={{ height: '60px' }}
+                                    options={[
+                                      {
+                                        value: "Vinculado",
+                                        label: "Vinculado",
+                                       },
+                                      {
+                                        value: "Contratista",
+                                        label: "Contratista",
+                                      },
+                                    ]}
                                   />
                                 ) : (
                                   row.tipoContrato
                                 )}
-                              </TableCell>
-                              {/* <TableCell>
-                                {editMode === row.documento ? (
-                                  <StyledTextField
-                                    value={editedRow.estado}
-                                    onChange={(event) => handleInputChange(event, 'estado')}
-                                  />
+                            </TableCell> 
+
+                            <TableCell>
+                              {editMode === row.documento ? (
+                                <Select
+                                  name="estado"
+                                  onChange={(event) => handleInputChange(event, 'estado')}
+                                  value={editedRow.estado.estado ? "Activo" : "Inactivo"}
+                                  style={{ height: '60px' }}
+                                  options={[
+                                    {
+                                      value: "Activo",
+                                      label: "Activo",
+                                    },
+                                    {
+                                      value: "Inactivo",
+                                      label: "Inactivo",
+                                    },
+                                  ]}
+                                />
                                 ) : (
-                                  row.estado
+                                  row.estado.estado ? "Activo" : "Inactivo"
                                 )}
-                              </TableCell> */}
+                              </TableCell>
+
                               <TableCell padding="checkbox">
                                 <IconButton onClick={(event) => handleEditClick(event, row)}>
                                  {editMode === row.documento ? <SaveIcon /> : <EditIcon />}
@@ -321,7 +364,7 @@ export function ListaCuentaDante() {
                                 <TableCell>{row.dependencia}</TableCell>
                                 <TableCell>{row.departamento}</TableCell>
                                 <TableCell>{row.tipoContrato}</TableCell>
-                                {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
+                                <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>                                     
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.documento ? <SaveIcon /> : <EditIcon />}

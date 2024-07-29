@@ -1,6 +1,6 @@
 import { useState } from "react";
-// import usePostData from "../../hooks/usePostData";
-// import useGetData from "../../hooks/useGetData";
+import usePostData from "../../hooks/usePostData";
+import useGetData from "../../hooks/useGetData";
 import { Input } from "../../components/forms/elements/input";
 import { Button } from "../../components/forms/elements/button";
 import { Select } from "../../components/forms/elements/select";
@@ -12,7 +12,7 @@ export const FormEquipos = () => {
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
 
-    // const urls = ["tipoEquipos", "cuentadantes", "areas"];
+    const urls = ["tipoEquipos", "cuentadantes", "areas"];
     const { data, error, loading } = useGetData(urls);
 
     const inputs1 = [
