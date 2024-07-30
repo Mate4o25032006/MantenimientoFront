@@ -262,9 +262,6 @@ export function ListaEquipos() {
                       console.log(row);
                       const isItemSelected = isSelected(row.serial);
                       const labelId = `enhanced-table-checkbox-${index}`;
-                      const equipoMantenimientos = mantenimientos.filter(
-                        (mantenimiento) => mantenimiento.equipo.serial === equipo.serial
-                      );
 
                       return (
                         <React.Fragment key={row.serial}>
@@ -433,20 +430,26 @@ export function ListaEquipos() {
                                         <TableRow>
                                           <TableCell>Fecha Mantenimiento</TableCell>
                                           <TableCell>Objetivo</TableCell>
+                                          <TableCell>Tipo</TableCell>
                                         </TableRow>
                                       </TableHead>
                                       <TableBody>
-                                        {equipoMantenimientos
-                                          // .filter((mant) => mant.equipo.serial === row.serial)
-                                          .map((mant) => (
-                                            <TableRow key={mant.id}>
-                                              <TableCell component="th" scope="row">
-                                                {new Date(mant.fechaProxMantenimiento).toLocaleDateString()}
-                                              </TableCell>
-                                              <TableCell>{mant.objetivo}</TableCell>
-                                            </TableRow>
-                                          ))}
-                                      </TableBody>
+                                      {row.mantenimientos.length > 0 ? (
+                                        row.mantenimientos.map((mantenimiento) => (
+                                          <TableRow key={mantenimiento.idMantenimiento}>
+                                            <TableCell component="th" scope="row">
+                                              {mantenimiento.fechaProxMantenimiento}
+                                            </TableCell>
+                                            <TableCell>{mantenimiento.objetivo}</TableCell>
+                                            <TableCell>{mantenimiento.tipoMantenimiento}</TableCell>
+                                          </TableRow>
+                                        ))
+                                      ) : (
+                                        <TableRow>
+                                          <TableCell colSpan={3}>No hay mantenimientos</TableCell>
+                                        </TableRow>
+                                      )}
+                                    </TableBody>
                                     </Table>
                                   </Box>
                                 </Collapse>
