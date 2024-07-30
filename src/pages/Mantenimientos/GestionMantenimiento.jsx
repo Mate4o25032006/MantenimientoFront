@@ -40,30 +40,29 @@ export function GestionMantenimiento() {
     });
   };
 
-  const handleMarcarCompletado = async () => {
-    if (!equipoSeleccionado) {
-      console.error("No hay equipo seleccionado para actualizar.");
-      return;
-    }
-  
-    const dataChequeo = {
-      idChequeo: equipoSeleccionado.chequeos?.[0]?.idChequeo || null,
-      equipo_serial: equipoSeleccionado.serial,
-      observaciones: "Todo Melo",
-      descripcion: "Completado",
-    };
-  
-    try {
-      const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos/${equipoSeleccionado.chequeos?.[0]?.idChequeo}`, dataChequeo);
-      console.log("Esta es la" + response);
-      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
-    } catch (error) {
-      console.error("Error al enviar los datos:", error);
-      handleAlert("Error", "No se pudo completar la solicitud.", "error");
-    }
-  };
-  
+const handleMarcarCompletado = async () => {
+  if (!equipoSeleccionado) {
+    console.error("No hay equipo seleccionado para actualizar.");
+    return;
+  }
 
+  const dataChequeo = {
+    idChequeo: equipoSeleccionado.chequeos?.[0]?.idChequeo || null,
+    equipo_serial: equipoSeleccionado.serial,
+    observaciones: "Todo Melo",
+    descripcion: "Completado",
+  };
+
+  try {
+    const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos/${equipoSeleccionado.chequeos?.[0]?.idChequeo}`, dataChequeo);
+    handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
+  } catch (error) {
+    console.error("Error al enviar los datos:", error);
+    handleAlert("Error", "No se pudo completar la solicitud.", "error");
+  }
+};
+
+  
   const filteredEquipos = useMemo(() => {
     return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));
   }, [equipos, busqueda]);

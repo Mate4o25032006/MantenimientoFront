@@ -12,7 +12,7 @@ const MaintenanceHistoryChart = () => {
   // Función para procesar los datos y contar equipos completados y con fallas
   const countCompletedAndFailed = () => {
     let completedCount = 0;
-    let withFailuresCount = 0;
+    let withFailuresCount = 0; 
 
     data.mantenimientos.forEach(mant => {
       mant.equipos.forEach(equipo => {
