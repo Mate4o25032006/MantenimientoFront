@@ -408,7 +408,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
                                 <TableCell>{row.area.zona}</TableCell>
-                                <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>                                
+                                <TableCell>{row.estado.estado ? "Activo" : "Inactivo" }</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.serial ? <SaveIcon /> : <EditIcon />}

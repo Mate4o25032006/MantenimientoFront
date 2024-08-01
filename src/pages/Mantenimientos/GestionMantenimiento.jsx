@@ -4,7 +4,6 @@ import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import useGetData from "@/hooks/useGetData";
 import axiosInstance from "@/helpers/axiosConfig";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -14,14 +13,21 @@ export function GestionMantenimiento() {
   const location = useLocation();
   const { mantenimientoId } = location.state || {};
   const [equipos, setEquipos] = useState([]);
-  console.log(equipos);
+  const [chequeos, setChequeos] = useState({});
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
   const [observaciones, setObservaciones] = useState("");
   const navigate = useNavigate();
 
-  const handleSeleccionarEquipo = (equipo) => setEquipoSeleccionado(equipo);
+  const handleSeleccionarEquipo = (equipo) => {
+    setEquipoSeleccionado(equipo);
+    if (chequeos[equipo.serial]) {
+        setObservaciones(chequeos[equipo.serial].observaciones);
+    } else {
+        setObservaciones("");
+    }
+  };
 
   const handleAlert = (title, text, icon) => {
     Swal.fire({
@@ -40,65 +46,84 @@ export function GestionMantenimiento() {
     });
   };
 
-const handleMarcarCompletado = async () => {
-  if (!equipoSeleccionado) {
-    console.error("No hay equipo seleccionado para actualizar.");
-    return;
-  }
-
-  const dataChequeo = {
-    idChequeo: equipoSeleccionado.chequeos?.[0]?.idChequeo || null,
-    equipo_serial: equipoSeleccionado.serial,
-    observaciones: "Todo Melo",
-    descripcion: "Completado",
-  };
-
-  try {
-    const response = await axiosInstance.put(`${import.meta.env.VITE_API_URL}/chequeos/${equipoSeleccionado.chequeos?.[0]?.idChequeo}`, dataChequeo);
-    handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
-  } catch (error) {
-    console.error("Error al enviar los datos:", error);
-    handleAlert("Error", "No se pudo completar la solicitud.", "error");
-  }
-};
-
   
   const filteredEquipos = useMemo(() => {
     return equipos.filter((equipo) => equipo.marca.toLowerCase().includes(busqueda.toLowerCase()));
   }, [equipos, busqueda]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const dataChequeo = {
-      equipo_serial: equipoSeleccionado.serial,
-      observaciones,
-      descripcion: "Proceso",
-    };
-
+  const handleMarcarCompletado = async () => {
     try {
-      await axiosInstance.post(`${import.meta.env.VITE_API_URL}/chequeos`, dataChequeo);
-      handleAlert("¡Bien!", "La información ha sido guardada correctamente.", "success");
+        const response = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/chequeos/addOrUpdate`, {
+            equipoSerial: equipoSeleccionado.serial,
+            mantenimientoId,
+            descripcion: 'Completado',
+            observaciones,
+        });
+
+        if (response.status === 200) {
+            handleAlert('Éxito', 'Chequeo completado guardado correctamente', 'success');
+            setEquipoSeleccionado(null); // Limpia la selección
+        }
     } catch (error) {
-      console.error("Error al enviar los datos:", error);
+        console.error('Error al enviar los datos:', error);
+        handleAlert('Error', 'Error al guardar el chequeo', 'error');
     }
+};
+
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        const response = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/chequeos/addOrUpdate`, {
+            equipoSerial: equipoSeleccionado.serial,
+            mantenimientoId,
+            descripcion: 'Fallas',
+            observaciones,
+        });
+
+        if (response.status === 200) {
+            handleAlert('Éxito', 'Chequeo de fallas guardado correctamente', 'success');
+            setTareaSeleccionada(null); // Cierra el modal de observaciones
+            setObservaciones(''); // Limpia las observaciones
+        }
+    } catch (error) {
+        console.error('Error al enviar los datos:', error);
+        handleAlert('Error', 'Error al guardar el chequeo', 'error');
+    }
+};
+
+useEffect(() => {
+  const fetchEquipos = async () => {
+      try {
+          const response = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/mantenimientos/${mantenimientoId}/equipos`);
+          setEquipos(response.data);
+      } catch (error) {
+          console.error('Error al obtener los equipos relacionados:', error);
+      }
   };
 
-  useEffect(() => {
-    const fetchEquipos = async () => {
+  const fetchChequeos = async () => {
       try {
-        const response = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/mantenimientos/${mantenimientoId}/equipos`);
-        setEquipos(response.data);
-        console.log(response);
-      } catch (error) {
-        console.error("Error al obtener los equipos relacionados:", error);
-      }
-    };
+          const response = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/chequeos/cosas/${mantenimientoId}`);
+          const chequeosData = response.data;
 
-    if (mantenimientoId) {
+          // Create a map of chequeos by equipo serial
+          const chequeosMap = chequeosData.reduce((map, chequeo) => {
+              map[chequeo.equipo.serial] = chequeo;
+              return map;
+          }, {});
+
+          setChequeos(chequeosMap);
+      } catch (error) {
+          console.error('Error al obtener los chequeos relacionados:', error);
+      }
+  };
+
+  if (mantenimientoId) {
       fetchEquipos();
-    }
-  }, [mantenimientoId]);
+      fetchChequeos();
+  }
+}, [mantenimientoId]);
+
 
 
   return (
@@ -131,28 +156,30 @@ const handleMarcarCompletado = async () => {
                   </h3>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      equipo.chequeos[0]?.descripcion === "Proceso"
+                      chequeos[equipo.serial]?.descripcion === "Fallas"
                       ? "bg-red-500 text-red-50"
-                      : equipo.chequeos[0]?.descripcion === "Completado"
+                      : chequeos[equipo.serial]?.descripcion === "Completado"
                       ? "bg-green-500 text-green-50"
-                      : "bg-gray-500 text-gray-50"}`}
+                      : "bg-gray-500 text-gray-50"
+                    }`}
                   >
-                    {equipo.chequeos.length > 0 ? equipo.chequeos[0].descripcion : "Sin Chequeo"}
+                    {chequeos[equipo.serial] ? chequeos[equipo.serial].descripcion : "Sin Chequeo"}
                   </span>
                 </div>
                 <div className="text-muted-foreground text-sm">
                   <p>Serial: {equipo.serial}</p>
                   <p>Tipo Equipo: {equipo.tipoEquipo.nombre}</p>
-                  <p>Area: {equipo.area.zona}</p> 
+                  <p>Area: {equipo.area.zona}</p>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
         {equipoSeleccionado && (
           <div className="bg-background rounded-lg shadow-lg p-6">
             <h2 className="text-xl font-bold mb-4">
-              Checklist de Mantenimiento - {equipoSeleccionado.referencia}
+              Checklist de Mantenimiento - {equipoSeleccionado.referencia}  
             </h2>
             <div className="bg-card text-card-foreground rounded-lg p-4 flex justify-between items-center">
               <div>
@@ -160,6 +187,7 @@ const handleMarcarCompletado = async () => {
                 <p className="text-sm font-medium">Marca: {equipoSeleccionado.marca}</p>
                 <p className="text-sm font-medium">Placa: {equipoSeleccionado.placaSena}</p>
                 <p className="text-sm font-medium">Propietario: {equipoSeleccionado.cuentaDante.nombre}</p>
+                <p className="text-sm font-medium">Observaciones: {observaciones}</p>  
               </div>
               <div className="flex flex-col gap-2">
                 <Button

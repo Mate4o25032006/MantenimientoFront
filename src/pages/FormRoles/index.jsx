@@ -49,7 +49,7 @@ export const FormRoles = () => {
                     onChange={handleInputChange}
                     options={data.roles.map(rol => ({ value: rol.id, label: rol.nombre }))}
                 />
-                <div>
+                <div className="md:col-span-2">
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>
