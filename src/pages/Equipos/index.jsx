@@ -110,7 +110,7 @@ export const FormEquipos = () => {
                     onChange={handleInputChange}
                     options={data.areas.map(area => ({ value: area.codigo, label: area.zona }))}
                 /> 
-                <div className={inputs1.length % 2 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
+                <div className={inputs1.length % 1 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
             </form>

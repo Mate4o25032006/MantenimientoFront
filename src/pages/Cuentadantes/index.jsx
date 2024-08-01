@@ -59,7 +59,7 @@ export const FormCuetadantes = () => {
     const handleSubmit = usePostData("cuentadantes", onSubmit, inputs);
 
     return (
-        <Forms>
+        <Forms className="form-background">
             <h1 className="text-center my-2 mb-8 text-xl font-semibold">Formulario CuentaDantes</h1>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
                 {inputs1.map(input => (

@@ -11,102 +11,46 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import DvrIcon from '@mui/icons-material/Dvr';
 import { styled } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-// const menuItems = [
-//     { to: "/admin", icon: <HomeIcon color='primary' />, text: "Inicio" },
-//     { to: "/equipos/lista", icon: <LaptopIcon color='primary' />, text: "Equipos" },
-//     { to: "/mantenimientos/lista", icon: <EngineeringIcon color='primary' />, text: "Mantenimiento" },
-//     { to: "/usuarios/lista", icon: <PeopleIcon color='primary' />, text: "Usuarios" },
-//     { to: "/formularios", icon: <AssignmentIcon color='primary' />, text: "Formularios" },
-//     { to: "/asignacionRoles", icon: <AssignmentIcon color='primary' />, text: "Asignación roles" },
-//     { to: "/asignacionEquipos", icon: <AssignmentIcon color='primary' />, text: "Asignación equipos" },
-//     { to: "/admin", icon: <HomeIcon color='primary' />, text: "Inicio" },
-//     { to: "/equipos/lista", icon: <LaptopIcon color='primary' />, text: "Equipos" }
-//   ];
+// Estilo personalizado para ListItemButtonBlue
+const ListItemButtonBlue = styled(ListItemButton)(({ theme, selected }) => ({
+  backgroundColor: selected ? "#bbdefb" : "transparent",
+  "&:hover": {
+    backgroundColor: "#bbdefb",
+  },
+}));
 
-const ListItemButtonBlue = styled(ListItemButton)({
-    "&:hover":{
-      backgroundColor:"#bbdefb",
-    }
-})
+const CustomListItem = ({ to, icon, text }) => {
+  const location = useLocation();
+  const isSelected = location.pathname === to;
+
+  return (
+    <Link to={to} style={{ textDecoration: 'none' }}>
+      <ListItemButtonBlue selected={isSelected}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={text} primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} />
+      </ListItemButtonBlue>
+    </Link>
+  );
+};
 
 export const mainListItems = (
-  <React.Fragment >
-    <Link to="/admin">
-      <ListItemButtonBlue>
-        <ListItemIcon>
-            <HomeIcon color='primary'/>  
-        </ListItemIcon>
-        <ListItemText primary="Inicio" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-      </ListItemButtonBlue>
-    </Link>
-    <Link to="/equipos/lista">
-      <ListItemButtonBlue>
-        <ListItemIcon>
-          <LaptopIcon color='primary'/>
-        </ListItemIcon>
-        <ListItemText primary="Equipos" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-      </ListItemButtonBlue>
-    </Link>
-    <Link to="/mantenimientos/lista">
-      <ListItemButtonBlue>
-        <ListItemIcon>
-          <EngineeringIcon color='primary' />
-        </ListItemIcon>
-        <ListItemText primary="Mantenimiento" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-      </ListItemButtonBlue>
-    </Link>
-    <Link to="/usuarios/lista">
-      <ListItemButtonBlue>
-        <ListItemIcon>
-          <PeopleIcon color='primary' />
-        </ListItemIcon>
-        <ListItemText primary="Usuarios" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-      </ListItemButtonBlue>
-    </Link>
-    {/* <ListItemButtonBlue>
-      <ListItemIcon>
-        <LayersIcon color='primary' />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }}/>
-    </ListItemButtonBlue> */}
+  <React.Fragment>
+    <CustomListItem to="/admin" icon={<HomeIcon color='primary' />} text="Inicio" />
+    <CustomListItem to="/equipos/lista" icon={<LaptopIcon color='primary' />} text="Equipos" />
+    <CustomListItem to="/mantenimientos/lista" icon={<EngineeringIcon color='primary' />} text="Mantenimiento" />
+    <CustomListItem to="/usuarios/lista" icon={<PeopleIcon color='primary' />} text="Usuarios" />
   </React.Fragment>
 );
 
 export const secondaryListItems = (
   <React.Fragment>
-    <Link to="/formularios" >
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <AssignmentIcon color='primary'/>
-      </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Formularios" />
-    </ListItemButtonBlue>
-    </Link>
-    <Link to="/listas" >
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <ListAltIcon color='primary'/>
-      </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Listas" />
-    </ListItemButtonBlue>
-    </Link>
-    <Link to="/asignacionRoles">
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <AssignmentIndIcon color='primary'/>
-      </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación roles" />
-    </ListItemButtonBlue>
-    </Link>
-    <Link to="/asignacionEquipos">
-    <ListItemButtonBlue>
-      <ListItemIcon>
-        <DvrIcon color='primary'/>
-      </ListItemIcon>
-      <ListItemText primaryTypographyProps={{ color: 'primary', fontWeight: 'bold' }} primary="Asignación equipos" />
-    </ListItemButtonBlue>
-    </Link>
+    <CustomListItem to="/formularios" icon={<AssignmentIcon color='primary' />} text="Formularios" />
+    <CustomListItem to="/listas" icon={<ListAltIcon color='primary' />} text="Listas" />
+    <CustomListItem to="/asignacionRoles" icon={<AssignmentIndIcon color='primary' />} text="Asignación roles" />
+    <CustomListItem to="/asignacionEquipos" icon={<DvrIcon color='primary' />} text="Asignación equipos" />
   </React.Fragment>
 );

@@ -80,6 +80,7 @@ export const FormMantenimientos = () => {
                 <Select
                     label="Tipo Mantenimiento"
                     name="tipoMantenimiento"
+                    value={inputs.tipoMantenimiento}
                     onChange={handleInputChange}
                     options={[
                         {

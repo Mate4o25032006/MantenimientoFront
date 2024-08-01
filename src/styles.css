@@ -6,3 +6,10 @@
   z-index: 9999 !important;
 }
   
+.form-background {
+  background-image: url('/src/assets/ImagenFondo.jpg'); /* Reemplaza esto con la ruta real de tu imagen */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px; /* Ajusta el padding según sea necesario */
+}
