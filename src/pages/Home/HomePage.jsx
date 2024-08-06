@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 import EnhancedTable  from '../../components/home/Orders';
 import useGetAdmin from '../../hooks/useGetAdmin';
 import LoaderCard from "../../components/Loader/LoaderCard";
-import MaintenanceHistoryChart from '@/components/Graficos/HistoryChart';
+// import MaintenanceHistoryChart from '@/components/Graficos/HistoryChart';
 import EquipmentTypeChart from '@/components/Graficos/TipoEquipoChart';
 import AreaChart from '@/components/Graficos/AreaChart';
 import { useMediaQuery } from '@mui/material';
@@ -53,7 +53,7 @@ export const HomePage = () => {
                 <Grid item xs={12} md={4}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>Historial de Mantenimiento</h2>
-                    <MaintenanceHistoryChart />
+                    {/* <MaintenanceHistoryChart /> */}
                   </Paper>
                 </Grid>
   

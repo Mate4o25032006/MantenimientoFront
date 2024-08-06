@@ -46,11 +46,20 @@ const headCells = [
 ];
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+  if (orderBy === 'tipoEquipo') {
+    if (b[orderBy].nombre < a[orderBy].nombre) {
+      return -1;
+    }
+    if (b[orderBy].nombre > a[orderBy].nombre) {
+      return 1;
+    }
+  } else {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
   }
   return 0;
 }
@@ -373,7 +382,7 @@ export function ListaEquipos() {
                                 <Select
                                   name="estado"
                                   onChange={(event) => handleInputChange(event, 'estado')}
-                                  value={editedRow.estado.estado ? "Activo" : "Inactivo"}
+                                  value={editedRow.estado ? "Activo" : "Inactivo"}
                                   style={{ height: '60px' }}
                                   options={[
                                     {
@@ -387,7 +396,7 @@ export function ListaEquipos() {
                                   ]}
                                 />
                                 ) : (
-                                  row.estado.estado ? "Activo" : "Inactivo"
+                                  row.estado ? "Activo" : "Inactivo"
                                 )}
                               </TableCell>
                               <TableCell padding="checkbox">
@@ -408,7 +417,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
                                 <TableCell>{row.area.zona}</TableCell>
-                                <TableCell>{row.estado.estado ? "Activo" : "Inactivo" }</TableCell>                                
+                                <TableCell>{row.estado ? "Activo" : "Inactivo" }</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.serial ? <SaveIcon /> : <EditIcon />}
