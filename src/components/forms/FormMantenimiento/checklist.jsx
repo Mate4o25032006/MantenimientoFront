@@ -12,7 +12,7 @@ export const Checklist = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedArea, setSelectedArea] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
-  const [selectedMantent, setSelectedMantent] = useState("");
+  const [selectedMantent, setSelectedMantent] = useState({ idMantenimiento: "", objetivo: "" });
   const [selectAll, setSelectAll] = useState(false);
   const urls = ["tipoEquipos", "mantenimientos", "areas", "equipos"];
   const { data, error, loading } = useGetData(urls);
@@ -49,7 +49,7 @@ export const Checklist = () => {
 
   const onSubmit = () => {
     setSelectedItems([]);
-    setSelectedMantent("");
+    setSelectedMantent({ idMantenimiento: "", objetivo: "" });
     setSelectAll(false);
   };
 
@@ -57,7 +57,7 @@ export const Checklist = () => {
     'mantenimientos/asociaEquipos',
     onSubmit,
     {
-      idMantenimiento: selectedMantent,
+      idMantenimiento: selectedMantent.idMantenimiento,
       equipos: selectedItems.map(serial => ({ serial }))
     }
   );
@@ -76,13 +76,16 @@ export const Checklist = () => {
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="mantenimiento">Selecciona el mantenimiento</Label>
-                <Select id="mantenimiento" value={selectedMantent} onValueChange={setSelectedMantent}>
+                <Select id="mantenimiento" value={selectedMantent.objetivo} onValueChange={(value) => {
+                  const selectedMant = data.mantenimientos.find(mant => mant.objetivo === value);
+                  setSelectedMantent({ idMantenimiento: selectedMant.idMantenimiento, objetivo: selectedMant.objetivo });
+                }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Mantenimiento" />
                   </SelectTrigger>
                   <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                     {data.mantenimientos.map(mant => (
-                      <SelectItem key={mant.idMantenimiento} value={mant.idMantenimiento}>{mant.objetivo}</SelectItem>
+                      <SelectItem key={mant.idMantenimiento} value={mant.objetivo || 'hola'}>{mant.objetivo}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -95,7 +98,7 @@ export const Checklist = () => {
                     <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todas las ubicaciones</SelectItem>
                       {data.areas.map(area => (
-                        <SelectItem key={area.codigo} value={area.zona}>{area.zona}</SelectItem>
+                        <SelectItem key={area.codigo} value={area.zona}>{area.zona || 'hola'}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -106,7 +109,7 @@ export const Checklist = () => {
                     <SelectContent className="absolute bg-white border border-bg-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todos los tipos</SelectItem>
                       {data.tipoEquipos.map(tipo => (
-                        <SelectItem key={tipo.id} value={tipo.nombre}>{tipo.nombre}</SelectItem>
+                        <SelectItem key={tipo.id} value={tipo.nombre || 'hola'}>{tipo.nombre}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

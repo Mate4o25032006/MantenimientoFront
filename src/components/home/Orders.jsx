@@ -26,14 +26,24 @@ const headCells = [
 ];
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+  if (orderBy === 'cuentaDante') {
+    if (b[orderBy].nombre < a[orderBy].nombre) {
+      return -1;
+    }
+    if (b[orderBy].nombre > a[orderBy].nombre) {
+      return 1;
+    }
+  } else {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
   }
   return 0;
 }
+
 
 function getComparator(order, orderBy) {
   return order === 'desc'
