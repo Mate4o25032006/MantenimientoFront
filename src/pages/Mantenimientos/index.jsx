@@ -23,7 +23,7 @@ export const FormMantenimientos = () => {
             type: 'text', 
             name: 'objetivo', 
             placeholder: 'Ingrese el objetivo del mantenimiento', 
-            value: inputs.serial, 
+            value: inputs.objetivo, 
             required: true 
         },
         { 
