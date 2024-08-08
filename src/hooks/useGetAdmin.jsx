@@ -23,7 +23,7 @@ const useGetAdmin = () => {
                 setAdminSession(true);
                 console.log(response);
             } catch (error) {
-                console.log(error);
+                console.log("error");
                 setLoader(false);
                 setAdmin(false);
                 setAdminSession(false);
