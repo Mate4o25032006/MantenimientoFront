@@ -33,7 +33,6 @@ export const HomePage = () => {
 
   return (
     <>
-    {admin1 ? (
             <Box
               component="main"
               sx={{
@@ -87,9 +86,6 @@ export const HomePage = () => {
               <Copyright sx={{ pt: 4 }} />
             </Container>
           </Box>
-        ) : (
-          <LoaderCard />
-      )}
     </>
   );
 };
