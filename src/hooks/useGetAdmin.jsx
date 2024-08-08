@@ -23,30 +23,25 @@ const useGetAdmin = () => {
                 setAdminSession(true);
                 console.log(response);
             } catch (error) {
-                console.log("error");
+                console.log(error);
                 setLoader(false);
                 setAdmin(false);
                 setAdminSession(false);
-                console.log("acá llega")
-                
+
                 Swal.fire({
                     title: "Oops....",
                     text: "No tienes Autorización para entrar a este apartado. Por favor inicie sesión.",
                     icon: "error",
                     showConfirmButton: false,
                     timer: 2500,
+                }).then(() => {
+                    navigate("/login", { replace: true });
                 });
-                console.log("Acá tambien")
-                setTimeout(() => {
-                    navigate("/login", {
-                        replace: true
-                    });
-                }, 2500); // Espera hasta que Swal fire termine antes de navegar.
-                console.log("Termina acá")
             }
         };
         fetchData();
-    }, [tokenSession, setAdmin, setLoader, navigate]); 
+    }, [tokenSession, setAdmin, setLoader, navigate]);
+
     return adminSession;
 };
 

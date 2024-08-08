@@ -53,7 +53,7 @@ export const HomePage = () => {
                 <Grid item xs={12} md={4}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>Historial de Mantenimiento</h2>
-                    {/* <MaintenanceHistoryChart /> */}
+                    <MaintenanceHistoryChart />
                   </Paper>
                 </Grid>
   
