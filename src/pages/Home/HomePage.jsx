@@ -73,7 +73,7 @@ export const HomePage = () => {
                 Cantidad de equipos según la zona
               </Typography>
               <Box sx={{ width: '100%', maxWidth: 400 }}>
-                <AreaChart />
+                {/* <AreaChart /> */}
               </Box>
             </Paper>
           </Grid>

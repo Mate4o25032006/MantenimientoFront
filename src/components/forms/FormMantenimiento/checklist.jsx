@@ -14,7 +14,7 @@ export const Checklist = () => {
   const [selectedType, setSelectedType] = useState("all");
   const [selectedMantent, setSelectedMantent] = useState({ idMantenimiento: "", objetivo: "" });
   const [selectAll, setSelectAll] = useState(false);
-  const urls = ["tipoEquipos", "mantenimientos", "areas", "equipos"];
+  const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes"];
   const { data, error, loading } = useGetData(urls);
 
   const filteredEquipment = useMemo(() => {
@@ -97,8 +97,8 @@ export const Checklist = () => {
                     </SelectTrigger>
                     <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todas las ubicaciones</SelectItem>
-                      {data.areas.map(area => (
-                        <SelectItem key={area.codigo} value={area.zona}>{area.zona || 'hola'}</SelectItem>
+                      {data.subsedes.map(subsede => (
+                        <SelectItem key={subsede.codigo} value={subsede.nombre}>{subsede.nombre || 'hola'}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
