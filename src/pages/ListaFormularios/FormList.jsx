@@ -10,8 +10,9 @@ export const FormList = () => {
     { id: 2, name: 'Formulario Equipos', description: 'Creación de equipos', route: '/formularios/equipos' },
     { id: 3, name: 'Formulario Mantenimiento', description: 'Creación de mantenimientos', route: '/formularios/mantenimientos' },
     { id: 4, name: 'Formulario CuentaDante', description: 'Creación de cuenta dantes', route: '/formularios/cuentadantes' },
-    { id: 5, name: 'Formulario Areas', description: 'Creación de Areas', route: '/formularios/areas' },
-    { id: 6, name: 'Formulario Tipos de Equipos', description: 'Creación de Tipos', route: '/formularios/tipoEquipos' },
+    { id: 5, name: 'Formulario subsedes', description: 'Creación de subsedes', route: '/formularios/subsedes' },
+    { id: 6, name: 'Formulario dependencias', description: 'Creación de dependencias', route: '/formularios/dependencias' },
+    { id: 7, name: 'Formulario Tipos de Equipos', description: 'Creación de Tipos', route: '/formularios/tipoEquipos' },
   ];
 
   return (

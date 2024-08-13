@@ -1,6 +1,6 @@
 // routes.js
 import { useRoutes } from 'react-router-dom';
-import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormCuetadantes, FormMantenimientos, ListaEquipos, ListaUsuarios, GestionMantenimiento, FormAreas, FormTipos } from '../pages/';
+import { Login, HomePage, FormUsuarios, FormEquipos, FormRoles, FormCuetadantes, FormMantenimientos, ListaEquipos, ListaUsuarios, GestionMantenimiento, FormTipos, FormSubsedes } from '../pages/';
 import {ProtectedRoute} from './ProtectedRoute';
 import {LoginRoute} from './LoginRoute';
 import { FormList } from '@/pages/ListaFormularios/FormList';
@@ -8,8 +8,9 @@ import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
 import { ListaMantenimientos } from '@/pages/Mantenimientos/ListaMantenimiento';
 import { Listas } from '@/pages/Listas/Lista';
 import { ListaCuentaDante } from '@/pages/Cuentadantes/ListaCuentaDante';
-import ListaArea from '@/pages/Areas/ListaAreas';
+import ListaArea from '@/pages/Sedes/ListaAreas';
 import { ListaTipo } from '@/pages/TipoEquipos/ListaTipos';
+import { FormDependencias } from '@/pages/Sedes/FormDependencias';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -86,10 +87,18 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/formularios/areas',
+            path: '/formularios/subsedes',
             element: (
                 <ProtectedRoute>
-                    <FormAreas />
+                    <FormSubsedes />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/formularios/dependencias',
+            element: (
+                <ProtectedRoute>
+                    <FormDependencias />
                 </ProtectedRoute>
             ),
         },
