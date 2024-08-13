@@ -23,6 +23,8 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  maxWidth: '100%',
+  flexShrink: 0,
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -107,37 +109,39 @@ export const Menu = () => {
   return (
     <>
       <AppBar position="absolute" open={open}>
-        <Toolbar sx={{ pr: '24px' }}>
-          <IconButton
-            edge="start"
-            color="primary"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon color='secondary'/>
-          </IconButton>
-          <IconButton
-            edge="start"
-            color="primary"
-            aria-label="go back"
-            onClick={handleGoBack}
-            sx={{ marginRight: '16px' }}
-          >
-            <ArrowBackIcon color='secondary' />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="secondary"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            Software de mantenimientos
-          </Typography>
+        <Toolbar sx={{ pr: '24px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              edge="start"
+              color="primary"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' }),
+              }}
+            >
+              <MenuIcon color='secondary'/>
+            </IconButton>
+            <IconButton
+              edge="start"
+              color="primary"
+              aria-label="go back"
+              onClick={handleGoBack}
+              sx={{ marginRight: '16px' }}
+            >
+              <ArrowBackIcon color='secondary' />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="secondary"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Software de mantenimientos
+            </Typography>
+          </div>
           <img
             src={Logo1}
             alt="My Image"

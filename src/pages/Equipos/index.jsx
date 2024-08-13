@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import usePostData from "../../hooks/usePostData";
 import useGetData from "../../hooks/useGetData";
 import { Input } from "../../components/forms/elements/input";
@@ -8,54 +8,26 @@ import { Forms } from "../../layout/Forms";
 import { useNavigate } from 'react-router-dom';
 
 export const FormEquipos = () => {
-    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", placaSena: "", tipoEquipo: "", cuentaDante: "", area: "" };
+    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", placaSena: "", tipoEquipo: "", cuentaDante: "", area: "", subsede: "", dependencia: "" };
     const [inputs, setInputs] = useState(initialData);
+    const [filteredDependencias, setFilteredDependencias] = useState([]);
     const navigate = useNavigate();
 
-    const urls = ["tipoEquipos", "cuentadantes", "areas"];
+    const urls = ["tipoEquipos", "cuentadantes", "areas", "subsedes", "dependencias"];
     const { data, error, loading } = useGetData(urls);
 
+    useEffect(() => {
+        if (inputs.subsede) {
+            setFilteredDependencias(data.dependencias.filter(dep => dep.subsede_id === inputs.subsede));
+        }
+    }, [inputs.subsede, data.dependencias]);
+
     const inputs1 = [
-        { 
-            id: 1, 
-            type: 'text', 
-            name: 'serial', 
-            placeholder: 'Ingrese el serial del equipo', 
-            value: inputs.serial, 
-            required: true 
-        },
-        { 
-            id: 2, 
-            type: 'text', 
-            name: 'marca', 
-            placeholder: 'Ingrese la marca del equipo', 
-            value: inputs.marca, 
-            required: true 
-        },
-        { 
-            id: 3, 
-            type: 'text', 
-            name: 'referencia', 
-            placeholder: 'Ingrese la referencia del equipo', 
-            value: inputs.referencia, 
-            required: true 
-        },
-        { 
-            id: 4, 
-            type: 'date', 
-            name: 'fechaCompra', 
-            placeholder: 'Ingrese la fecha de compra del equipo', 
-            value: inputs.fechaCompra, 
-            required: true 
-        },
-        {
-            id: 5, 
-            type: 'text', 
-            name: 'placaSena', 
-            placeholder: 'Ingrese la placa Sena del equipo', 
-            value: inputs.placaSena, 
-            required: true 
-        },
+        { id: 1, type: 'text', name: 'serial', placeholder: 'Ingrese el serial del equipo', value: inputs.serial, required: true },
+        { id: 2, type: 'text', name: 'marca', placeholder: 'Ingrese la marca del equipo', value: inputs.marca, required: true },
+        { id: 3, type: 'text', name: 'referencia', placeholder: 'Ingrese la referencia del equipo', value: inputs.referencia, required: true },
+        { id: 4, type: 'date', name: 'fechaCompra', placeholder: 'Ingrese la fecha de compra del equipo', value: inputs.fechaCompra, required: true },
+        { id: 5, type: 'text', name: 'placaSena', placeholder: 'Ingrese la placa Sena del equipo', value: inputs.placaSena, required: true },
     ];
 
     const handleInputChange = (event) => {
@@ -110,6 +82,20 @@ export const FormEquipos = () => {
                     onChange={handleInputChange}
                     options={data.areas.map(area => ({ value: area.codigo, label: area.zona }))}
                 /> 
+                <Select
+                    label="Subsede"
+                    name="subsede"
+                    value={inputs.subsede}
+                    onChange={handleInputChange}
+                    options={data.subsedes.map(subsede => ({ value: subsede.id, label: subsede.nombre }))}
+                />
+                <Select
+                    label="Dependencia"
+                    name="dependencia"
+                    value={inputs.dependencia}
+                    onChange={handleInputChange}
+                    options={filteredDependencias.map(dependencia => ({ value: dependencia.id, label: dependencia.nombre }))}
+                />
                 <div className={inputs1.length % 1 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
                 </div>
