@@ -8,13 +8,14 @@ import { Forms } from "../../layout/Forms";
 import { useNavigate } from 'react-router-dom';
 
 export const FormEquipos = () => {
-    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", placaSena: "", tipoEquipo: "", cuentaDante: "", area: "", subsede: "", dependencia: "" };
+    const initialData = { serial: "", marca: "", referencia: "", fechaCompra: "", placaSena: "", tipoEquipo: "", cuentaDante: "", subsede: "", dependencia: "" };
     const [inputs, setInputs] = useState(initialData);
     const [filteredDependencias, setFilteredDependencias] = useState([]);
     const navigate = useNavigate();
 
-    const urls = ["tipoEquipos", "cuentadantes", "areas", "subsedes", "dependencias"];
+    const urls = ["tipoEquipos", "cuentadantes", "subsedes", "dependencias"];
     const { data, error, loading } = useGetData(urls);
+    console.log(data);
 
     useEffect(() => {
         if (inputs.subsede) {
@@ -76,26 +77,21 @@ export const FormEquipos = () => {
                     options={data.cuentadantes.map(cuentaDante => ({ value: cuentaDante.documento, label: cuentaDante.nombre }))}
                 />
                 <Select
-                    label="Area"
-                    name="area"
-                    value={inputs.area}
-                    onChange={handleInputChange}
-                    options={data.areas.map(area => ({ value: area.codigo, label: area.zona }))}
-                /> 
-                <Select
                     label="Subsede"
                     name="subsede"
                     value={inputs.subsede}
                     onChange={handleInputChange}
-                    options={data.subsedes.map(subsede => ({ value: subsede.id, label: subsede.nombre }))}
+                    options={data.subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                 />
-                <Select
-                    label="Dependencia"
-                    name="dependencia"
-                    value={inputs.dependencia}
-                    onChange={handleInputChange}
-                    options={filteredDependencias.map(dependencia => ({ value: dependencia.id, label: dependencia.nombre }))}
-                />
+                {inputs.subsede && (
+                    <Select
+                        label="Dependencia"
+                        name="dependencia"
+                        value={inputs.dependencia}
+                        onChange={handleInputChange}
+                        options={data.dependencias.map(dependencia => ({ value: dependencia.idDependencia, label: dependencia.nombre }))}
+                    />
+                )}
                 <div className={inputs1.length % 1 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
                 </div>

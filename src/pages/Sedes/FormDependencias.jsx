@@ -5,9 +5,10 @@ import { Button } from "../../components/forms/elements/button";
 import { Forms } from "../../layout/Forms";
 import { useNavigate } from 'react-router-dom';
 import useGetData from "@/hooks/useGetData";
+import { Select } from "@/components/forms/elements/select";
 
 export const FormDependencias = () => {
-    const initialData = { codigo: "", nombre: "" };
+    const initialData = { nombre: "", ambiente: "", subsede: "" };
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
     const urls = ["subsedes"];
@@ -17,17 +18,17 @@ export const FormDependencias = () => {
         { 
             id: 1, 
             type: 'text', 
-            name: 'codigo', 
-            placeholder: 'Ingrese el código del Area', 
-            value: inputs.codigo, 
+            name: 'nombre', 
+            placeholder: 'Ingrese nombre de la dependencia', 
+            value: inputs.nombre, 
             required: true 
         },
         { 
-            id: 2, 
+            id: 1, 
             type: 'text', 
-            name: 'nombre', 
-            placeholder: 'Ingrese nombre del Area', 
-            value: inputs.nombre, 
+            name: 'ambiente', 
+            placeholder: 'Ingrese ambiente de la dependencia', 
+            value: inputs.ambiente, 
             required: true 
         },
     ];
@@ -58,17 +59,17 @@ export const FormDependencias = () => {
 
     return (
         <Forms>
-            <h1 className="text-center my-2 mb-8 text-xl font-semibold">Formulario Subsedes</h1>
+            <h1 className="text-center my-2 mb-8 text-xl font-semibold">Formulario Dependencias</h1>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
                 {inputs1.map(input => (
                     <Input key={input.id} type={input.type} name={input.name} placeholder={input.placeholder} required={input.required} value={input.value} handleInputChange={handleInputChange} />
                 ))}
                 <Select
                     label="Subsedes"
-                    name="Subsede"
+                    name="subsede"
                     value={inputs.subsede}
                     onChange={handleInputChange}
-                    options={data.subsedes.map(subsede => ({ value: subsede.id, label: subsede.nombre }))}
+                    options={data.subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                 />
                 <div className={inputs1.length % 2 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>
                     <Button type={'submit'} name={'Enviar'} />
