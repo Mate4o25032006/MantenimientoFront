@@ -374,7 +374,7 @@ export function ListaEquipos() {
                                     style={{ height: '60px' }}
                                   />
                                 ) : (
-                                  row.subsede.zona
+                                  row.subsede.nombre
                                 )}
                               </TableCell>
                               <TableCell>
