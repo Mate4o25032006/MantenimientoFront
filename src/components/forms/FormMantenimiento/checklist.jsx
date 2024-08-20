@@ -10,22 +10,31 @@ import { Divider } from '@mui/material';
 
 export const Checklist = () => {
   const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedArea, setSelectedArea] = useState("all");
+  const [selectedSubsede, setSelectedSubsede] = useState("all");
+  const [selectedDependencia, setSelectedDependencia] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedMantent, setSelectedMantent] = useState({ idMantenimiento: "", objetivo: "" });
   const [selectAll, setSelectAll] = useState(false);
-  const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes"];
+  const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes", "dependencias"];
   const { data, error, loading } = useGetData(urls);
+  console.log(data.equipos);
 
   const filteredEquipment = useMemo(() => {
     if (!data.equipos) return [];
-    return data.equipos.filter((item) => {
-      const areaMatches = selectedArea === 'all' || item.area.zona === selectedArea;
-      const typeMatches = selectedType === 'all' || item.tipoEquipo.nombre === selectedType;
-      
-      return areaMatches && typeMatches;
+    return data.equipos.filter((equipo) => {
+      const subsedeMatches = selectedSubsede === 'all' || equipo.subsede.nombre === selectedSubsede;
+      const typeMatches = selectedType === 'all' || equipo.tipoEquipo.nombre === selectedType;
+      const dependenciaMatches = selectedDependencia === 'all' || equipo.dependencia.nombre === selectedDependencia;
+
+      return subsedeMatches && typeMatches && dependenciaMatches;
     });
-  }, [selectedArea, selectedType, data.equipos]);
+  }, [selectedSubsede, selectedType, selectedDependencia, data.equipos]);
+
+  const filteredDependencias = useMemo(() => {
+    if (selectedSubsede === 'all') return [];
+    const subsede = data.subsedes.find(subsede => subsede.nombre === selectedSubsede);
+    return subsede ? subsede.dependencias : [];
+  }, [selectedSubsede, data.subsedes]);
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
@@ -84,29 +93,49 @@ export const Checklist = () => {
                     <SelectValue placeholder="Mantenimiento" />
                   </SelectTrigger>
                   <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
-                    {data.mantenimientos.map(mant => (
-                      <SelectItem key={mant.idMantenimiento} value={mant.objetivo || 'hola'}>{mant.objetivo}</SelectItem>
-                    ))}
+                    {data.mantenimientos
+                      .filter(mant => mant.equipos.length === 0) // Filtra mantenimientos con equipos vacíos
+                      .map(mant => (
+                        <SelectItem key={mant.idMantenimiento} value={mant.objetivo || 'hola'}>
+                          {mant.objetivo}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
+
                 <div className="grid gap-2 mt-3">
-                  <Label htmlFor="equipment">Filtra los equipos por:</Label>
-                  <Select id="equipment" value={selectedArea} onValueChange={setSelectedArea}>
+                  <Label htmlFor="subsede">Filtra los equipos por:</Label>
+                  <Select id="subsede" value={selectedSubsede} onValueChange={setSelectedSubsede}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Ubicacion" />
+                      <SelectValue placeholder="Ubicación" />
                     </SelectTrigger>
                     <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
-                      <SelectItem value="all">Todas las ubicaciones</SelectItem>
+                      <SelectItem value="all">Todas las subsedes</SelectItem>
                       {data.subsedes.map(subsede => (
                         <SelectItem key={subsede.codigo} value={subsede.nombre}>{subsede.nombre || 'hola'}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {selectedSubsede !== "all" && (
+                    <Select id="dependencia" value={selectedDependencia} onValueChange={setSelectedDependencia}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Dependencia" />
+                      </SelectTrigger>
+                      <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
+                        <SelectItem value="all">Todas las dependencias</SelectItem>
+                        {filteredDependencias.map(dependencia => (
+                          <SelectItem key={dependencia.idDependencia} value={dependencia.nombre}>{dependencia.nombre}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+
                   <Select id="equipment-type" value={selectedType} onValueChange={setSelectedType}>
                     <SelectTrigger>
                       <SelectValue placeholder="Tipo equipo" />
                     </SelectTrigger>
-                    <SelectContent className="absolute bg-white border border-bg-gray-300 rounded-md shadow-lg mt-1 z-10">
+                    <SelectContent className="absolute bg-white border-bg-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todos los tipos</SelectItem>
                       {data.tipoEquipos.map(tipo => (
                         <SelectItem key={tipo.id} value={tipo.nombre || 'hola'}>{tipo.nombre}</SelectItem>
@@ -115,6 +144,7 @@ export const Checklist = () => {
                   </Select>
                 </div>
               </div>
+
               <div className="grid gap-2 mt-3">
                 <Label>Selecciona los equipos para hacer el mantenimiento:</Label>
                 <div className="max-h-64 overflow-y-auto border border-gray-300 rounded-md p-2 mt-2">

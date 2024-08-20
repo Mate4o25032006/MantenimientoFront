@@ -23,7 +23,7 @@ const colors = [
     '#1565c0', // 800
   ];
 
-const AreaChart = () => {
+const SubsedeChart = () => {
   const { data, error, loading } = useGetData(['equipos']);
   const [chartData, setChartData] = useState({
     labels: [],
@@ -41,7 +41,7 @@ const AreaChart = () => {
   useEffect(() => {
     if (!loading && !error && data.equipos) {
       const tipoCounts = data.equipos.reduce((acc, equipo) => {
-        acc[equipo.area.zona] = (acc[equipo.area.zona] || 0) + 1;
+        acc[equipo.subsede.nombre] = (acc[equipo.subsede.nombre] || 0) + 1;
         return acc;
       }, {});
 
@@ -76,4 +76,4 @@ const AreaChart = () => {
   return <Pie data={chartData} />;
 };
 
-export default AreaChart;
+export default SubsedeChart;

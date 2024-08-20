@@ -91,7 +91,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 export function ListaEquipos() {
-  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "areas", "estados"]);
+  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "subsedes", "estados"]);
   const mantenimientos = data?.mantenimientos;
   const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
@@ -211,7 +211,7 @@ export function ListaEquipos() {
     equipo.referencia.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.cuentaDante.nombre.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.tipoEquipo.nombre.toLowerCase().includes(filter.toLowerCase()) ||
-    equipo.area.zona.toLowerCase().includes(filter.toLowerCase()) ||
+    equipo.subsede.nombre.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.serial.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.placaSena.toLowerCase().includes(filter.toLowerCase()) ||
     new Date(equipo.fechaCompra).toLocaleDateString().includes(filter)
@@ -368,13 +368,13 @@ export function ListaEquipos() {
                                 {editMode === row.serial ? (
                                   <Select
                                     name="area"
-                                    value={editedRow.area ? editedRow.area.codigo : ''}
+                                    value={editedRow.subsede ? editedRow.subsede.idSubsede : ''}
                                     onChange={(event) => handleInputChange(event, 'area')}
-                                    options={areas.map(area => ({ value: area.codigo, label: area.zona }))}
+                                    options={subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                                     style={{ height: '60px' }}
                                   />
                                 ) : (
-                                  row.area.zona
+                                  row.subsede.zona
                                 )}
                               </TableCell>
                               <TableCell>
@@ -416,7 +416,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.cuentaDante.nombre}</TableCell>
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
-                                <TableCell>{row.area.zona}</TableCell>
+                                <TableCell>{row.subsede.nombre}</TableCell>
                                 <TableCell>{row.estado ? "Activo" : "Inactivo" }</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
