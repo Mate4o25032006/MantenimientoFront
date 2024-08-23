@@ -9,34 +9,41 @@ import usePostData from '@/hooks/usePostData';
 import { Divider } from '@mui/material';
 
 export const Checklist = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedSubsede, setSelectedSubsede] = useState("all");
   const [selectedDependencia, setSelectedDependencia] = useState("all");
+  const [selectedAmbiente, setSelectedAmbiente] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedMantent, setSelectedMantent] = useState({ idMantenimiento: "", objetivo: "" });
   const [selectAll, setSelectAll] = useState(false);
-  const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes", "dependencias"];
+  const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes", "dependencias", "ambientes"];
   const { data, error, loading } = useGetData(urls);
-  console.log(data.equipos);
 
   const filteredEquipment = useMemo(() => {
     if (!data.equipos) return [];
     return data.equipos.filter((equipo) => {
       const subsedeMatches = selectedSubsede === 'all' || equipo.subsede.nombre === selectedSubsede;
-      const typeMatches = selectedType === 'all' || equipo.tipoEquipo.nombre === selectedType;
       const dependenciaMatches = selectedDependencia === 'all' || equipo.dependencia.nombre === selectedDependencia;
+      const ambienteMatches = selectedAmbiente === 'all' || equipo.ambiente.nombre === selectedAmbiente;
+      const typeMatches = selectedType === 'all' || equipo.tipoEquipo.nombre === selectedType;
       const searchMatches = equipo.serial.toLowerCase().includes(searchTerm.toLowerCase()) || equipo.tipoEquipo.nombre.toLowerCase().includes(searchTerm.toLowerCase());
 
-      return subsedeMatches && typeMatches && dependenciaMatches && searchMatches;
+      return subsedeMatches && dependenciaMatches && ambienteMatches && typeMatches && searchMatches;
     });
-  }, [selectedSubsede, selectedType, selectedDependencia, searchTerm, data.equipos]);
+  }, [selectedSubsede, selectedDependencia, selectedAmbiente, selectedType, searchTerm, data.equipos]);
 
   const filteredDependencias = useMemo(() => {
     if (selectedSubsede === 'all') return [];
     const subsede = data.subsedes.find(subsede => subsede.nombre === selectedSubsede);
     return subsede ? subsede.dependencias : [];
   }, [selectedSubsede, data.subsedes]);
+
+  const filteredAmbientes = useMemo(() => {
+    if (selectedDependencia === 'all') return [];
+    const dependencia = data.dependencias.find(dep => dep.nombre === selectedDependencia);
+    return dependencia ? dependencia.ambientes : [];
+  }, [selectedDependencia, data.dependencias]);
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
@@ -96,16 +103,18 @@ export const Checklist = () => {
                   </SelectTrigger>
                   <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                     {data.mantenimientos
-                      .filter(mant => mant.equipos.length === 0) // Filtra mantenimientos con equipos vacíos
+                      .filter(mant => mant.equipos.length === 0) 
                       .map(mant => (
-                        <SelectItem key={mant.idMantenimiento} value={mant.objetivo || 'hola'}>
+                        <SelectItem key={mant.idMantenimiento} value={mant.objetivo}>
                           {mant.objetivo}
                         </SelectItem>
                       ))}
                   </SelectContent>
                 </Select>
+              </div>
 
-                <div className="grid gap-2 mt-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid gap-2">
                   <Label htmlFor="subsede">Filtra los equipos por:</Label>
                   <Select id="subsede" value={selectedSubsede} onValueChange={setSelectedSubsede}>
                     <SelectTrigger>
@@ -114,12 +123,15 @@ export const Checklist = () => {
                     <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todas las subsedes</SelectItem>
                       {data.subsedes.map(subsede => (
-                        <SelectItem key={subsede.codigo} value={subsede.nombre}>{subsede.nombre || 'hola'}</SelectItem>
+                        <SelectItem key={subsede.codigo} value={subsede.nombre}>{subsede.nombre}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
 
-                  {selectedSubsede !== "all" && (
+                {selectedSubsede !== "all" && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="dependencia">Dependencia</Label>
                     <Select id="dependencia" value={selectedDependencia} onValueChange={setSelectedDependencia}>
                       <SelectTrigger>
                         <SelectValue placeholder="Dependencia" />
@@ -131,22 +143,42 @@ export const Checklist = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  )}
+                  </div>
+                )}
 
+                {selectedDependencia !== "all" && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="ambiente">Ambiente</Label>
+                    <Select id="ambiente" value={selectedAmbiente} onValueChange={setSelectedAmbiente}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Ambiente" />
+                      </SelectTrigger>
+                      <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
+                        <SelectItem value="all">Todos los ambientes</SelectItem>
+                        {filteredAmbientes.map(ambiente => (
+                          <SelectItem key={ambiente.idAmbiente} value={ambiente.nombre}>{ambiente.nombre}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div className="grid gap-2">
+                  <Label htmlFor="equipment-type">Tipo de equipo</Label>
                   <Select id="equipment-type" value={selectedType} onValueChange={setSelectedType}>
                     <SelectTrigger>
                       <SelectValue placeholder="Tipo equipo" />
                     </SelectTrigger>
-                    <SelectContent className="absolute bg-white border-bg-gray-300 rounded-md shadow-lg mt-1 z-10">
+                    <SelectContent className="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
                       <SelectItem value="all">Todos los tipos</SelectItem>
                       {data.tipoEquipos.map(tipo => (
-                        <SelectItem key={tipo.id} value={tipo.nombre || 'hola'}>{tipo.nombre}</SelectItem>
+                        <SelectItem key={tipo.id} value={tipo.nombre}>{tipo.nombre}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-              {/* Buscador */}
+
               <div className="grid gap-2 mt-3">
                 <Label htmlFor="search">Buscar equipo:</Label>
                 <input
@@ -184,7 +216,7 @@ export const Checklist = () => {
           </CardContent>
         </Card>
         <div className="flex items-center justify-center mt-6">
-          <Button type={'submit'} name={'Enviar'} />
+          <Button type={'submit'} text={'Asignar'} />
         </div>
       </form>
     </Forms>
