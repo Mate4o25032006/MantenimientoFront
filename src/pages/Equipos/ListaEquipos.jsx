@@ -40,7 +40,7 @@ const headCells = [
   { id: 'cuentaDante', numeric: false, disablePadding: false, label: 'Cuenta Dante' },
   { id: 'placaSena', numeric: false, disablePadding: false, label: 'Placa Sena' },
   { id: 'tipoEquipo', numeric: false, disablePadding: false, label: 'Tipo Equipo' },
-  { id: 'area', numeric: false, disablePadding: false, label: 'Area' },
+  { id: 'subsede', numeric: false, disablePadding: false, label: 'Subsede' },
   { id: 'estado', numeric: false, disablePadding: false, label: 'Estado' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
@@ -96,13 +96,13 @@ export function ListaEquipos() {
   const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
   const tipoEquipos = data?.tipoEquipos;
-  const areas = data?.areas;
+  const subsedes = data?.subsedes;
   const estados = data?.estados;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fechaCompra');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
+  const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);
@@ -367,9 +367,9 @@ export function ListaEquipos() {
                               <TableCell>
                                 {editMode === row.serial ? (
                                   <Select
-                                    name="area"
+                                    name="subsede"
                                     value={editedRow.subsede ? editedRow.subsede.idSubsede : ''}
-                                    onChange={(event) => handleInputChange(event, 'area')}
+                                    onChange={(event) => handleInputChange(event, 'subsede')}
                                     options={subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                                     style={{ height: '60px' }}
                                   />

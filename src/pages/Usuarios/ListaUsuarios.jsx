@@ -20,12 +20,13 @@ import usePutData from '../../hooks/usePutData';
 import { Select } from '@/components/forms/elements/select';
 
 const headCells = [
-  { id: 'fechaInicio', numeric: false, disablePadding: false, label: 'Fecha Inicio' },
-  { id: 'fechaFin', numeric: false, disablePadding: false, label: 'Fecha Fin' },
+  { id: 'fechaInicio', numeric: false, disablePadding: false, label: 'Fecha Inicio de contrato' },
+  { id: 'fechaFin', numeric: false, disablePadding: false, label: 'Fecha Fin de contrato' },
   { id: 'documento', numeric: false, disablePadding: false, label: 'Documento' },
   { id: 'nombre', numeric: false, disablePadding: false, label: 'Nombre' },
   { id: 'correo', numeric: false, disablePadding: false, label: 'Correo' },
   { id: 'observaciones', numeric: false, disablePadding: false, label: 'Observaciones' },
+  { id: 'roles', numeric: false, disablePadding: false, label: 'Rol' },
   { id: 'estado', numeric: false, disablePadding: false, label: 'Estado' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
@@ -329,6 +330,7 @@ export function ListaUsuarios() {
                             <TableCell>{row.nombre}</TableCell>
                             <TableCell>{row.correo}</TableCell>
                             <TableCell>{row.observaciones}</TableCell>
+                            <TableCell>{row.roles.length > 0 ? row.roles[0].nombre : 'Sin Rol'}</TableCell>
                             <TableCell>{row.estado.estado ? "Activo" : "Inactivo"}</TableCell>    
                             <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
@@ -338,38 +340,6 @@ export function ListaUsuarios() {
                             </>
                             )}
                           </TableRow>
-                          {/* <TableRow>
-                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
-                              <Collapse in={isItemSelected} timeout="auto" unmountOnExit>
-                                <Box margin={1}>
-                                  <Typography variant="h6" gutterBottom component="div">
-                                    Historial de mantenimientos
-                                  </Typography>
-                                  {/* Aquí integras el componente de historial de mantenimientos */}
-                                  {/* <Table size="small" aria-label="historial-mantenimientos">
-                                    <TableHead>
-                                      <TableRow>
-                                        <TableCell>Fecha Prox Mantenimiento</TableCell>
-                                        <TableCell>Objetivo</TableCell>
-                                        <TableCell>Cantidad</TableCell>
-                                      </TableRow>
-                                    </TableHead> } } 
-                                    {/* <TableBody>
-                                      {mantenimientos.map((mantenimiento) => (
-                                        <TableRow key={mantenimiento.id}>
-                                          <TableCell component="th" scope="row">
-                                            {new Date(mantenimiento.fechaProxMantenimiento).toLocaleDateString()}
-                                          </TableCell>
-                                          <TableCell>{mantenimiento.objetivo}</TableCell>
-                                          <TableCell>{mantenimiento.tipoMantenimiento}</TableCell>
-                                        </TableRow>
-                                      ))}
-                                    </TableBody> */}
-                                  {/* </Table>
-                                </Box>
-                              </Collapse>
-                            </TableCell>
-                          </TableRow> */}
                         </React.Fragment>
                       );
                     })}

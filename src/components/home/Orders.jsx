@@ -210,7 +210,7 @@ export default function EnhancedTable() {
                       <TableCell>{row.marca}</TableCell>
                       <TableCell>{row.referencia}</TableCell>
                       <TableCell>{row.cuentaDante.nombre}</TableCell>
-                      <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                
+                      <TableCell>{row.estado ? "Activo" : "Inactivo"}</TableCell>                                
                       </TableRow>
                   );
                 })}

@@ -102,7 +102,7 @@ export const ListaMantenimientos = () => {
                   <TableCell>Fecha Ultimo Mantenimiento</TableCell>
                   <TableCell>Objetivo</TableCell>
                   <TableCell>Tipo de Mantenimiento</TableCell>
-                  <TableCell>Responsable</TableCell>
+                  <TableCell>Técnico asignado</TableCell>
                   <TableCell>Acciones</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
