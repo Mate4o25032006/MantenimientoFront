@@ -74,7 +74,7 @@ export function ListaUsuarios() {
   const [orderBy, setOrderBy] = useState('fechaInicio');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
+  const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);

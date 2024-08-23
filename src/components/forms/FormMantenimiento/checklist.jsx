@@ -9,6 +9,7 @@ import usePostData from '@/hooks/usePostData';
 import { Divider } from '@mui/material';
 
 export const Checklist = () => {
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedSubsede, setSelectedSubsede] = useState("all");
   const [selectedDependencia, setSelectedDependencia] = useState("all");
@@ -25,10 +26,11 @@ export const Checklist = () => {
       const subsedeMatches = selectedSubsede === 'all' || equipo.subsede.nombre === selectedSubsede;
       const typeMatches = selectedType === 'all' || equipo.tipoEquipo.nombre === selectedType;
       const dependenciaMatches = selectedDependencia === 'all' || equipo.dependencia.nombre === selectedDependencia;
+      const searchMatches = equipo.serial.toLowerCase().includes(searchTerm.toLowerCase()) || equipo.tipoEquipo.nombre.toLowerCase().includes(searchTerm.toLowerCase());
 
-      return subsedeMatches && typeMatches && dependenciaMatches;
+      return subsedeMatches && typeMatches && dependenciaMatches && searchMatches;
     });
-  }, [selectedSubsede, selectedType, selectedDependencia, data.equipos]);
+  }, [selectedSubsede, selectedType, selectedDependencia, searchTerm, data.equipos]);
 
   const filteredDependencias = useMemo(() => {
     if (selectedSubsede === 'all') return [];
@@ -143,6 +145,18 @@ export const Checklist = () => {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+              {/* Buscador */}
+              <div className="grid gap-2 mt-3">
+                <Label htmlFor="search">Buscar equipo:</Label>
+                <input
+                  id="search"
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Buscar por serial o tipo de equipo"
+                  className="border border-gray-300 rounded-md p-2"
+                />
               </div>
 
               <div className="grid gap-2 mt-3">
