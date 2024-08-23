@@ -13,3 +13,9 @@
   background-repeat: no-repeat;
   padding: 20px; /* Ajusta el padding según sea necesario */
 }
+
+/* Ejemplo de estilos en Tailwind CSS */
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}

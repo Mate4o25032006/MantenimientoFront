@@ -8,8 +8,8 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MaintenanceHistoryChart from '@/components/Graficos/HistoryChart';
 import EquipmentTypeChart from '@/components/Graficos/TipoEquipoChart';
-import AreaChart from '@/components/Graficos/AreaChart';
 import EnhancedTable from '../../components/home/Orders';
+import SubsedeChart from '@/components/Graficos/SubsedeChart';
 
 // Componente para mostrar el aviso de copyright
 const Copyright = (props) => (
@@ -70,10 +70,10 @@ export const HomePage = () => {
           <Grid item xs={12} md={4}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', color:'#1565c0' }}>
-                Cantidad de equipos según la zona
+                Cantidad de equipos según la subsede
               </Typography>
               <Box sx={{ width: '100%', maxWidth: 400 }}>
-                {/* <AreaChart /> */}
+                <SubsedeChart />
               </Box>
             </Paper>
           </Grid>

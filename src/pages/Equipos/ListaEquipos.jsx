@@ -40,7 +40,7 @@ const headCells = [
   { id: 'cuentaDante', numeric: false, disablePadding: false, label: 'Cuenta Dante' },
   { id: 'placaSena', numeric: false, disablePadding: false, label: 'Placa Sena' },
   { id: 'tipoEquipo', numeric: false, disablePadding: false, label: 'Tipo Equipo' },
-  { id: 'area', numeric: false, disablePadding: false, label: 'Area' },
+  { id: 'subsede', numeric: false, disablePadding: false, label: 'Subsede' },
   { id: 'estado', numeric: false, disablePadding: false, label: 'Estado' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
@@ -91,18 +91,18 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 export function ListaEquipos() {
-  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "areas", "estados"]);
+  const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "subsedes", "estados"]);
   const mantenimientos = data?.mantenimientos;
   const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
   const tipoEquipos = data?.tipoEquipos;
-  const areas = data?.areas;
+  const subsedes = data?.subsedes;
   const estados = data?.estados;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fechaCompra');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
+  const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);
@@ -211,7 +211,7 @@ export function ListaEquipos() {
     equipo.referencia.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.cuentaDante.nombre.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.tipoEquipo.nombre.toLowerCase().includes(filter.toLowerCase()) ||
-    equipo.area.zona.toLowerCase().includes(filter.toLowerCase()) ||
+    equipo.subsede.nombre.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.serial.toLowerCase().includes(filter.toLowerCase()) ||
     equipo.placaSena.toLowerCase().includes(filter.toLowerCase()) ||
     new Date(equipo.fechaCompra).toLocaleDateString().includes(filter)
@@ -367,14 +367,14 @@ export function ListaEquipos() {
                               <TableCell>
                                 {editMode === row.serial ? (
                                   <Select
-                                    name="area"
-                                    value={editedRow.area ? editedRow.area.codigo : ''}
-                                    onChange={(event) => handleInputChange(event, 'area')}
-                                    options={areas.map(area => ({ value: area.codigo, label: area.zona }))}
+                                    name="subsede"
+                                    value={editedRow.subsede ? editedRow.subsede.idSubsede : ''}
+                                    onChange={(event) => handleInputChange(event, 'subsede')}
+                                    options={subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                                     style={{ height: '60px' }}
                                   />
                                 ) : (
-                                  row.area.zona
+                                  row.subsede.nombre
                                 )}
                               </TableCell>
                               <TableCell>
@@ -416,7 +416,7 @@ export function ListaEquipos() {
                                 <TableCell>{row.cuentaDante.nombre}</TableCell>
                                 <TableCell>{row.placaSena}</TableCell>
                                 <TableCell>{row.tipoEquipo.nombre}</TableCell>
-                                <TableCell>{row.area.zona}</TableCell>
+                                <TableCell>{row.subsede.nombre}</TableCell>
                                 <TableCell>{row.estado ? "Activo" : "Inactivo" }</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>

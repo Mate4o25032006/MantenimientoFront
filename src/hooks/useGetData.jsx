@@ -17,8 +17,12 @@ function useGetData(urls) {
 
             setData(updatedData);
         } catch (error) {
-            console.error('Error al obtener los datos:', error);
-            setError('Error al obtener los datos');
+            if (error.response && error.response.status === 401) {
+                // El interceptor de Axios se encargará de redirigir al login
+            } else {
+                console.error('Error al obtener los datos:', error);
+                setError('Error al obtener los datos');
+            }
         } finally {
             setLoading(false);
         }

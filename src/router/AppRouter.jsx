@@ -11,6 +11,7 @@ import { ListaCuentaDante } from '@/pages/Cuentadantes/ListaCuentaDante';
 import ListaArea from '@/pages/Sedes/ListaAreas';
 import { ListaTipo } from '@/pages/TipoEquipos/ListaTipos';
 import { FormDependencias } from '@/pages/Sedes/FormDependencias';
+import { FormAmbientes } from '@/pages/Sedes/FormAmbientes';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -99,6 +100,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <FormDependencias />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/formularios/ambientes',
+            element: (
+                <ProtectedRoute>
+                    <FormAmbientes />
                 </ProtectedRoute>
             ),
         },

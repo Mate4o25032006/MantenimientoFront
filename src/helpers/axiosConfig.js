@@ -1,5 +1,6 @@
 // axiosConfig.js
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Crear una instancia de axios
 const axiosInstance = axios.create({
@@ -17,6 +18,18 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Interceptor para manejar respuestas
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('authToken'); // Limpia el token
+            window.location.href = '/login'; // Redirige al login
+        }
         return Promise.reject(error);
     }
 );

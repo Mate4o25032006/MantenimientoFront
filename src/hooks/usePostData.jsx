@@ -28,7 +28,8 @@ const usePostData = (url, onSubmit, inputs) => {
                 icon: "error",
                 title: "Oops...",
                 text: `Parece que hubo un error: por favor verifique los datos.`,
-                confirmButtonColor: "#6fc390",
+                confirmButtonColor: "#007BFF",
+                iconColor: '#007BFF',
                 customClass: {
                     container: 'swal2-container', // Custom class for container
                     popup: 'swal2-popup' // Custom class for popup

@@ -1,44 +1,49 @@
-import { useEffect, useState } from 'react'; // Importación de hooks y componentes de React
-import Table from '@mui/material/Table'; // Importación de componentes de Material UI para la tabla
-import TableBody from '@mui/material/TableBody'; 
-import TableCell from '@mui/material/TableCell'; 
-import TableContainer from '@mui/material/TableContainer'; 
-import TableHead from '@mui/material/TableHead'; 
-import TableRow from '@mui/material/TableRow'; 
-import Paper from '@mui/material/Paper'; 
-import Grid from '@mui/material/Grid'; 
-import useGetData from '../../hooks/useGetData'; // Hook personalizado para obtener datos
-import { Button, Container, TextField } from '@mui/material'; // Componentes de Material UI para diseño y formulario
-import SearchIcon from '@mui/icons-material/Search'; // Icono para búsqueda
-import { useNavigate } from 'react-router-dom'; // Hook para la navegación
+import { useEffect, useState } from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import useGetData from '../../hooks/useGetData';
+import { IconButton, Container, TextField, MenuItem } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import VisibilityIcon from '@mui/icons-material/Visibility'; // Icono para ver
+import EditIcon from '@mui/icons-material/Edit'; // Icono para editar
+import SaveIcon from '@mui/icons-material/Save'; // Icono para guardar
+import { useNavigate } from 'react-router-dom';
+import usePutData from '../../hooks/usePutData';
+import { Select } from '@/components/forms/elements/select';
 
-// Función para prevenir el comportamiento por defecto de un evento
 function preventDefault(event) {
   event.preventDefault();
 }
 
-// Componente principal de la lista de mantenimientos
 export const ListaMantenimientos = () => {
-  // Uso del hook personalizado para obtener los datos de mantenimientos
-  const { data, error, loading } = useGetData(["mantenimientos"]);
-  const navigate = useNavigate(); // Hook para la navegación entre rutas
-  const mantenimiento = data?.mantenimientos || []; // Datos de mantenimientos, o un array vacío si no hay datos
+  const { data, error, loading } = useGetData(["mantenimientos", "usuarios"]);
+  const navigate = useNavigate();
+  const mantenimiento = data?.mantenimientos || [];
+  const [editMode, setEditMode] = useState(null);
+  const [editedRow, setEditedRow] = useState({});
+  
+  const handlePutData = usePutData(`mantenimientos`, () => {
+    setEditMode(null);
+  });
 
-  // Hook useEffect para manejar el estado de carga y errores
   useEffect(() => {
     if (loading) {
-      console.log('Cargando datos...'); // Mensaje de carga
+      console.log('Cargando datos...');
     } else if (error) {
-      console.error('Error al obtener los datos:', error); // Mensaje de error
+      console.error('Error al obtener los datos:', error);
     } else {
-      console.log('Datos obtenidos:', mantenimiento); // Mensaje con los datos obtenidos
+      console.log('Datos obtenidos:', mantenimiento);
     }
-  }, [data, error, loading]); // Dependencias del efecto
+  }, [data, error, loading]);
 
-  // Estado para almacenar el término de búsqueda
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filtra los mantenimientos basados en el término de búsqueda
   const filteredMantent = mantenimiento.filter((mant) => {
     const searchTextLower = searchTerm.toLowerCase();
     return (
@@ -49,9 +54,26 @@ export const ListaMantenimientos = () => {
     );
   });
 
-  // Función para manejar la visualización de la gestión de mantenimiento
   const handleViewGestion = (mant) => {
     navigate(`/mantenimientos/${mant.idMantenimiento}/equipos`, { state: { mantenimientoId: mant.idMantenimiento } });
+  };
+
+  const handleEditClick = (event, row) => {
+    if (editMode === row.idMantenimiento) {
+      console.log('Updating:', editedRow);
+      handlePutData(editedRow);
+    } else {
+      setEditMode(row.idMantenimiento);
+      setEditedRow(row);
+    }
+  };
+
+  const handleInputChange = (event, field) => {
+    const value = event.target.value;
+    setEditedRow((prevState) => ({
+      ...prevState,
+      [field]: value
+    }));
   };
 
   return (
@@ -64,11 +86,11 @@ export const ListaMantenimientos = () => {
               label="Buscar equipo"
               variant="outlined"
               value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)} // Actualiza el término de búsqueda
+              onChange={(event) => setSearchTerm(event.target.value)}
               fullWidth
               placeholder="Ej: Marca, propietario, referencia"
               InputProps={{
-                startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />, // Icono de búsqueda
+                startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
               }}
             />
           </div>
@@ -80,23 +102,91 @@ export const ListaMantenimientos = () => {
                   <TableCell>Fecha Ultimo Mantenimiento</TableCell>
                   <TableCell>Objetivo</TableCell>
                   <TableCell>Tipo de Mantenimiento</TableCell>
-                  <TableCell>Responsable</TableCell>
+                  <TableCell>Técnico asignado</TableCell>
                   <TableCell>Acciones</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredMantent.map((mant) => (
                   <TableRow key={mant.idMantenimiento}>
-                    <TableCell>{new Date(mant.fechaProxMantenimiento).toLocaleDateString()}</TableCell>
-                    <TableCell>{new Date(mant.fechaUltimoMantenimiento).toLocaleDateString()}</TableCell>
-                    <TableCell>{mant.objetivo}</TableCell>
-                    <TableCell>{mant.tipoMantenimiento}</TableCell>
-                    <TableCell>{mant.usuario.nombre}</TableCell>
-                    <TableCell>
-                      <Button variant="contained" color="primary" onClick={() => handleViewGestion(mant)}>
-                        Ver Gestión
-                      </Button>
-                    </TableCell>
+                    {editMode === mant.idMantenimiento ? (
+                      <>
+                        <TableCell>
+                          <TextField
+                            value={editedRow.fechaProxMantenimiento || ''}
+                            onChange={(event) => handleInputChange(event, 'fechaProxMantenimiento')}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editedRow.fechaUltimoMantenimiento || ''}
+                            onChange={(event) => handleInputChange(event, 'fechaUltimoMantenimiento')}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editedRow.objetivo || ''}
+                            onChange={(event) => handleInputChange(event, 'objetivo')}
+                          />
+                        </TableCell>
+                        <TableCell>
+                        <Select
+                                  name="tipoMantenimiento"
+                                  onChange={(event) => handleInputChange(event, 'tipoMantenimiento')}
+                                  value={editedRow.tipoMantenimiento}
+                                  style={{ height: '60px' }}
+                                  options={[
+                                    {
+                                      value: "Correctivo",
+                                      label: "Correctivo",
+                                    },
+                                    {
+                                      value: "Preventivo",
+                                      label: "Preventivo",
+                                    },
+                                    {
+                                      value: "Predictivo",
+                                      label: "Predictivo",
+                                    },
+                                  ]}
+                                />
+                        </TableCell>
+                          <Select
+                            name="usuario"
+                            value={editedRow.usuario ? editedRow.usuario.documento : ''}
+                            onChange={(event) => handleInputChange(event, 'usuario')}
+                            options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
+                            style={{ height: '60px', marginTop: '6px' }}
+                          />
+                        <TableCell>
+                          <IconButton onClick={(event) => handleEditClick(event, mant)}>
+                            <SaveIcon color='primary'/>
+                          </IconButton>
+                        </TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell>{new Date(mant.fechaProxMantenimiento).toLocaleDateString()}</TableCell>
+                        <TableCell>{new Date(mant.fechaUltimoMantenimiento).toLocaleDateString()}</TableCell>
+                        <TableCell>{mant.objetivo}</TableCell>
+                        <TableCell>{mant.tipoMantenimiento}</TableCell>
+                        <TableCell>{mant.usuario.nombre}</TableCell>
+                        <TableCell>
+                          <IconButton onClick={(event) => handleEditClick(event, mant)}>
+                            <EditIcon color='primary'/>
+                          </IconButton>
+                        </TableCell>
+                        <TableCell>
+                          {mant.equipos && mant.equipos.length > 0 && (
+                            <IconButton onClick={() => handleViewGestion(mant)}>
+                              <VisibilityIcon color="primary" />
+                            </IconButton>
+                          )}
+                        </TableCell>
+
+                      </>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -107,3 +197,5 @@ export const ListaMantenimientos = () => {
     </Container>
   );
 };
+
+export default ListaMantenimientos;
