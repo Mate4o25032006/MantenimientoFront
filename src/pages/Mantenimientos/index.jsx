@@ -6,7 +6,6 @@ import useGetData from "../../hooks/useGetData";
 import { Forms } from "../../layout/Forms";
 import { Input } from "../../components/forms/elements/input";
 import { Button } from "../../components/forms/elements/button";
-import { Checklist } from "@/components/forms/FormMantenimiento/checklist";
 import { Select } from "../../components/forms/elements/select";
 
 

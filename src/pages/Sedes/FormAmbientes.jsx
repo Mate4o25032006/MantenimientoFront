@@ -14,6 +14,15 @@ export const FormAmbientes = () => {
     const urls = ["dependencias"];
     const { data, error, loading } = useGetData(urls);
 
+    const validations = {
+        nombre: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El nombre es obligatorio."
+            }
+        ],
+    }
+
     const inputs1 = [
         { 
             id: 1, 
@@ -39,7 +48,7 @@ export const FormAmbientes = () => {
         navigate("/admin", { replace: true });
     };
 
-    const handleSubmit = usePostData("ambientes", onSubmit, inputs);
+    const handleSubmit = usePostData("ambientes", onSubmit, inputs, validations);
 
     if (loading) {l
         return <div>Loading...</div>;
