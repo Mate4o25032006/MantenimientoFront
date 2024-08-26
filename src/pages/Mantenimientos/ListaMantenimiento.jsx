@@ -18,7 +18,7 @@ import usePutData from '../../hooks/usePutData';
 import { Select } from '@/components/forms/elements/select';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[200], // Fondo gris claro
+  backgroundColor: theme.palette.grey[200],
   color: '#1565c0',
   fontWeight: 'bold',
 }));
@@ -81,7 +81,7 @@ export const ListaMantenimientos = () => {
   const calculateProgress = (equipos, chequeos) => {
     const totalEquipos = equipos.length;
     const completedChequeos = chequeos.filter(chequeo => chequeo.descripcion === "Completado").length;
-    return totalEquipos > 0 ? (completedChequeos / totalEquipos) * 100 : 0;
+    return { completedChequeos, totalEquipos };
   };  
 
   return (
@@ -111,86 +111,95 @@ export const ListaMantenimientos = () => {
                   <StyledTableCell>Objetivo</StyledTableCell>
                   <StyledTableCell>Tipo de Mantenimiento</StyledTableCell>
                   <StyledTableCell>Técnico asignado</StyledTableCell>
-                  <StyledTableCell>Progreso (Equipos Completados)</StyledTableCell> {/* Nueva columna para el progreso */}
+                  <StyledTableCell>Progreso (Equipos Completados)</StyledTableCell>
                   <StyledTableCell>Acciones</StyledTableCell>
                   <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredMantent.map((mant) => (
-                  <TableRow key={mant.idMantenimiento}>
-                    {editMode === mant.idMantenimiento ? (
-                      <>
-                        <TableCell>
-                          <TextField
-                            value={editedRow.fechaProxMantenimiento || ''}
-                            onChange={(event) => handleInputChange(event, 'fechaProxMantenimiento')}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            value={editedRow.fechaUltimoMantenimiento || ''}
-                            onChange={(event) => handleInputChange(event, 'fechaUltimoMantenimiento')}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <TextField
-                            value={editedRow.objetivo || ''}
-                            onChange={(event) => handleInputChange(event, 'objetivo')}
-                          />
-                        </TableCell>
-                        <TableCell>
+                {filteredMantent.map((mant) => {
+                  const { completedChequeos, totalEquipos } = calculateProgress(mant.equipos, mant.chequeos);
+                  const progressValue = totalEquipos > 0 ? (completedChequeos / totalEquipos) * 100 : 0;
+                  return (
+                    <TableRow key={mant.idMantenimiento}>
+                      {editMode === mant.idMantenimiento ? (
+                        <>
+                          <TableCell>
+                            <TextField
+                              value={editedRow.fechaProxMantenimiento || ''}
+                              onChange={(event) => handleInputChange(event, 'fechaProxMantenimiento')}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <TextField
+                              value={editedRow.fechaUltimoMantenimiento || ''}
+                              onChange={(event) => handleInputChange(event, 'fechaUltimoMantenimiento')}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <TextField
+                              value={editedRow.objetivo || ''}
+                              onChange={(event) => handleInputChange(event, 'objetivo')}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              name="tipoMantenimiento"
+                              onChange={(event) => handleInputChange(event, 'tipoMantenimiento')}
+                              value={editedRow.tipoMantenimiento}
+                              style={{ height: '60px' }}
+                              options={[
+                                { value: "Correctivo", label: "Correctivo" },
+                                { value: "Preventivo", label: "Preventivo" },
+                                { value: "Predictivo", label: "Predictivo" },
+                              ]}
+                            />
+                          </TableCell>
                           <Select
-                            name="tipoMantenimiento"
-                            onChange={(event) => handleInputChange(event, 'tipoMantenimiento')}
-                            value={editedRow.tipoMantenimiento}
-                            style={{ height: '60px' }}
-                            options={[
-                              { value: "Correctivo", label: "Correctivo" },
-                              { value: "Preventivo", label: "Preventivo" },
-                              { value: "Predictivo", label: "Predictivo" },
-                            ]}
+                            name="usuario"
+                            value={editedRow.usuario ? editedRow.usuario.documento : ''}
+                            onChange={(event) => handleInputChange(event, 'usuario')}
+                            options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
+                            style={{ height: '60px', marginTop: '6px' }}
                           />
-                        </TableCell>
-                        <Select
-                          name="usuario"
-                          value={editedRow.usuario ? editedRow.usuario.documento : ''}
-                          onChange={(event) => handleInputChange(event, 'usuario')}
-                          options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
-                          style={{ height: '60px', marginTop: '6px' }}
-                        />
-                        <TableCell>
-                          <IconButton onClick={(event) => handleEditClick(event, mant)}>
-                            <SaveIcon color='primary'/>
-                          </IconButton>
-                        </TableCell>
-                      </>
-                    ) : (
-                      <>
-                        <TableCell>{new Date(mant.fechaProxMantenimiento).toLocaleDateString()}</TableCell>
-                        <TableCell>{new Date(mant.fechaUltimoMantenimiento).toLocaleDateString()}</TableCell>
-                        <TableCell>{mant.objetivo}</TableCell>
-                        <TableCell>{mant.tipoMantenimiento}</TableCell>
-                        <TableCell>{mant.usuario.nombre}</TableCell>
-                        <TableCell>
-                          <LinearProgress variant="determinate" value={calculateProgress(mant.equipos, mant.chequeos)} />
-                        </TableCell>
-                        <TableCell>
-                          <IconButton onClick={(event) => handleEditClick(event, mant)}>
-                            <EditIcon color='primary'/>
-                          </IconButton>
-                        </TableCell>
-                        <TableCell>
-                          {mant.equipos && mant.equipos.length > 0 && (
-                            <IconButton onClick={() => handleViewGestion(mant)}>
-                              <VisibilityIcon color="primary" />
+                          <TableCell>
+                            <IconButton onClick={(event) => handleEditClick(event, mant)}>
+                              <SaveIcon color='primary'/>
                             </IconButton>
-                          )}
-                        </TableCell>
-                      </>
-                    )}
-                  </TableRow>
-                ))}
+                          </TableCell>
+                        </>
+                      ) : (
+                        <>
+                          <TableCell>{new Date(mant.fechaProxMantenimiento).toLocaleDateString()}</TableCell>
+                          <TableCell>{new Date(mant.fechaUltimoMantenimiento).toLocaleDateString()}</TableCell>
+                          <TableCell>{mant.objetivo}</TableCell>
+                          <TableCell>{mant.tipoMantenimiento}</TableCell>
+                          <TableCell>{mant.usuario.nombre}</TableCell>
+                          <TableCell>
+                          <Box display="flex" flexDirection="column" alignItems="center">
+                            <LinearProgress variant="determinate" value={progressValue} style={{ width: '100%', marginBottom: 8 }} />
+                            <Typography variant="caption">
+                              {`${completedChequeos} de ${totalEquipos}`}
+                            </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <IconButton onClick={(event) => handleEditClick(event, mant)}>
+                              <EditIcon color='primary'/>
+                            </IconButton>
+                          </TableCell>
+                          <TableCell>
+                            {mant.equipos && mant.equipos.length > 0 && (
+                              <IconButton onClick={() => handleViewGestion(mant)}>
+                                <VisibilityIcon color="primary" />
+                              </IconButton>
+                            )}
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
