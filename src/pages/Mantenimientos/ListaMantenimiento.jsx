@@ -8,18 +8,20 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import useGetData from '../../hooks/useGetData';
-import { IconButton, Container, TextField, MenuItem } from '@mui/material';
+import { IconButton, Container, TextField, LinearProgress, Box, Typography, styled } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import VisibilityIcon from '@mui/icons-material/Visibility'; // Icono para ver
-import EditIcon from '@mui/icons-material/Edit'; // Icono para editar
-import SaveIcon from '@mui/icons-material/Save'; // Icono para guardar
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 import { useNavigate } from 'react-router-dom';
 import usePutData from '../../hooks/usePutData';
 import { Select } from '@/components/forms/elements/select';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.grey[200], // Fondo gris claro
+  color: '#1565c0',
+  fontWeight: 'bold',
+}));
 
 export const ListaMantenimientos = () => {
   const { data, error, loading } = useGetData(["mantenimientos", "usuarios"]);
@@ -76,6 +78,12 @@ export const ListaMantenimientos = () => {
     }));
   };
 
+  const calculateProgress = (equipos, chequeos) => {
+    const totalEquipos = equipos.length;
+    const completedChequeos = chequeos.filter(chequeo => chequeo.descripcion === "Completado").length;
+    return totalEquipos > 0 ? (completedChequeos / totalEquipos) * 100 : 0;
+  };  
+
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3} marginTop={10} padding={3}>
@@ -98,13 +106,14 @@ export const ListaMantenimientos = () => {
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>Fecha Prox Mantenimiento</TableCell>
-                  <TableCell>Fecha Ultimo Mantenimiento</TableCell>
-                  <TableCell>Objetivo</TableCell>
-                  <TableCell>Tipo de Mantenimiento</TableCell>
-                  <TableCell>Técnico asignado</TableCell>
-                  <TableCell>Acciones</TableCell>
-                  <TableCell></TableCell>
+                  <StyledTableCell>Fecha Prox Mantenimiento</StyledTableCell>
+                  <StyledTableCell>Fecha Ultimo Mantenimiento</StyledTableCell>
+                  <StyledTableCell>Objetivo</StyledTableCell>
+                  <StyledTableCell>Tipo de Mantenimiento</StyledTableCell>
+                  <StyledTableCell>Técnico asignado</StyledTableCell>
+                  <StyledTableCell>Progreso (Equipos Completados)</StyledTableCell> {/* Nueva columna para el progreso */}
+                  <StyledTableCell>Acciones</StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -131,34 +140,25 @@ export const ListaMantenimientos = () => {
                           />
                         </TableCell>
                         <TableCell>
-                        <Select
-                                  name="tipoMantenimiento"
-                                  onChange={(event) => handleInputChange(event, 'tipoMantenimiento')}
-                                  value={editedRow.tipoMantenimiento}
-                                  style={{ height: '60px' }}
-                                  options={[
-                                    {
-                                      value: "Correctivo",
-                                      label: "Correctivo",
-                                    },
-                                    {
-                                      value: "Preventivo",
-                                      label: "Preventivo",
-                                    },
-                                    {
-                                      value: "Predictivo",
-                                      label: "Predictivo",
-                                    },
-                                  ]}
-                                />
-                        </TableCell>
                           <Select
-                            name="usuario"
-                            value={editedRow.usuario ? editedRow.usuario.documento : ''}
-                            onChange={(event) => handleInputChange(event, 'usuario')}
-                            options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
-                            style={{ height: '60px', marginTop: '6px' }}
+                            name="tipoMantenimiento"
+                            onChange={(event) => handleInputChange(event, 'tipoMantenimiento')}
+                            value={editedRow.tipoMantenimiento}
+                            style={{ height: '60px' }}
+                            options={[
+                              { value: "Correctivo", label: "Correctivo" },
+                              { value: "Preventivo", label: "Preventivo" },
+                              { value: "Predictivo", label: "Predictivo" },
+                            ]}
                           />
+                        </TableCell>
+                        <Select
+                          name="usuario"
+                          value={editedRow.usuario ? editedRow.usuario.documento : ''}
+                          onChange={(event) => handleInputChange(event, 'usuario')}
+                          options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
+                          style={{ height: '60px', marginTop: '6px' }}
+                        />
                         <TableCell>
                           <IconButton onClick={(event) => handleEditClick(event, mant)}>
                             <SaveIcon color='primary'/>
@@ -173,6 +173,9 @@ export const ListaMantenimientos = () => {
                         <TableCell>{mant.tipoMantenimiento}</TableCell>
                         <TableCell>{mant.usuario.nombre}</TableCell>
                         <TableCell>
+                          <LinearProgress variant="determinate" value={calculateProgress(mant.equipos, mant.chequeos)} />
+                        </TableCell>
+                        <TableCell>
                           <IconButton onClick={(event) => handleEditClick(event, mant)}>
                             <EditIcon color='primary'/>
                           </IconButton>
@@ -184,7 +187,6 @@ export const ListaMantenimientos = () => {
                             </IconButton>
                           )}
                         </TableCell>
-
                       </>
                     )}
                   </TableRow>

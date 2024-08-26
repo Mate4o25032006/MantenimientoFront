@@ -10,6 +10,15 @@ export const FormTipos = () => {
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
 
+    const validations = {
+        nombre: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El nombre es obligatorio."
+            }
+        ],
+    }
+
     const inputs1 = [
         { 
             id: 1, 
@@ -35,7 +44,7 @@ export const FormTipos = () => {
         navigate("/admin", { replace: true });
     };
 
-    const handleSubmit = usePostData("tipoEquipos", onSubmit, inputs);
+    const handleSubmit = usePostData("tipoEquipos", onSubmit, inputs, validations);
 
     return (
         <Forms>

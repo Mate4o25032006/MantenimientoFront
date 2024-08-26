@@ -7,8 +7,45 @@ import { useNavigate } from 'react-router-dom';
 import { Select } from "@/components/forms/elements/select";
 
 export const FormCuetadantes = () => {
-    const initialData = {documento : "", nombre : "", dependencia : "", departamento: "", tipoContrato: ""};
+    const initialData = { documento: "", nombre: "", dependencia: "", departamento: "", tipoContrato: "" };
     const [inputs, setInputs] = useState(initialData);
+
+    const validations = {
+        documento: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El documento es obligatorio."
+            },
+            {
+                validate: value => /^[0-9]{6,10}$/.test(value),
+                message: "El documento debe tener entre 6 y 10 dígitos."
+            }
+        ],
+        nombre: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El nombre es obligatorio."
+            }
+        ],
+        dependencia: [
+            {
+                validate: value => value.trim() !== "",
+                message: "La dependencia es obligatoria."
+            }
+        ],
+        departamento: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El departamento es obligatorio."
+            }
+        ],
+        tipoContrato: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El tipo de contrato es obligatorio."
+            }
+        ]
+    };
 
     const inputs1 = [
         {
@@ -56,7 +93,7 @@ export const FormCuetadantes = () => {
         navigate("/admin", { replace: true });
     };
 
-    const handleSubmit = usePostData("cuentadantes", onSubmit, inputs);
+    const handleSubmit = usePostData("cuentadantes", onSubmit, inputs, validations);
 
     return (
         <Forms className="form-background">
