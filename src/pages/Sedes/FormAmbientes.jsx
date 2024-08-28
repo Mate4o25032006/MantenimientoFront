@@ -50,7 +50,7 @@ export const FormAmbientes = () => {
 
     const handleSubmit = usePostData("ambientes", onSubmit, inputs, validations);
 
-    if (loading) {l
+    if (loading) {
         return <div>Loading...</div>;
     }
 
