@@ -87,7 +87,7 @@ export const ListaMantenimientos = () => {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} marginTop={10} padding={3}>
+      <Grid container spacing={3} marginTop={5} padding={3}>
         <Grid item xs={12}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 15 }}>
             <TextField
@@ -103,7 +103,8 @@ export const ListaMantenimientos = () => {
               }}
             />
           </div>
-          <TableContainer component={Paper} style={{ marginTop: 20, padding: 25 }}>
+          <TableContainer component={Paper} style={{ marginTop: 1, padding: 25 }}>
+          <ExportButton />
             <Table size="small">
               <TableHead>
                 <TableRow>
@@ -203,7 +204,6 @@ export const ListaMantenimientos = () => {
                 })}
               </TableBody>
             </Table>
-          <ExportButton />
           </TableContainer>
         </Grid>
       </Grid>
