@@ -8,10 +8,12 @@ import { Checklist } from '@/components/forms/FormMantenimiento/checklist';
 import { ListaMantenimientos } from '@/pages/Mantenimientos/ListaMantenimiento';
 import { Listas } from '@/pages/Listas/Lista';
 import { ListaCuentaDante } from '@/pages/Cuentadantes/ListaCuentaDante';
-import ListaArea from '@/pages/Sedes/ListaAreas';
 import { ListaTipo } from '@/pages/TipoEquipos/ListaTipos';
 import { FormDependencias } from '@/pages/Sedes/FormDependencias';
 import { FormAmbientes } from '@/pages/Sedes/FormAmbientes';
+import { ListaSubsedes } from '@/pages/Sedes/ListaSubsedes';
+import ListaDependencias from '@/pages/Sedes/ListaDependencias';
+import ListaAmbientes from '@/pages/Sedes/ListaAmbientes';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -176,10 +178,25 @@ export const AppRoutes = () => {
             ),
         },
         {
-            path: '/areas/lista',
+            path: '/subsedes/lista',
             element: (
                 <ProtectedRoute>
-                    <ListaArea />
+                    <ListaSubsedes />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/dependencias/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaDependencias />
+                </ProtectedRoute>
+            ),
+        },        {
+            path: '/ambientes/lista',
+            element: (
+                <ProtectedRoute>
+                    <ListaAmbientes />
                 </ProtectedRoute>
             ),
         },

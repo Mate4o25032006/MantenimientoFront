@@ -30,7 +30,7 @@ const usePutData = (url) => {
 
   const acceptSubmit = async (data) => {
     try {
-      const endpoint = `${import.meta.env.VITE_API_URL}/${url}/${data.serial || data.idMantenimiento}`;
+      const endpoint = `${import.meta.env.VITE_API_URL}/${url}/${data.serial || data.idMantenimiento || data.idSubsede || data.idDependencia || data.idSubsede}`;
       await axiosInstance.put(endpoint, data); 
       Swal.fire({
         title: "¡Bien!",

@@ -8,7 +8,7 @@ import useGetData from "@/hooks/useGetData";
 import { Select } from "@/components/forms/elements/select";
 
 export const FormDependencias = () => {
-    const initialData = { nombre: "", ambiente: "", subsede: "" };
+    const initialData = { nombre: "", subsede: "" };
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
     const urls = ["subsedes"];

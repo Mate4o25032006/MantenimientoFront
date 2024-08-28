@@ -7,8 +7,10 @@ export const Listas = () => {
   
   const forms = [
     { id: 1, name: 'Lista Cuentadantes', description: 'Lista de todos los cuentadantes', route: '/cuentadantes/lista' },
-    { id: 2, name: 'Lista Areas ', description: 'Lista de todas las areas', route: '/areas/lista' },
-    { id: 3, name: 'Lista Tipo Equipos', description: 'Lista de todos los tipos de equipos', route: '/tipoEquipos/lista' },
+    { id: 2, name: 'Lista Subsedes ', description: 'Lista de todas las subsedes', route: '/subsedes/lista' },
+    { id: 3, name: 'Lista Dependencias ', description: 'Lista de todas las dependencias', route: '/dependencias/lista' },
+    { id: 4, name: 'Lista Ambientes ', description: 'Lista de todos los ambientes', route: '/ambientes/lista' },
+    { id: 5, name: 'Lista Tipo Equipos', description: 'Lista de todos los tipos de equipos', route: '/tipoEquipos/lista' },
   ];
 
   return (

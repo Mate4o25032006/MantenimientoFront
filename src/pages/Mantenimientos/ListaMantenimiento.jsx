@@ -16,6 +16,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useNavigate } from 'react-router-dom';
 import usePutData from '../../hooks/usePutData';
 import { Select } from '@/components/forms/elements/select';
+import { ExportButton } from '@/components/mantenimientos/ExportButton';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
@@ -202,6 +203,7 @@ export const ListaMantenimientos = () => {
                 })}
               </TableBody>
             </Table>
+          <ExportButton />
           </TableContainer>
         </Grid>
       </Grid>
