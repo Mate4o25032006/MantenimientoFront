@@ -21,9 +21,7 @@ export function GestionMantenimiento() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [equiposPerPage] = useState(3);
-
-  
-  
+console.log(equipos);  
   const handleSeleccionarEquipo = (equipo) => {
     setEquipoSeleccionado(equipo);
     if (chequeos[equipo.serial]) {

@@ -6,27 +6,28 @@ export const ExportButton = () => {
   const urls = ['mantenimientos'];
   const { data, error, loading } = useGetData(urls);
 
-  console.log(data);
-
   const handleExport = () => {
-    // Asegúrate de que 'data' sea un objeto y tenga la propiedad 'mantenimientos'
     if (!data || !data.mantenimientos || !Array.isArray(data.mantenimientos)) {
       console.error('Data is not in the expected format or is undefined');
       return;
     }
 
-    // Transformamos la data para incluir los detalles de los equipos
     const transformedData = data.mantenimientos.flatMap(mantenimiento => 
-      (mantenimiento.equipos || []).map(equipo => ({
-        // 'ID Mantenimiento': mantenimiento.idMantenimiento,
-        'Objetivo': mantenimiento.objetivo,
-        'Próxima Fecha de Mantenimiento': format(new Date(mantenimiento.fechaProxMantenimiento), 'dd/MM/yyyy'),
-        'Última Fecha de Mantenimiento': format(new Date(mantenimiento.fechaUltimoMantenimiento), 'dd/MM/yyyy'),
-        'Tipo de mantenimiento': mantenimiento.tipoMantenimiento,
-        'Técnico asignado': mantenimiento.usuario.nombre,
-        'Serial Equipo': equipo.serial,
-        'Placa SENA': equipo.placaSena
-      }))
+      (mantenimiento.equipos || []).map(equipo => {
+        const chequeo = mantenimiento.chequeos?.find(chq => chq.equipo.serial === equipo.serial);
+
+        return {
+          'Objetivo': mantenimiento.objetivo,
+          'Próxima Fecha de Mantenimiento': format(new Date(mantenimiento.fechaProxMantenimiento), 'dd/MM/yyyy'),
+          'Última Fecha de Mantenimiento': format(new Date(mantenimiento.fechaUltimoMantenimiento), 'dd/MM/yyyy'),
+          'Tipo de mantenimiento': mantenimiento.tipoMantenimiento,
+          'Técnico asignado': mantenimiento.usuario.nombre,
+          'Serial Equipo': equipo.serial,
+          'Placa SENA': equipo.placaSena,
+          'Descripción del Chequeo': chequeo ? chequeo.descripcion : 'Pendiente', // Nueva columna con la descripción del chequeo
+          'Observaciones': chequeo ? chequeo.observaciones : '' // Nueva columna con la descripción del chequeo
+        };
+      })
     );
 
     const ws = XLSX.utils.json_to_sheet(transformedData);
