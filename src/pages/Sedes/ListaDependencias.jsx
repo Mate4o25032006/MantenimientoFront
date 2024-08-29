@@ -173,8 +173,9 @@ export function ListaDependencias() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} marginTop={5} padding={3}>
+      <Grid container spacing={3} marginTop={3} padding={3}>
         <Grid item xs={12}>
+          <h1 className="text-center my-2 mb-3 text-xl font-semibold">Lista Dependencias</h1>
           <TextField
             label="Buscar dependencia"
             variant="outlined"

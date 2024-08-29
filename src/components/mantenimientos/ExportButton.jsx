@@ -18,10 +18,12 @@ export const ExportButton = () => {
     // Transformamos la data para incluir los detalles de los equipos
     const transformedData = data.mantenimientos.flatMap(mantenimiento => 
       (mantenimiento.equipos || []).map(equipo => ({
-        'ID Mantenimiento': mantenimiento.idMantenimiento,
+        // 'ID Mantenimiento': mantenimiento.idMantenimiento,
+        'Objetivo': mantenimiento.objetivo,
         'Próxima Fecha de Mantenimiento': format(new Date(mantenimiento.fechaProxMantenimiento), 'dd/MM/yyyy'),
         'Última Fecha de Mantenimiento': format(new Date(mantenimiento.fechaUltimoMantenimiento), 'dd/MM/yyyy'),
-        'Objetivo': mantenimiento.objetivo,
+        'Tipo de mantenimiento': mantenimiento.tipoMantenimiento,
+        'Técnico asignado': mantenimiento.usuario.nombre,
         'Serial Equipo': equipo.serial,
         'Placa SENA': equipo.placaSena
       }))
