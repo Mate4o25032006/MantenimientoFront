@@ -14,10 +14,7 @@ import {
   Switch,
   Container,
   Grid,
-  Box,
-  Collapse,
   IconButton,
-  Typography
 } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import SearchIcon from '@mui/icons-material/Search';
@@ -27,11 +24,8 @@ import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
 
 const headCells = [
-  // { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
-  { id: 'codigo', numeric: false, disablePadding: false, label: 'Código' },
+  { id: 'idSubsede', numeric: false, disablePadding: false, label: 'Código' },
   { id: 'nombre', numeric: false, disablePadding: false, label: 'Nombre' },
-  { id: 'zona', numeric: false, disablePadding: false, label: 'Zona' },
-  { id: 'coordenadas', numeric: false, disablePadding: false, label: 'Coordenadas' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
 
@@ -71,11 +65,11 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   minWidth: 150
 }));
 
-export function ListaArea() {
-  const { data, error, loading } = useGetData(["areas"]);
-  const areas = data?.areas || [];
+export function ListaSubsedes() {
+  const { data, error, loading } = useGetData(["subsedes"]);
+  const subsedes = data?.subsedes || [];
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('codigo');
+  const [orderBy, setOrderBy] = useState('idSubsede');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
@@ -84,16 +78,17 @@ export function ListaArea() {
   const [editMode, setEditMode] = useState(null);
   const [editedRow, setEditedRow] = useState({});
   
-  const handlePutData = usePutData(`areas`, () => {
+  const handlePutData = usePutData(`subsedes`, () => {
     setEditMode(null);
   });
   
   const handleEditClick = (event, row) => {
-    if (editMode === row.codigo) {
+    if (editMode === row.idSubsede) {
       console.log(editMode);
-      handlePutData({ ...editedRow, serial: row.codigo });
+      // Save changes to backend using custom hook
+      handlePutData({ ...editedRow, idSubsede: row.idSubsede });
     } else {
-      setEditMode(row.codigo);
+      setEditMode(row.idSubsede);
       setEditedRow(row);
     }
   };
@@ -113,7 +108,7 @@ export function ListaArea() {
     } else if (error) {
       console.error('Error al obtener los datos:', error);
     } else {
-      console.log('Datos obtenidos:', areas);
+      console.log('Datos obtenidos:', subsedes);
     }
   }, [data, error, loading]);
 
@@ -161,29 +156,27 @@ export function ListaArea() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (codigo) => selected.indexOf(codigo) !== -1;
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  const filteredAreas = areas.filter(area =>
-    area.nombre.toLowerCase().includes(filter.toLowerCase()) ||
-    area.zona.toLowerCase().includes(filter.toLowerCase()) ||
-    area.coordenadas.toLowerCase().includes(filter.toLowerCase())
+  const filteredSubsedes = subsedes.filter(subsede =>
+    subsede.nombre.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const sortedAreas = stableSort(filteredAreas, getComparator(order, orderBy));
+  const sortedSubsedes = stableSort(filteredSubsedes, getComparator(order, orderBy));
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sortedAreas.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sortedSubsedes.length - page * rowsPerPage);
 
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3} marginTop={5} padding={3}>
         <Grid item xs={12}>
           <TextField
-            label="Buscar area"
+            label="Buscar subsede"
             variant="outlined"
             value={filter}
             onChange={handleFilterChange}
             fullWidth
-            placeholder="Ej: nombre, zona, coordenadas"
+            placeholder="Ej: nombre"
             InputProps={{
               startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
             }}
@@ -217,15 +210,15 @@ export function ListaArea() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sortedAreas
+                  {sortedSubsedes
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       console.log(row);
-                      const isItemSelected = isSelected(row.codigo);
+                      const isItemSelected = isSelected(row.idSubsede);
                       const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
-                        <React.Fragment key={row.codigo}>
+                        <React.Fragment key={row.idSubsede}>
                           <TableRow
                             hover
                             role="checkbox"
@@ -238,20 +231,20 @@ export function ListaArea() {
                                 {isItemSelected ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                               </IconButton>
                             </TableCell> */}
-                            {editMode === row.codigo ? (
+                            {editMode === row.idSubsede ? (
                               <>
                               <TableCell>
-                                {editMode === row.codigo ? (
+                                {editMode === row.idSubsede ? (
                                   <StyledTextField
-                                    value={editedRow.codigo}
-                                    onChange={(event) => handleInputChange(event, 'codigo')}
+                                    value={editedRow.idSubsede}
+                                    onChange={(event) => handleInputChange(event, 'idSubsede')}
                                   />
                                 ) : (
-                                  row.codigo
+                                  row.idSubsede
                                 )}
                               </TableCell>
                               <TableCell>
-                                {editMode === row.codigo ? (
+                                {editMode === row.idSubsede ? (
                                   <StyledTextField
                                     value={editedRow.nombre}
                                     onChange={(event) => handleInputChange(event, 'nombre')}
@@ -260,54 +253,22 @@ export function ListaArea() {
                                   row.nombre
                                 )}
                               </TableCell>
-                              <TableCell>
-                                {editMode === row.codigo ? (
-                                  <StyledTextField
-                                    value={editedRow.zona}
-                                    onChange={(event) => handleInputChange(event, 'zona')}
-                                  />
-                                ) : (
-                                  row.zona
-                                )}
-                              </TableCell>
-                              <TableCell>
-                                {editMode === row.codigo ? (
-                                  <StyledTextField
-                                    value={editedRow.coordenadas}
-                                    onChange={(event) => handleInputChange(event, 'coordenadas')}
-                                  />
-                                ) : (
-                                  row.coordenadas
-                                )}
-                              </TableCell>
-                              {/* <TableCell>
-                                {editMode === row.codigo ? (
-                                  <StyledTextField
-                                    value={editedRow.estado}
-                                    onChange={(event) => handleInputChange(event, 'estado')}
-                                  />
-                                ) : (
-                                  row.estado
-                                )}
-                              </TableCell> */}
                               <TableCell padding="checkbox">
                                 <IconButton onClick={(event) => handleEditClick(event, row)}>
-                                 {editMode === row.codigo ? <SaveIcon /> : <EditIcon />}
+                                 {editMode === row.idSubsede ? <SaveIcon /> : <EditIcon />}
                                 </IconButton>
                               </TableCell>
                               </>
                             ) : (
                               <>
                                 <TableCell component="th" id={labelId} scope="row">
-                                 {row.codigo}
+                                 {row.idSubsede}
                                 </TableCell>
                                 <TableCell>{row.nombre}</TableCell>
-                                <TableCell>{row.zona}</TableCell>
-                                <TableCell>{row.coordenadas}</TableCell>
                                 {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
-                                    {editMode === row.codigo ? <SaveIcon /> : <EditIcon />}
+                                    {editMode === row.id ? <SaveIcon /> : <EditIcon />}
                                   </IconButton>
                                 </TableCell>
                               </>
@@ -327,7 +288,7 @@ export function ListaArea() {
             <TablePagination
               rowsPerPageOptions={[8, 16, 24]}
               component="div"
-              count={sortedAreas.length}
+              count={sortedSubsedes.length}
               rowsPerPage={rowsPerPage}
               labelRowsPerPage="Número de filas"
               page={page}
@@ -345,4 +306,4 @@ export function ListaArea() {
   );
 }
 
-export default ListaArea;
+export default ListaSubsedes;

@@ -16,6 +16,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useNavigate } from 'react-router-dom';
 import usePutData from '../../hooks/usePutData';
 import { Select } from '@/components/forms/elements/select';
+import { ExportButton } from '@/components/mantenimientos/ExportButton';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
@@ -86,7 +87,7 @@ export const ListaMantenimientos = () => {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} marginTop={10} padding={3}>
+      <Grid container spacing={3} marginTop={5} padding={3}>
         <Grid item xs={12}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 15 }}>
             <TextField
@@ -102,7 +103,8 @@ export const ListaMantenimientos = () => {
               }}
             />
           </div>
-          <TableContainer component={Paper} style={{ marginTop: 20, padding: 25 }}>
+          <TableContainer component={Paper} style={{ marginTop: 1, padding: 25 }}>
+          <ExportButton />
             <Table size="small">
               <TableHead>
                 <TableRow>

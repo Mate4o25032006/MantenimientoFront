@@ -22,11 +22,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
+import { Select } from '@/components/forms/elements/select';
 
 const headCells = [
   // { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
-  { id: 'id', numeric: false, disablePadding: false, label: 'Código' },
+  { id: 'idAmbiente', numeric: false, disablePadding: false, label: 'Código' },
   { id: 'nombre', numeric: false, disablePadding: false, label: 'Nombre' },
+  { id: 'dependencia', numeric: false, disablePadding: false, label: 'Dependencia' },
   { id: 'acciones', numeric: false, disablePadding: false, label: 'Acciones' },
 ];
 
@@ -66,9 +68,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   minWidth: 150
 }));
 
-export function ListaTipo() {
-  const { data, error, loading } = useGetData(["tipoEquipos"]);
-  const tipoEquipos = data?.tipoEquipos || [];
+export function ListaAmbientes() {
+  const { data, error, loading } = useGetData(["ambientes", "dependencias"]);
+  const ambientes = data?.ambientes || [];
+  const dependencias = data?.dependencias || [];
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('id');
   const [selected, setSelected] = useState([]);
@@ -79,17 +82,17 @@ export function ListaTipo() {
   const [editMode, setEditMode] = useState(null);
   const [editedRow, setEditedRow] = useState({});
   
-  const handlePutData = usePutData(`tipoEquipos`, () => {
+  const handlePutData = usePutData(`ambientes`, () => {
     setEditMode(null);
   });
   
   const handleEditClick = (event, row) => {
-    if (editMode === row.id) {
+    if (editMode === row.idAmbiente) {
       console.log(editMode);
       // Save changes to backend using custom hook
-      handlePutData({ ...editedRow, serial: row.id });
+      handlePutData({ ...editedRow, idAmbiente: row.idAmbiente });
     } else {
-      setEditMode(row.id);
+      setEditMode(row.idAmbiente);
       setEditedRow(row);
     }
   };
@@ -109,7 +112,7 @@ export function ListaTipo() {
     } else if (error) {
       console.error('Error al obtener los datos:', error);
     } else {
-      console.log('Datos obtenidos:', tipoEquipos);
+      console.log('Datos obtenidos:', ambientes);
     }
   }, [data, error, loading]);
 
@@ -159,25 +162,25 @@ export function ListaTipo() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  const filteredTipoEquipos = tipoEquipos.filter(tipoEquipo =>
-    tipoEquipo.nombre.toLowerCase().includes(filter.toLowerCase())
+  const filteredAmbientes = ambientes.filter(ambiente =>
+    ambiente.nombre.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const sortedTipoEquipos = stableSort(filteredTipoEquipos, getComparator(order, orderBy));
+  const sortedAmbientes = stableSort(filteredAmbientes, getComparator(order, orderBy));
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sortedTipoEquipos.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sortedAmbientes.length - page * rowsPerPage);
 
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3} marginTop={5} padding={3}>
         <Grid item xs={12}>
           <TextField
-            label="Buscar area"
+            label="Buscar ambiente"
             variant="outlined"
             value={filter}
             onChange={handleFilterChange}
             fullWidth
-            placeholder="Ej: nombre, zona, coordenadas"
+            placeholder="Ej: nombre"
             InputProps={{
               startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
             }}
@@ -211,7 +214,7 @@ export function ListaTipo() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {sortedTipoEquipos
+                  {sortedAmbientes
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       console.log(row);
@@ -219,7 +222,7 @@ export function ListaTipo() {
                       const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
-                        <React.Fragment key={row.codigo}>
+                        <React.Fragment key={row.idAmbiente}>
                           <TableRow
                             hover
                             role="checkbox"
@@ -227,25 +230,20 @@ export function ListaTipo() {
                             tabIndex={-1}
                             selected={isItemSelected}
                           >
-                            {/* <TableCell>
-                              <IconButton aria-label="expand row" size="small" onClick={(event) => handleClick(event, row.serial)}>
-                                {isItemSelected ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                              </IconButton>
-                            </TableCell> */}
-                            {editMode === row.id ? (
+                            {editMode === row.idAmbiente ? (
                               <>
                               <TableCell>
-                                {editMode === row.id ? (
+                                {editMode === row.idAmbiente ? (
                                   <StyledTextField
-                                    value={editedRow.id}
-                                    onChange={(event) => handleInputChange(event, 'id')}
+                                    value={editedRow.idAmbiente}
+                                    onChange={(event) => handleInputChange(event, 'idAmbiente')}
                                   />
                                 ) : (
-                                  row.id
+                                  row.idAmbiente
                                 )}
                               </TableCell>
                               <TableCell>
-                                {editMode === row.id ? (
+                                {editMode === row.idAmbiente ? (
                                   <StyledTextField
                                     value={editedRow.nombre}
                                     onChange={(event) => handleInputChange(event, 'nombre')}
@@ -254,22 +252,35 @@ export function ListaTipo() {
                                   row.nombre
                                 )}
                               </TableCell>
+                              <TableCell>
+                                {editMode === row.idDependencia ? (
+                                  <Select
+                                  name="dependencia"
+                                  value={editedRow.dependencia ? editedRow.dependencia.idDependencia : ''}
+                                  onChange={(event) => handleInputChange(event, 'dependencia')}
+                                  options={dependencias.map(dependencia => ({ value: dependencia.idSubsede, label: dependencia.nombre }))}
+                                  style={{ height: '60px' }}
+                                />
+                                ) : (
+                                  row.subsede.nombre
+                                )}
+                              </TableCell>
                               <TableCell padding="checkbox">
                                 <IconButton onClick={(event) => handleEditClick(event, row)}>
-                                 {editMode === row.id ? <SaveIcon /> : <EditIcon />}
+                                 {editMode === row.idAmbiente ? <SaveIcon /> : <EditIcon />}
                                 </IconButton>
                               </TableCell>
                               </>
                             ) : (
                               <>
                                 <TableCell component="th" id={labelId} scope="row">
-                                 {row.id}
+                                 {row.idAmbiente}
                                 </TableCell>
                                 <TableCell>{row.nombre}</TableCell>
                                 {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
-                                    {editMode === row.id ? <SaveIcon /> : <EditIcon />}
+                                    {editMode === row.idAmbiente ? <SaveIcon /> : <EditIcon />}
                                   </IconButton>
                                 </TableCell>
                               </>
@@ -289,7 +300,7 @@ export function ListaTipo() {
             <TablePagination
               rowsPerPageOptions={[8, 16, 24]}
               component="div"
-              count={sortedTipoEquipos.length}
+              count={sortedAmbientes.length}
               rowsPerPage={rowsPerPage}
               labelRowsPerPage="Número de filas"
               page={page}
@@ -307,4 +318,4 @@ export function ListaTipo() {
   );
 }
 
-export default ListaTipo;
+export default ListaAmbientes;
