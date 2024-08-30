@@ -2,10 +2,14 @@ import axiosInstance from '../helpers/axiosConfig';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-const usePostData = (url, onSubmit, inputs, validations) => {
+const usePostData = (url, onSubmit, inputs, validations = {}) => {
     const navigate = useNavigate();
 
     const validateInputs = () => {
+        if (!validations || Object.keys(validations).length === 0) {
+            return true; // Si no hay validaciones, se considera como válido
+        }
+
         for (const [field, rules] of Object.entries(validations)) {
             for (const rule of rules) {
                 if (!rule.validate(inputs[field])) {
@@ -26,7 +30,8 @@ const usePostData = (url, onSubmit, inputs, validations) => {
         }
         return true;
     };
-    const aceptSubmit = async () => {
+
+    const acceptSubmit = async () => {
         try {
             await axiosInstance.post(`${import.meta.env.VITE_API_URL}/${url}`, inputs);
             Swal.fire({
@@ -83,7 +88,7 @@ const usePostData = (url, onSubmit, inputs, validations) => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                aceptSubmit();
+                acceptSubmit();
             }
         });
     }

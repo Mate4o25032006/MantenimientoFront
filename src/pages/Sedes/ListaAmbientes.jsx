@@ -172,8 +172,9 @@ export function ListaAmbientes() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} marginTop={5} padding={3}>
+      <Grid container spacing={3} marginTop={3} padding={3}>
         <Grid item xs={12}>
+          <h1 className="text-center my-2 mb-3 text-xl font-semibold">Lista Ambientes</h1>
           <TextField
             label="Buscar ambiente"
             variant="outlined"
@@ -253,7 +254,7 @@ export function ListaAmbientes() {
                                 )}
                               </TableCell>
                               <TableCell>
-                                {editMode === row.idDependencia ? (
+                                {editMode === row.idAmbiente ? (
                                   <Select
                                   name="dependencia"
                                   value={editedRow.dependencia ? editedRow.dependencia.idDependencia : ''}
@@ -262,7 +263,7 @@ export function ListaAmbientes() {
                                   style={{ height: '60px' }}
                                 />
                                 ) : (
-                                  row.subsede.nombre
+                                  row.dependencia.nombre
                                 )}
                               </TableCell>
                               <TableCell padding="checkbox">
@@ -276,8 +277,8 @@ export function ListaAmbientes() {
                                 <TableCell component="th" id={labelId} scope="row">
                                  {row.idAmbiente}
                                 </TableCell>
-                                <TableCell>{row.nombre}</TableCell>
-                                {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
+                                <TableCell>{row.nombre}</TableCell>                             
+                                <TableCell>{row.dependencia.nombre}</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.idAmbiente ? <SaveIcon /> : <EditIcon />}

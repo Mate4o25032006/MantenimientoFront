@@ -16,6 +16,27 @@ export const FormMantenimientos = () => {
     const urls = ["usuarios"];
     const { data, error, loading } = useGetData(urls);
 
+    const validations = {
+        objetivo: [
+            {
+                validate: value => value.trim() !== "",
+                message: "El objetivo es obligatorio."
+            }
+        ],
+        fechaProxMantenimiento: [
+            {
+                validate: value => value.trim() !== "",
+                message: "La fechaProxMantenimiento es obligatorio."
+            }
+        ],
+        fechaUltimoMantenimiento: [
+            {
+                validate: value => value.trim() !== "",
+                message: "La fecha de ultimo mantenimiento es obligatoria."
+            }
+        ],
+    };
+
     const inputs1 = [
         { 
             id: 1, 
@@ -53,7 +74,7 @@ export const FormMantenimientos = () => {
     };
 
 
-    const handleSubmit = usePostData("mantenimientos", onSubmit, inputs);
+    const handleSubmit = usePostData("mantenimientos", onSubmit, inputs, validations);
 
     if (loading) {
         return <div>Loading...</div>;

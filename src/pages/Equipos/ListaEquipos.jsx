@@ -21,8 +21,6 @@ import {
 } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import SearchIcon from '@mui/icons-material/Search';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
@@ -103,7 +101,7 @@ export function ListaEquipos() {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);
   const [editedRow, setEditedRow] = useState({});
@@ -223,8 +221,9 @@ export function ListaEquipos() {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3} marginTop={5} padding={3}>
+      <Grid container spacing={3} marginTop={3} padding={3}>
         <Grid item xs={12}>
+        <h1 className="text-center my-2 mb-3 text-xl font-semibold">Lista Equipos</h1>
           <TextField
             label="Buscar equipo"
             variant="outlined"
@@ -477,7 +476,7 @@ export function ListaEquipos() {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[8, 16, 24]}
+              rowsPerPageOptions={[5, 10, 15, 20]}
               component="div"
               count={sortedEquipos.length}
               rowsPerPage={rowsPerPage}
