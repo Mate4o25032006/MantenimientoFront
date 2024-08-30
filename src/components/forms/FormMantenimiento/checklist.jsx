@@ -4,10 +4,9 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import useGetData from '@/hooks/useGetData';
 import { Forms } from '@/layout/Forms';
 import React, { useMemo, useState } from 'react';
-import { Button } from "../../../components/forms/elements/button";
 import usePostData from '@/hooks/usePostData';
 import { Divider } from '@mui/material';
-
+import { Button } from '@/components/forms/elements/button';
 export const Checklist = () => {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [selectedItems, setSelectedItems] = useState([]);
@@ -19,13 +18,13 @@ export const Checklist = () => {
   const [selectAll, setSelectAll] = useState(false);
   const urls = ["tipoEquipos", "mantenimientos", "equipos", "subsedes", "dependencias", "ambientes"];
   const { data, error, loading } = useGetData(urls);
-
+  console.log(data.equipos);
   const filteredEquipment = useMemo(() => {
     if (!data.equipos) return [];
     return data.equipos.filter((equipo) => {
       const subsedeMatches = selectedSubsede === 'all' || equipo.subsede.nombre === selectedSubsede;
       const dependenciaMatches = selectedDependencia === 'all' || equipo.dependencia.nombre === selectedDependencia;
-      const ambienteMatches = selectedAmbiente === 'all' || equipo.ambiente.nombre === selectedAmbiente;
+      const ambienteMatches = selectedAmbiente === 'all' || (equipo.ambiente && equipo.ambiente.nombre === selectedAmbiente);
       const typeMatches = selectedType === 'all' || equipo.tipoEquipo.nombre === selectedType;
       const searchMatches = equipo.serial.toLowerCase().includes(searchTerm.toLowerCase()) || equipo.tipoEquipo.nombre.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -65,12 +64,14 @@ export const Checklist = () => {
     setSelectedItems(checked ? filteredEquipment.map(item => item.serial) : []);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (event) => {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado
     setSelectedItems([]);
     setSelectedMantent({ idMantenimiento: "", objetivo: "" });
     setSelectAll(false);
+    handleSubmit(); // Llama a la función handleSubmit aquí
   };
-
+  
   const handleSubmit = usePostData(
     'mantenimientos/asociaEquipos',
     onSubmit,
@@ -216,7 +217,7 @@ export const Checklist = () => {
           </CardContent>
         </Card>
         <div className="flex items-center justify-center mt-6">
-          <Button type={'submit'} text={'Asignar'} />
+          <Button type={'submit'} name='Asignar' />
         </div>
       </form>
     </Forms>

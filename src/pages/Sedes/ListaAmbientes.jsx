@@ -254,7 +254,7 @@ export function ListaAmbientes() {
                                 )}
                               </TableCell>
                               <TableCell>
-                                {editMode === row.idDependencia ? (
+                                {editMode === row.idAmbiente ? (
                                   <Select
                                   name="dependencia"
                                   value={editedRow.dependencia ? editedRow.dependencia.idDependencia : ''}
@@ -263,7 +263,7 @@ export function ListaAmbientes() {
                                   style={{ height: '60px' }}
                                 />
                                 ) : (
-                                  row.subsede.nombre
+                                  row.dependencia.nombre
                                 )}
                               </TableCell>
                               <TableCell padding="checkbox">
@@ -277,8 +277,8 @@ export function ListaAmbientes() {
                                 <TableCell component="th" id={labelId} scope="row">
                                  {row.idAmbiente}
                                 </TableCell>
-                                <TableCell>{row.nombre}</TableCell>
-                                {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
+                                <TableCell>{row.nombre}</TableCell>                             
+                                <TableCell>{row.dependencia.nombre}</TableCell>                                
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.idAmbiente ? <SaveIcon /> : <EditIcon />}

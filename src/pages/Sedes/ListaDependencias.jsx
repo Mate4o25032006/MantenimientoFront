@@ -280,7 +280,6 @@ export function ListaDependencias() {
                                 </TableCell>
                                 <TableCell>{row.nombre}</TableCell>
                                 <TableCell>{row.subsede.nombre}</TableCell>
-                                {/* <TableCell>{row.estado ? <ToggleOnIcon color='primary' /> : <ToggleOffIcon sx={{ fontSize: 30 }} color='primary' />}</TableCell>                                 */}
                                 <TableCell padding="checkbox">
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.idDependencia ? <SaveIcon /> : <EditIcon />}

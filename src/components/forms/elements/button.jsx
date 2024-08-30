@@ -11,5 +11,5 @@ export const Button = ({ name, type }) => {
         >
             {name}
         </button>
-    )
+    )   
 }
