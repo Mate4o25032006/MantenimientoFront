@@ -89,6 +89,7 @@ export function ListaAmbientes() {
   const handleEditClick = (event, row) => {
     if (editMode === row.idAmbiente) {
       console.log(editMode);
+      console.log(editedRow);
       // Save changes to backend using custom hook
       handlePutData({ ...editedRow, idAmbiente: row.idAmbiente });
     } else {
@@ -259,7 +260,7 @@ export function ListaAmbientes() {
                                   name="dependencia"
                                   value={editedRow.dependencia ? editedRow.dependencia.idDependencia : ''}
                                   onChange={(event) => handleInputChange(event, 'dependencia')}
-                                  options={dependencias.map(dependencia => ({ value: dependencia.idSubsede, label: dependencia.nombre }))}
+                                  options={dependencias.map(dependencia => ({ value: dependencia.idDependencia, label: dependencia.nombre }))}
                                   style={{ height: '60px' }}
                                 />
                                 ) : (
