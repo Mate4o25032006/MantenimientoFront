@@ -28,6 +28,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Select } from '@/components/forms/elements/select';
 import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
+import ImportButton from '@/components/equipos/ImportButton';
 
 const headCells = [
   { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
@@ -475,6 +476,7 @@ export function ListaEquipos() {
                 </TableBody>
               </Table>
             </TableContainer>
+            <ImportButton />
             <TablePagination
               rowsPerPageOptions={[5, 10, 15, 20]}
               component="div"
