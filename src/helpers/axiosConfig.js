@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 401) {
+        if (error.response && error.response.status === 401 || 404) {
             const currentPath = window.location.pathname;
             if (currentPath !== '/login') {
                 localStorage.removeItem('authToken'); // Limpia el token
