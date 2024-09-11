@@ -26,11 +26,11 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 401 || 404) {
+        if (error.response && error.response.status === 401) {
             const currentPath = window.location.pathname;
             if (currentPath !== '/login') {
                 localStorage.removeItem('authToken'); // Limpia el token
-                window.location.href = '/login'; // Redirige al login
+                window.location.href = '/'; // Redirige al login
             }
         }
         return Promise.reject(error);
