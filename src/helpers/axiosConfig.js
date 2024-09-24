@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
             const currentPath = window.location.pathname;
             if (currentPath !== '/login') {
                 localStorage.removeItem('authToken'); // Limpia el token
-                window.location.href = '/login'; // Redirige al login
+                window.location.href = '/'; // Redirige al login
             }
         }
         return Promise.reject(error);

@@ -21,7 +21,7 @@ const ImportButton = () => {
     console.log('Archivo seleccionado:', file); // Log para verificar el archivo
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('excelEquipos', file); // Replace 'excelEquipos' with the correct field name
 
     try {
       // Subir el archivo al backend
