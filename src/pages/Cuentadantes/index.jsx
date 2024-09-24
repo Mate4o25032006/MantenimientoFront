@@ -17,7 +17,7 @@ export const FormCuetadantes = () => {
                 message: "El documento es obligatorio."
             },
             {
-                validate: value => /^[0-9]{6,10}$/.test(value),
+                validate: value => /^[0-9]{6,20}$/.test(value),
                 message: "El documento debe tener entre 6 y 10 dígitos."
             }
         ],

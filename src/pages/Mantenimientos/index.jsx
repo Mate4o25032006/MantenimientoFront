@@ -14,7 +14,15 @@ export const FormMantenimientos = () => {
     const [inputs, setInputs] = useState(initialData);
     const navigate = useNavigate();
     const urls = ["usuarios"];
+
     const { data, error, loading } = useGetData(urls);
+
+    const usuariosTecnicos = useMemo(() => {
+        return data?.usuarios?.filter(usuario => 
+            usuario.roles.some(rol => rol.nombre === "TÉCNICO EN CAMPO")
+        ) || [];
+    }, [data?.usuarios]);
+    
 
     const validations = {
         objetivo: [
@@ -95,7 +103,7 @@ export const FormMantenimientos = () => {
                     label="Responsable Mantenimiento"
                     name="usuario"
                     onChange={handleInputChange}
-                    options={data.usuarios.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
+                    options={usuariosTecnicos.map(usuario => ({ value: usuario.documento, label: usuario.nombre }))}
                 />
                 <Select
                     label="Tipo Mantenimiento"
