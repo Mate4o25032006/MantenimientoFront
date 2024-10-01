@@ -172,7 +172,7 @@ export function ListaAmbientes() {
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, sortedAmbientes.length - page * rowsPerPage);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Grid container spacing={3} marginTop={3} padding={3}>
         <Grid item xs={12}>
           <h1 className="text-center my-2 mb-3 text-xl font-semibold">Lista Ambientes</h1>

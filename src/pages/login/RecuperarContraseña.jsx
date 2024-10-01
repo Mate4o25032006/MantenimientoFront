@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sena from "../../assets/Sena.png";
 import ImagenLogin from "../../assets/ImagenLogin.jpg";
-import useLogin from '../../hooks/useLogin';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import useResetData from '@/hooks/useResetData';
 
-export const Login = () => {
+export const RecuperarContraseña = () => {
     const navigate = useNavigate();
-    const data = { correo: "", contrasenia: "" };
+    const data = { correo: "" };
     const [inputs, setInputs] = useState(data);
 
     const handleInputChange = (event) => {
@@ -23,7 +23,7 @@ export const Login = () => {
         navigate("/admin", { replace: true });
     };
 
-    const handleSubmit = useLogin("login", onSubmit, inputs);
+    const handleSubmit = useResetData("usuarios/recuperar-contrasenia", onSubmit, inputs);
     return (
         <div className="relative flex items-center justify-center min-h-screen p-4 w-full bg-cover bg-center bg-no-repeat" 
             style={{ backgroundImage: `url(${ImagenLogin})` }}>
@@ -59,12 +59,15 @@ export const Login = () => {
                     <p className="text-blue-700 mb-6">
                         Este es un software utilizado para la gestión del mantenimiento de los equipos tecnologicos del Sena CIAA, solo es para usuarios ya registrados.
                     </p>
+                    <a href='/'>
+                    <Button className="w-full bg-blue-500 text-white py-2 rounded-full">Volver al login</Button>
+                    </a>
                 </div>
 
                 {/* Segunda columna */}
                 <div className="flex flex-col justify-center items-center p-8 md:w-1/2 bg-white">
                     <img src={Sena} alt="Descripción de la imagen" className="w-20 h-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-blue-900 mb-6">Inicio de sesión</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 mb-6">Recuperación de contraseña</h2>
                     <form className="w-full max-w-sm" onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <Label htmlFor="username" className="block text-blue-700">
@@ -72,21 +75,8 @@ export const Login = () => {
                             </Label>
                             <Input name="correo" placeholder="Correo" className="w-full mt-1" onChange={handleInputChange} />
                         </div>
-                        <div className="mb-6">
-                            <Label htmlFor="password" className="block text-blue-700">
-                                Contraseña
-                            </Label>
-                            <Input
-                                name="contrasenia"
-                                type="password"
-                                placeholder="Contraseña"
-                                className="w-full mt-1"
-                                onChange={handleInputChange}
-                            />
-                        </div>
                         <Button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-full">Enviar</Button>
                     </form>
-                        <a className="mt-5 text-blue-500" href='/recuperar-contrasenia'>¿Olvidaste tu contraseña? Haz clic aquí.</a>
                 </div>
             </div>
         </div>

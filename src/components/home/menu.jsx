@@ -142,17 +142,19 @@ export const Menu = () => {
               Software de mantenimientos
             </Typography>
           </div>
-          <img
-            src={Logo1}
-            alt="My Image"
-            style={{ width: 60, height: 60, objectFit: 'cover', marginTop: 5 }}
-          />
+          <a href='/admin'>
+            <img
+              src={Logo1}
+              alt="My Image"
+              style={{ width: 60, height: 60, objectFit: 'cover', marginTop: 5 }}
+            />
+          </a>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <Toolbar
           sx={{
-            display: 'flex',
+            display: 'flex',  
             alignItems: 'center',
             justifyContent: 'flex-end',
             px: [1],
