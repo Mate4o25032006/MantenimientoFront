@@ -10,7 +10,7 @@ export const ExportButton = () => {
     if (!data || !data.mantenimientos || !Array.isArray(data.mantenimientos)) {
       console.error('Data is not in the expected format or is undefined');
       return;
-    }
+    } 
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Hoja de Mantenimiento');

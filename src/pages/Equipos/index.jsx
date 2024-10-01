@@ -17,13 +17,15 @@ export const FormEquipos = () => {
         tipoEquipo: "", 
         cuentaDante: "", 
         subsede: "", 
-        dependencia: "" 
+        dependencia: "",
+        ambiente: "" 
     };
     const [inputs, setInputs] = useState(initialData);
     const [filteredDependencias, setFilteredDependencias] = useState([]);
+    const [filteredAmbientes, setFilteredAmbientes] = useState([]);
     const navigate = useNavigate();
 
-    const urls = ["tipoEquipos", "cuentadantes", "subsedes", "dependencias"];
+    const urls = ["tipoEquipos", "cuentadantes", "subsedes", "dependencias", "ambientes"];
     const { data, error, loading } = useGetData(urls);
 
     useEffect(() => {
@@ -33,6 +35,14 @@ export const FormEquipos = () => {
             setFilteredDependencias(filtered);
         }
     }, [inputs.subsede, data.dependencias]);
+
+    useEffect(() => {
+        if (inputs.dependencia && data.ambientes) {
+            const dependenciaId = parseInt(inputs.dependencia, 10);
+            const filtered = data.ambientes.filter(dep => dep.dependencia.idDependencia === dependenciaId);
+            setFilteredAmbientes(filtered);
+        }
+    }, [inputs.dependencia, data.ambientes]);
 
     const validations = {
         serial: [
@@ -83,12 +93,6 @@ export const FormEquipos = () => {
                 message: "La subsede es obligatoria."
             }
         ],
-        dependencia: [
-            {
-                validate: value => value.trim() !== "",
-                message: "La dependencia es obligatoria."
-            }
-        ]
     };
 
     const inputs1 = [
@@ -159,13 +163,22 @@ export const FormEquipos = () => {
                     onChange={handleInputChange}
                     options={data.subsedes.map(subsede => ({ value: subsede.idSubsede, label: subsede.nombre }))}
                 />
-                {inputs.subsede && (
+                {inputs.subsede && filteredDependencias.length > 0 && (
                     <Select
                         label="Dependencia"
                         name="dependencia"
                         value={inputs.dependencia}
                         onChange={handleInputChange}
                         options={filteredDependencias.map(dependencia => ({ value: dependencia.idDependencia, label: dependencia.nombre }))}
+                    />
+                )}
+                {inputs.dependencia && filteredAmbientes.length > 0 && (
+                    <Select
+                        label="Ambiente"
+                        name="ambiente"
+                        value={inputs.ambiente}
+                        onChange={handleInputChange}
+                        options={filteredAmbientes.map(ambiente => ({ value: ambiente.idAmbiente, label: ambiente.nombre }))}
                     />
                 )}
                 <div className={inputs1.length % 1 === 0 ? "md:col-span-2" : "flex items-center justify-center mt-6"}>

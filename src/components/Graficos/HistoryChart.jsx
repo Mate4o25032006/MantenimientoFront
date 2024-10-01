@@ -7,7 +7,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const MaintenanceHistoryChart = () => {
   const { data, error, loading } = useGetData(['mantenimientos', 'equipos']); 
-  console.log(data);
   
   const countCompletedAndFailed = (mantenimiento) => {
     let completedCount = 0;
