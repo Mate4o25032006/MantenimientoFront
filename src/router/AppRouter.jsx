@@ -15,6 +15,7 @@ import { ListaSubsedes } from '@/pages/Sedes/ListaSubsedes';
 import ListaDependencias from '@/pages/Sedes/ListaDependencias';
 import ListaAmbientes from '@/pages/Sedes/ListaAmbientes';
 import { RecuperarContraseña } from '@/pages/login/RecuperarContraseña';
+import RecuperarContrasena from '@/pages/login/RecuperarContraseña2';
 
 export const AppRoutes = () => {
     return useRoutes([
