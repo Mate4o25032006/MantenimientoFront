@@ -30,9 +30,7 @@ export const AppRoutes = () => {
         { 
             path: '/login', 
             element: (
-                <LoginRoute>
                     <Login /> 
-                </LoginRoute>
             )
         },
         { 
