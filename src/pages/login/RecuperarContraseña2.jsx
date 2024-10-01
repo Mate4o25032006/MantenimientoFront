@@ -30,6 +30,13 @@ const RecuperarContrasena = () => {
           icon: 'success',
           title: 'Éxito',
           text: 'Contraseña actualizada correctamente.',
+          iconColor: "#007BFF",
+          showConfirmButton: false,
+          timer: 2500,
+          customClass: {
+              container: 'swal2-container',
+              popup: 'swal2-popup'
+          }
         }).then(() => {
           // Redirigir a la página de inicio de sesión después de actualizar la contraseña
           navigate('/');
