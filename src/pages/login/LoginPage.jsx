@@ -86,7 +86,7 @@ export const Login = () => {
                         </div>
                         <Button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-full">Enviar</Button>
                     </form>
-                        <a className="mt-5 text-blue-500" href='/recuperar-contrasenia'>¿Olvidaste tu contraseña? Haz clic aquí.</a>
+                        <a className="mt-5 text-blue-500" href='/usuarios/recuperar-contrasenia'>¿Olvidaste tu contraseña? Haz clic aquí.</a>
                 </div>
             </div>
         </div>
