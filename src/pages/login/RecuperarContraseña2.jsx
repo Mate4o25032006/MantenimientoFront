@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import axiosInstance from '@/helpers/axiosConfig';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 const RecuperarContrasena = () => {
   const { token } = useParams(); // Captura el token de la URL
   const navigate = useNavigate();
-  
+
   // Estado para la contraseña
-  const [contrasenia, setContrasenia] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
   // Manejar el cambio de la contraseña
@@ -20,18 +21,37 @@ const RecuperarContrasena = () => {
     e.preventDefault();
     try {
       // Enviar la nueva contraseña y el token al backend
-      const response = await axiosInstance.post(`https://sistemamantenimiento-production.up.railway.app/usuarios/recuperar-contrasenia/${token}`, {
-        contrasenia,
-      });
+      const url = `/usuarios/recuperar-contrasenia/${token}`;
+      const response = await axiosInstance.post(url, { password });
 
-      if (response.data.success) {
-        // Redirigir a la página de inicio de sesión después de actualizar la contraseña
-        navigate('/');
+      if (response.data.message) {
+        // Mostrar alerta de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Contraseña actualizada correctamente.',
+        }).then(() => {
+          // Redirigir a la página de inicio de sesión después de actualizar la contraseña
+          navigate('/');
+        });
       } else {
         setError('Hubo un error al actualizar la contraseña.');
+        // Mostrar alerta de error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al actualizar la contraseña.',
+        });
       }
     } catch (error) {
+      console.error('Error al enviar la solicitud:', error); // Muestra más detalles del error
       setError('Hubo un error al actualizar la contraseña.');
+      // Mostrar alerta de error
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al actualizar la contraseña.',
+      });
     }
   };
 
@@ -83,12 +103,12 @@ const RecuperarContrasena = () => {
                 Contraseña
               </Label>
               <Input
-                name="contrasenia"
+                name="password"
                 type="password"
                 placeholder="Contraseña"
                 className="w-full mt-1"
-                value={contrasenia}
-                onChange={(e) => setContrasenia(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             {error && <p className="text-red-500 mb-4">{error}</p>}
