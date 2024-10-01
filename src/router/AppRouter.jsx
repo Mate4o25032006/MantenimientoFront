@@ -36,7 +36,7 @@ export const AppRoutes = () => {
             )
         },
         { 
-            path: '/recuperar-contrasenia', 
+            path: '/usuarios/recuperar-contrasenia', 
             element: (
                     <RecuperarContraseña /> 
             )
@@ -44,9 +44,7 @@ export const AppRoutes = () => {
         { 
             path: '/usuarios/recuperar-contraseña/:token', 
             element: (
-                <LoginRoute>
                     <RecuperarContrasena /> 
-                </LoginRoute>
             )
         },
         {
