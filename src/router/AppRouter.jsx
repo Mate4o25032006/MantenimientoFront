@@ -14,6 +14,7 @@ import { FormAmbientes } from '@/pages/Sedes/FormAmbientes';
 import { ListaSubsedes } from '@/pages/Sedes/ListaSubsedes';
 import ListaDependencias from '@/pages/Sedes/ListaDependencias';
 import ListaAmbientes from '@/pages/Sedes/ListaAmbientes';
+import { RecuperarContraseña } from '@/pages/login/RecuperarContraseña';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -30,6 +31,22 @@ export const AppRoutes = () => {
             element: (
                 <LoginRoute>
                     <Login /> 
+                </LoginRoute>
+            )
+        },
+        { 
+            path: '/recuperar-contrasenia', 
+            element: (
+                <LoginRoute>
+                    <RecuperarContraseña /> 
+                </LoginRoute>
+            )
+        },
+        { 
+            path: '/usuarios/recuperar-contraseña/:token', 
+            element: (
+                <LoginRoute>
+                    <RecuperarContrasena /> 
                 </LoginRoute>
             )
         },
