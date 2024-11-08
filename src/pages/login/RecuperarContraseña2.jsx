@@ -51,7 +51,7 @@ const RecuperarContrasena = () => {
         });
       }
     } catch (error) {
-      console.error('Error al enviar la solicitud:', error); // Muestra más detalles del error
+      console.error('Error al enviar la solicitud:', error);
       setError('Hubo un error al actualizar la contraseña.');
       // Mostrar alerta de error
       Swal.fire({
@@ -94,16 +94,17 @@ const RecuperarContrasena = () => {
             <div className="bg-blue-500 h-8 w-8 rounded-full" />
             <div className="ml-2 text-2xl font-bold text-blue-900">¡Hola!</div>
           </div>
-          <h1 className="text-4xl font-bold text-blue-900 mb-4">Bienvenidos!</h1>
           <p className="text-blue-700 mb-6">
-            Este es un software utilizado para la gestión del mantenimiento de los equipos tecnológicos del Sena CIAA, solo es para usuarios ya registrados.
+            Si solicitaste la recuperación de contraseña, asegúrate de crear una nueva clave segura que no hayas usado anteriormente. 
+            Te recomendamos que utilices una combinación de letras mayúsculas, minúsculas, números y símbolos para aumentar la seguridad. 
+            Recuerda no compartir tu contraseña con nadie y cambiarla periódicamente para mantener tu cuenta protegida.
           </p>
         </div>
 
         {/* Segunda columna */}
         <div className="flex flex-col justify-center items-center p-8 md:w-1/2 bg-white">
           <img src={Sena} alt="Descripción de la imagen" className="w-20 h-auto mb-4" />
-          <h2 className="text-2xl font-bold text-blue-900 mb-6">Recuperar Contraseña</h2>
+          <h2 className="text-2xl font-bold text-blue-900 mb-6">Cambio de Contraseña</h2>
           <form className="w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="mb-6">
               <Label htmlFor="password" className="block text-blue-700">
@@ -125,6 +126,6 @@ const RecuperarContrasena = () => {
       </div>
     </div>
   );
-};
+};          
 
 export default RecuperarContrasena;

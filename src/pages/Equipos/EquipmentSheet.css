@@ -1,0 +1,59 @@
+.equipment-sheet-container {
+  font-family: Arial, sans-serif;
+  width: 75%;
+  margin: 0 auto; 
+  border-collapse: collapse;
+  margin-top: 88px;
+}
+
+.equipment-sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.equipment-sheet-header {
+  background-color: #f0f0f0;
+  text-align: center;
+  font-size: 1.5em;
+  padding: 10px 0;
+  font-weight: 700;
+}
+
+.equipment-sheet-image-header {
+  text-align: center;
+  vertical-align: middle;
+  width: 350px;
+}
+
+.equipment-sheet-image {
+  text-align: center;
+  padding: 10px;
+}
+
+.equipment-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.equipment-sheet-table th, .equipment-sheet-table td {
+  border: 1px solid #cfcfcf;
+  padding: 5px;
+}
+
+.equipment-sheet-table th {
+  background-color: #e7e7e7;
+  text-align: center;
+}
+
+.equipment-sheet-table td {
+  vertical-align: auto;
+}
+
+.equipment-sheet-title {
+  font-weight: bold;
+}
+
+

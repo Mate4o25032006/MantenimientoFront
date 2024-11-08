@@ -178,7 +178,7 @@ export function ListaTipo() {
             value={filter}
             onChange={handleFilterChange}
             fullWidth
-            placeholder="Ej: nombre, zona, coordenadas"
+            placeholder="Ej: nombre"
             InputProps={{
               startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
             }}

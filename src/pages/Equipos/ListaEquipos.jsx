@@ -21,17 +21,16 @@ import {
 } from '@mui/material';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import SearchIcon from '@mui/icons-material/Search';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import { Select } from '@/components/forms/elements/select';
 import useGetData from '../../hooks/useGetData';
 import usePutData from '../../hooks/usePutData';
 import ImportButton from '@/components/equipos/ImportButton';
+import { FileSpreadsheet } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const headCells = [
-  { id: 'seleccion', numeric: false, disablePadding: false, label: '' },
   { id: 'fechaCompra', numeric: false, disablePadding: false, label: 'Fecha Compra' },
   { id: 'serial', numeric: false, disablePadding: false, label: 'Serial' },
   { id: 'marca', numeric: false, disablePadding: false, label: 'Marca' },
@@ -80,7 +79,7 @@ function stableSort(array, comparator) {
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[200], // Fondo gris claro
+  backgroundColor: theme.palette.grey[200], 
   color: '#1565c0',
   fontWeight: 'bold',
 }));
@@ -91,12 +90,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 export function ListaEquipos() {
   const { data, error, loading } = useGetData(["equipos", "mantenimientos", "cuentadantes", "tipoEquipos", "subsedes", "estados"]);
-  const mantenimientos = data?.mantenimientos;
   const cuentadantes = data?.cuentadantes;
   const equipos = data?.equipos || [];
   const tipoEquipos = data?.tipoEquipos;
   const subsedes = data?.subsedes;
-  const estados = data?.estados;
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('fechaCompra');
   const [selected, setSelected] = useState([]);
@@ -106,6 +103,7 @@ export function ListaEquipos() {
   const [filter, setFilter] = useState('');
   const [editMode, setEditMode] = useState(null);
   const [editedRow, setEditedRow] = useState({});
+  const navigate = useNavigate();
   
   const handlePutData = usePutData(`equipos`, () => {
     setEditMode(null);
@@ -165,26 +163,6 @@ export function ListaEquipos() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, serial) => {
-    const selectedIndex = selected.indexOf(serial);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, serial);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -201,6 +179,11 @@ export function ListaEquipos() {
 
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
+  };
+
+  const handleSendToHojaDeVida = (row) => {
+    // Redirige a la página de hoja de vida con el id del equipo, por ejemplo.
+    navigate(`/hoja-de-vida/${row.serial}`);
   };
 
   const isSelected = (serial) => selected.indexOf(serial) !== -1;
@@ -231,7 +214,7 @@ export function ListaEquipos() {
             value={filter}
             onChange={handleFilterChange}
             fullWidth
-            placeholder="Ej: Marca, cuentadante, referencia"
+            placeholder="Ej: Marca, cuentadante, referencia, subsede, serial, placaSena"
             InputProps={{
               startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
             }}
@@ -281,11 +264,6 @@ export function ListaEquipos() {
                             tabIndex={-1}
                             selected={isItemSelected}
                           >
-                            <TableCell>
-                              <IconButton aria-label="expand row" size="small" onClick={(event) => handleClick(event, row.serial)}>
-                                {isItemSelected ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                              </IconButton>
-                            </TableCell>
                             {editMode === row.serial ? (
                               <>
                                 <TableCell>
@@ -364,7 +342,7 @@ export function ListaEquipos() {
                                   row.tipoEquipo.nombre
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell> 
                                 {editMode === row.serial ? (
                                   <Select
                                     name="subsede"
@@ -422,49 +400,13 @@ export function ListaEquipos() {
                                   <IconButton onClick={(event) => handleEditClick(event, row)}>
                                     {editMode === row.serial ? <SaveIcon /> : <EditIcon />}
                                   </IconButton>
+                                  <IconButton onClick={() => handleSendToHojaDeVida(row)}>
+                                    <FileSpreadsheet />
+                                  </IconButton>
                                 </TableCell>
                               </>
                             )}
                           </TableRow>
-                          {isItemSelected && (
-                            <TableRow>
-                              <TableCell colSpan={headCells.length}>
-                                <Collapse in={isItemSelected} timeout="auto" unmountOnExit>
-                                  <Box margin={1}>
-                                    <Typography variant="h6" gutterBottom component="div">
-                                      Mantenimientos
-                                    </Typography>
-                                    <Table size="small" aria-label="purchases">
-                                      <TableHead>
-                                        <TableRow>
-                                          <TableCell>Fecha Mantenimiento</TableCell>
-                                          <TableCell>Objetivo</TableCell>
-                                          <TableCell>Tipo</TableCell>
-                                        </TableRow>
-                                      </TableHead>
-                                      <TableBody>
-                                      {row.mantenimientos.length > 0 ? (
-                                        row.mantenimientos.map((mantenimiento) => (
-                                          <TableRow key={mantenimiento.idMantenimiento}>
-                                            <TableCell component="th" scope="row">
-                                              {mantenimiento.fechaProxMantenimiento}
-                                            </TableCell>
-                                            <TableCell>{mantenimiento.objetivo}</TableCell>
-                                            <TableCell>{mantenimiento.tipoMantenimiento}</TableCell>
-                                          </TableRow>
-                                        ))
-                                      ) : (
-                                        <TableRow>
-                                          <TableCell colSpan={3}>No hay mantenimientos</TableCell>
-                                        </TableRow>
-                                      )}
-                                    </TableBody>
-                                    </Table>
-                                  </Box>
-                                </Collapse>
-                              </TableCell>
-                            </TableRow>
-                          )}
                         </React.Fragment>
                       );
                     })}

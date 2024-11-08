@@ -57,10 +57,10 @@ export const RecuperarContraseña = () => {
                     </div>
                     <h1 className="text-4xl font-bold text-blue-900 mb-4">Bienvenidos!</h1>
                     <p className="text-blue-700 mb-6">
-                        Este es un software utilizado para la gestión del mantenimiento de los equipos tecnologicos del Sena CIAA, solo es para usuarios ya registrados.
+                        Si olvidaste tu contraseña, no te preocupes. Introduce tu correo electrónico y te enviaremos un enlace para recuperarla de forma segura.
                     </p>
                     <a href='/'>
-                    <Button className="w-full bg-blue-500 text-white py-2 rounded-full">Volver al login</Button>
+                    <Button className="w-full bg-blue-500 text-white py-2 rounded-full">Volver al inicio de sesión</Button>
                     </a>
                 </div>
 
