@@ -16,6 +16,7 @@ import ListaDependencias from '@/pages/Sedes/ListaDependencias';
 import ListaAmbientes from '@/pages/Sedes/ListaAmbientes';
 import { RecuperarContraseña } from '@/pages/login/RecuperarContraseña';
 import RecuperarContrasena from '@/pages/login/RecuperarContraseña2';
+import EquipmentSheet from '@/pages/Equipos/HojadeVida';
 
 export const AppRoutes = () => {
     return useRoutes([
@@ -150,6 +151,14 @@ export const AppRoutes = () => {
             element: (
                 <ProtectedRoute>
                     <ListaEquipos />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/hoja-de-vida/:serial',
+            element: (
+                <ProtectedRoute>
+                    <EquipmentSheet />
                 </ProtectedRoute>
             ),
         },

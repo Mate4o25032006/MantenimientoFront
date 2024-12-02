@@ -207,7 +207,7 @@ export function ListaCuentaDante() {
             value={filter}
             onChange={handleFilterChange}
             fullWidth
-            placeholder="Ej: Marca, cuentadante, referencia"
+            placeholder="Ej: nombre, dependencia, tipo de contrato"
             InputProps={{
               startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
             }}

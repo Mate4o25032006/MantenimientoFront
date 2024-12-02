@@ -110,7 +110,7 @@
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 fullWidth
-                placeholder="Ej: Marca, propietario, referencia"
+                placeholder="Ej: Objetivo, tipo de mantenimiento, tecnico asignado, estado"
                 InputProps={{
                   startAdornment: <SearchIcon style={{ color: '#1565c0', marginRight: 8 }} />,
                 }}
